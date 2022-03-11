@@ -1,0 +1,4 @@
+name: Default
+lr: 1e-2
+epochs: 1000
+iter: 250

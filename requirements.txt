@@ -1,0 +1,6 @@
+nibabel
+monai
+hydra-core
+tensorboard
+tqdm
+omegaconf

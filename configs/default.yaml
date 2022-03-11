@@ -1,0 +1,14 @@
+defaults:
+  - dataset: us
+  - model: fine
+  - training: default
+  - _self_
+
+
+hydra:
+  run:
+    dir: outputs/${dataset.name}/${model.name}/${training.name}
+  sweep:
+    dir: outputs/${dataset.name}/${model.name}
+    subdir: ${training.name}:${hydra.job.num}
+  verbose: [__main__]
