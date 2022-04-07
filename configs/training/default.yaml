@@ -1,6 +1,7 @@
 name: Default
+dbg: True
 gpu: 0
-use_gpu: False
+use_gpu: True
 
 lr: 1e-2
 weight_decay: 3e-5

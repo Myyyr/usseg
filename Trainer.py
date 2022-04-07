@@ -34,13 +34,15 @@ import json
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
 
-
+import telegram_send as ts
 
 class Trainer():
 	def __init__(self, cfg, log, *args, **kwargs):
 		# Logs
 		self.log = log
+		self.dbg=cfg.training.dbg
 		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name)
+		
 
 		# Device
 		os.environ["CUDA_VISIBLE_DEVICES"]=str(cfg.training.gpu)
@@ -125,13 +127,16 @@ class Trainer():
 		if self.do_load_checkpoint:
 			self.load_checkpoint()
 
+
+
 		
 
 
 
 	def run_training(self, *args, **kwargs):
 		log=self.log
-		
+		if not self.dbg:
+        	ts.send(messages=["Training: " + cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name])
 
 
 		for epoch in range(self.start_epoch, self.epochs):
@@ -173,6 +178,9 @@ class Trainer():
 			self.writer.add_scalar('Loss', l.detach().cpu().numpy(), epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
+
+		if not self.dbg:
+	        ts.send(messages=["Training END: " + cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name])
 
 
 	def run_eval(self, do_infer=True, *args, **kwargs):
