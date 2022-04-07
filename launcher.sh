@@ -11,4 +11,4 @@ source /opt/server-env.sh
 source /home/lthemyr/usenv/bin/activate
 
 
-# srun python main.py
+srun python main.py
