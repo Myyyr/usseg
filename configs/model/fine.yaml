@@ -9,5 +9,5 @@ inference:
 checkpoint:
   save: 1
   load: False
-  load_path: ${pth}/${model.name}/checkpoint/latest.pt
-  path: ${pth}/${model.name}/checkpoint
+  load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
+  path: ${model.pth}/${model.name}/checkpoint
