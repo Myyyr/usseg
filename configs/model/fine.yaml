@@ -1,7 +1,9 @@
 name: FINE
 model: fine
 # pth: /home/myr/these/datasets
-pth: /etudiants/siscol/t/themyr_l/US
+# pth: /etudiants/siscol/t/themyr_l/US
+pth: /scratch/lthemyr/US
+
 
 inference:
   path: ${model.pth}/${model.name}
