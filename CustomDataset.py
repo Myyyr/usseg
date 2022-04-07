@@ -48,8 +48,8 @@ class CustomDataset(Dataset):
 			i = self.idx
 
 		# log.debug("data_i['label'].shape", data_i["label"].shape)
-		log.debug("index", index)
-		log.debug("i", i)
+		# log.debug("index", index)
+		# log.debug("i", i)
 		data_i = {"image": self.loader(self.data[i]["image"])[0][None, ...],
 				  "label": self.loader(self.data[i]["label"])[0][None, ...],
 				  "id": [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
@@ -71,5 +71,5 @@ class CustomDataset(Dataset):
 	            np.vstack(self.net_num_pool_op_kernel_sizes), axis=0))[:-1]
 
 			data_i["label"] = downsample_seg_for_ds_transform3(data_i["label"][None,...], deep_supervision_scales)
-		log.debug("loadok")
+		# log.debug("loadok")
 		return data_i
