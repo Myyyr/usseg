@@ -7,3 +7,4 @@ omegaconf
 termcolor
 nnunet==1.6.6
 batchgenerators==0.23
+einops
