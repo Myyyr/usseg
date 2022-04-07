@@ -4,3 +4,6 @@ hydra-core
 tensorboard
 tqdm
 omegaconf
+termcolor
+nnunet
+batchgenerators==0.21
