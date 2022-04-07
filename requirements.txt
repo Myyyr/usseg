@@ -5,5 +5,5 @@ tensorboard
 tqdm
 omegaconf
 termcolor
-nnunet
-batchgenerators==0.21
+nnunet==1.6.6
+batchgenerators==0.23
