@@ -10,3 +10,4 @@ batchgenerators==0.23
 einops
 timm
 telegram_send
+cachetools==4.2.2
