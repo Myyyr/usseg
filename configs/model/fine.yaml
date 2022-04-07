@@ -4,7 +4,7 @@ model: fine
 pth: /etudiants/siscol/t/themyr_l/US
 
 inference:
-  path: ${pth}/${model.name}
+  path: ${model.pth}/${model.name}
 
 checkpoint:
   save: 1
