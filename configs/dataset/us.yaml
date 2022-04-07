@@ -1,6 +1,6 @@
 name: US
 path: 
-  pth: /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022
+  pth: /scratch/lthemyr/US/2022-04-03-dream-4
   im: ${dataset.path.pth}/USimg_cropped128
   seg: ${dataset.path.pth}/USmask_cropped128
 
