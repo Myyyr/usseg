@@ -156,8 +156,8 @@ class Trainer():
 				labels = batch_data["label"]
 				centers = batch_data["center"]
 				
-				log.debug("inputs.shape", inputs.shape)
-				log.debug("type(inputs)", type(inputs))
+				# log.debug("inputs.shape", inputs.shape)
+				# log.debug("type(inputs)", type(inputs))
 				# log.debug("labels[0].shape", labels[0].shape)
 				# log.debug("centers", centers)
 
