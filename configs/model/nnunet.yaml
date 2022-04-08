@@ -1,0 +1,15 @@
+name: NNUNET
+model: Generic_UNet
+# pth: /home/myr/these/datasets
+# pth: /etudiants/siscol/t/themyr_l/US
+pth: /scratch/lthemyr/US
+
+
+inference:
+  path: ${model.pth}/${model.name}
+
+checkpoint:
+  save: 1
+  load: False
+  load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
+  path: ${model.pth}/${model.name}/checkpoint
