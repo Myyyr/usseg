@@ -159,7 +159,7 @@ class Trainer():
 				# log.debug("centers", centers)
 
 				if torch.cuda.is_available() and self.use_gpu:
-					inputs.cuda()
+					inputs.cuda(0, non_blocking=True)
 					[lab.cuda() for lab in labels]
 					# centers.cuda()
 				log.debug("inputs.device",inputs.device)
