@@ -109,7 +109,7 @@ class Trainer():
 		self.do_load_checkpoint = cfg.model.checkpoint.load
 		self.load_path = cfg.model.checkpoint.load_path
 
-		self.model = import_model(cfg.model.model, dataset='TEST', num_classes=self.classes, 
+		self.model = import_model(cfg.model.model, dataset='US', num_classes=self.classes, 
 													num_pool=len(self.net_num_pool_op_kernel_sizes), 
 													pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes,
 													conv_kernel_sizes=self.net_conv_kernel_sizes)
