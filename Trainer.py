@@ -153,13 +153,15 @@ class Trainer():
 				labels = batch_data["label"]
 				centers = batch_data["center"]
 				
-				# log.debug("inputs.shape", inputs.shape)
+				log.debug("inputs.shape", inputs.shape)
+				log.debug("type(inputs)", type(inputs))
 				# log.debug("labels[0].shape", labels[0].shape)
 				# log.debug("centers", centers)
 
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs.cuda()
 					[lab.cuda() for lab in labels]
+					# centers.cuda()
 
 				output = self.model(inputs, centers)
 				del inputs
