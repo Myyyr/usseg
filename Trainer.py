@@ -177,7 +177,12 @@ class Trainer():
 				torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
 
-				del output, labels
+				for out in output:
+					del out
+				del output
+				for lab in labels:
+					del lab
+				del labels
 
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
@@ -190,6 +195,7 @@ class Trainer():
 			self.writer.add_scalar('Loss', l.detach().cpu().numpy(), epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
+			torch.cuda.empty_cache()
 
 		if not self.dbg:
 			ts.send(messages=["Training END: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
