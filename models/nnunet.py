@@ -200,7 +200,7 @@ class model(SegmentationNetwork):
 
         Questions? -> f.isensee@dkfz.de
         """
-        super(Generic_UNet, self).__init__()
+        super(model, self).__init__()
 
         # print("\n\n\n\n\nThat's my model !! \n\n\n\n")
         # exit(0)
