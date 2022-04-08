@@ -143,7 +143,7 @@ class Trainer():
 	def run_training(self, *args, **kwargs):
 		log=self.log
 		if not self.dbg:
-			ts.send(messages=["Training: " + self..dataset_name+'self._'+.training_name+'self._'+.model_name])
+			ts.send(messages=["Training: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
 
 
 		for epoch in range(self.start_epoch, self.epochs):
@@ -191,7 +191,7 @@ class Trainer():
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 
 		if not self.dbg:
-			ts.send(messages=["Training END: " + self..dataset_name+'self._'+.training_name+'self._'+.model_name])
+			ts.send(messages=["Training END: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
 
 
 	def run_eval(self, do_infer=True, *args, **kwargs):
