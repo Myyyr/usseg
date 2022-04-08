@@ -164,7 +164,7 @@ class Upsample(nn.Module):
                                          align_corners=self.align_corners)
 
 
-class Generic_UNet(SegmentationNetwork):
+class model(SegmentationNetwork):
     DEFAULT_BATCH_SIZE_3D = 2
     DEFAULT_PATCH_SIZE_3D = (64, 192, 160)
     SPACING_FACTOR_BETWEEN_STAGES = 2

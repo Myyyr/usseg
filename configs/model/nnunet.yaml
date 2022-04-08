@@ -1,5 +1,5 @@
 name: NNUNET
-model: Generic_UNet
+model: nnunet
 # pth: /home/myr/these/datasets
 # pth: /etudiants/siscol/t/themyr_l/US
 pth: /scratch/lthemyr/US
