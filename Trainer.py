@@ -166,7 +166,7 @@ class Trainer():
 					[lab.cuda(0, non_blocking=True) for lab in labels]
 					# centers.cuda()
 				log.debug("inputs.device",inputs.device)
-				log.debug("model.device",model.device)
+				log.debug("model.device",self.model.device)
 
 				output = self.model(inputs, centers)
 				del inputs
