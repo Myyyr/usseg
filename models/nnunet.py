@@ -387,7 +387,7 @@ class model(SegmentationNetwork):
             self.apply(self.weightInitializer)
             # self.apply(print_module_training_status)
 
-    def forward(self, x):
+    def forward(self, x, *args, **kwargs):
         # print(x.shape)
         skips = []
         seg_outputs = []
