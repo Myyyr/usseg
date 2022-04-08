@@ -62,6 +62,7 @@ class Trainer():
 		self.iterations = cfg.training.iter
 		self.weight_decay = cfg.training.weight_decay
 		self.net_num_pool_op_kernel_sizes = cfg.training.net_num_pool_op_kernel_sizes
+		self.net_conv_kernel_sizes = cfg.training.net_conv_kernel_sizes
 
 		# Dataset
 		log.debug("Dataset")
@@ -105,7 +106,10 @@ class Trainer():
 		self.do_load_checkpoint = cfg.model.checkpoint.load
 		self.load_path = cfg.model.checkpoint.load_path
 
-		self.model = import_model(cfg.model.model, dataset='TEST', num_classes=self.classes)
+		self.model = import_model(cfg.model.model, dataset='TEST', num_classes=self.classes, 
+													num_pool=len(self.net_num_pool_op_kernel_sizes), 
+													pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes,
+													conv_kernel_sizes=self.net_conv_kernel_sizes)
 
 		if torch.cuda.is_available() and self.use_gpu:
 			self.model.cuda()
