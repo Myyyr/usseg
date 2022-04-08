@@ -42,6 +42,9 @@ class Trainer():
 		self.log = log
 		self.dbg=cfg.training.dbg
 		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name)
+		self.dataset_name = cfg.dataset.name
+		self.training_name = cfg.training.name
+		self.model_name = cfg.model.name
 		
 
 		# Device
@@ -140,7 +143,7 @@ class Trainer():
 	def run_training(self, *args, **kwargs):
 		log=self.log
 		if not self.dbg:
-			ts.send(messages=["Training: " + cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name])
+			ts.send(messages=["Training: " + self..dataset_name+'self._'+.training_name+'self._'+.model_name])
 
 
 		for epoch in range(self.start_epoch, self.epochs):
@@ -188,7 +191,7 @@ class Trainer():
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 
 		if not self.dbg:
-			ts.send(messages=["Training END: " + cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name])
+			ts.send(messages=["Training END: " + self..dataset_name+'self._'+.training_name+'self._'+.model_name])
 
 
 	def run_eval(self, do_infer=True, *args, **kwargs):
