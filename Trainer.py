@@ -149,7 +149,7 @@ class Trainer():
 		for epoch in range(self.start_epoch, self.epochs):
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
-			log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
+			# log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
 			btc = -1
 			for batch_data in tqdm(self.train_loader):
 				btc+=1
@@ -168,13 +168,13 @@ class Trainer():
 
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs = inputs.cuda(0)
-					log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
+					# log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
 					
 					# labels = [lab.cuda(0) for lab in labels]
 					for lab in range(len(labels)):
-						log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Shape: {}".format(labels[lab].shape))
+						# log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Shape: {}".format(labels[lab].shape))
 						labels[lab] = labels[lab].cuda(0)
-						log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb".format(torch.cuda.max_memory_allocated()//1024**3))
+						# log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb".format(torch.cuda.max_memory_allocated()//1024**3))
 
 
 					# centers.cuda()

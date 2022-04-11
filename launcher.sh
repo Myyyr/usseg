@@ -12,4 +12,4 @@ source /opt/server-env.sh
 conda activate usenv
 
 # srun python main.py #training.dbg=False
-srun python main.py -m model=nnunet #training.dbg=False
+srun python main.py -m model=nnunet training.dbg=False
