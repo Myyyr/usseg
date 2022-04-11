@@ -167,10 +167,14 @@ class Trainer():
 				
 
 				if torch.cuda.is_available() and self.use_gpu:
-					inputs = inputs.cuda(0, non_blocking=True)
+					inputs = inputs.cuda(0)
 					log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
-					labels = [lab.cuda(0, non_blocking=True) for lab in labels]
-					log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape, labels[0].shape))
+					
+					# labels = [lab.cuda(0) for lab in labels]
+					for lab in range(len(labels)):
+						log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Shape: {}".format(labels[lab].shape))
+						labels[lab] = labels[lab].cuda(0)
+						log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb".format(torch.cuda.max_memory_allocated()//1024**3))
 
 
 					# centers.cuda()
