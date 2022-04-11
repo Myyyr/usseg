@@ -150,7 +150,9 @@ class Trainer():
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
 			log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
+			btc = -1
 			for batch_data in tqdm(self.train_loader):
+				btc+=1
 				self.optimizer.zero_grad()
 
 				inputs = batch_data["image"]
@@ -162,11 +164,14 @@ class Trainer():
 				# log.debug("labels[0].shape", labels[0].shape)
 				# log.debug("centers", centers)
 
+				
+
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs = inputs.cuda(0, non_blocking=True)
-					log.debug("Memory input", torch.cuda.max_memory_allocated()//1024**3)
+					log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
 					labels = [lab.cuda(0, non_blocking=True) for lab in labels]
-					log.debug("Memory laebls", torch.cuda.max_memory_allocated()//1024**3)
+					log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape, labels[0].shape))
+
 
 					# centers.cuda()
 					# log.debug("torch.cuda.is_available() and self.use_gpu")
