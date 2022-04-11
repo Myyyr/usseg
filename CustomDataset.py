@@ -70,6 +70,6 @@ class CustomDataset(Dataset):
 			deep_supervision_scales = [[1, 1, 1]] + list(list(i) for i in 1 / np.cumprod(
 	            np.vstack(self.net_num_pool_op_kernel_sizes), axis=0))[:-1]
 
-			data_i["label"] = downsample_seg_for_ds_transform3(data_i["label"][None,...], deep_supervision_scales, classes=2)
+			data_i["label"] = downsample_seg_for_ds_transform3(data_i["label"][None,...], deep_supervision_scales, classes=[0,1])
 		# log.debug("loadok")
 		return data_i
