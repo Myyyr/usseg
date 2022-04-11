@@ -11,5 +11,5 @@ source /opt/server-env.sh
 # source /home/lthemyr/usenv/bin/activate
 conda activate usenv
 
-# srun python main.py #training.dbg=False
-srun python main.py -m model=nnunet training.dbg=False
+srun python main.py training.dbg=False
+# srun python main.py -m model=nnunet training.dbg=False
