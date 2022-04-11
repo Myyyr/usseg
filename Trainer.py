@@ -149,6 +149,7 @@ class Trainer():
 		for epoch in range(self.start_epoch, self.epochs):
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
+			log.debug("Memory", torch.cuda.max_memory_allocated())
 			for batch_data in tqdm(self.train_loader):
 				self.optimizer.zero_grad()
 
