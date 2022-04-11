@@ -149,7 +149,7 @@ class Trainer():
 		for epoch in range(self.start_epoch, self.epochs):
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
-			log.debug("Memory", torch.cuda.max_memory_allocated())
+			log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
 			for batch_data in tqdm(self.train_loader):
 				self.optimizer.zero_grad()
 
@@ -164,7 +164,10 @@ class Trainer():
 
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs = inputs.cuda(0, non_blocking=True)
+					log.debug("Memory input", torch.cuda.max_memory_allocated()//1024**3)
 					labels = [lab.cuda(0, non_blocking=True) for lab in labels]
+					log.debug("Memory laebls", torch.cuda.max_memory_allocated()//1024**3)
+
 					# centers.cuda()
 					# log.debug("torch.cuda.is_available() and self.use_gpu")
 				# log.debug("inputs.device",inputs.device)
