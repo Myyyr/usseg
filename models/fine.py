@@ -38,7 +38,7 @@ SYNAPSE_MAX=[218,660,660]
 BRAIN_TUMOR_MAX=[149,187,160]
 
 
-US=[760,540,868]
+US=[868,760,540]
 
 
 # TEST
@@ -1203,14 +1203,13 @@ class model(SegmentationNetwork):
             patch_size=[4,4,4]
             window_size=[4,4,8,4]
         elif dataset=="US":
-            self.imsize=[128,128,64]
-            self.imsize2=[64,128,128]
+            self.imsize=[64,128,128]
             self.vt_map=(14,6,9)
             self.max_imsize=US
             embed_dim=192
             depths=[2, 2, 2, 2]
             num_heads=[6, 12, 24, 48]
-            patch_size=[4,4,2]
+            patch_size=[2,4,4]
             window_size=[4,4,4,4]
         elif dataset=="TEST":
             self.imsize=[96,96,96]

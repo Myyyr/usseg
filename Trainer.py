@@ -36,6 +36,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 import telegram_send as ts
 
+from einops import rearrange
+
 class Trainer():
 	def __init__(self, cfg, log, *args, **kwargs):
 		# Logs
@@ -182,7 +184,10 @@ class Trainer():
 				# log.debug("inputs.device",inputs.device)
 				# log.debug("model.device",self.model.device)
 
+				inputs = rearrange(inputs, 'b c x y z -> b c z x y')
 				output = self.model(inputs, centers)
+				output = rearrange(output, 'b c z x y z -> b c x y z')
+
 				del inputs
 				# log.debug("type(output)", type(output))
 				l = self.loss(output, labels)
@@ -323,7 +328,10 @@ class Trainer():
 
 					crop = inputs[:,:,idx_h:idx_h+H_crop, idx_w:idx_w+W_crop, idx_d:idx_d+D_crop]
 					centers = [[idx_h+H_crop//2, idx_w+W_crop//2, idx_d+D_crop//2] for i in range(B)]
+					crop = rearrange(crop, 'b c x y z -> b c z x y')
 					out_crop = self.model(crop, centers)
+					out_crop = rearrange(out_crop, 'b c z x y z -> b c x y z')
+
 
 					del crop
 
