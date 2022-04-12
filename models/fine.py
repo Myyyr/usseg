@@ -1203,14 +1203,14 @@ class model(SegmentationNetwork):
             patch_size=[4,4,4]
             window_size=[4,4,8,4]
         elif dataset=="US":
-            self.imsize=[128,128,128]
-            self.vt_map=(2,2,2)
-            self.max_imsize=US
-            embed_dim=96
+            self.imsize=[128,128,64]
+            self.vt_map=(6,9,14)
+            self.max_imsize=SYNAPSE_MAX
+            embed_dim=192
             depths=[2, 2, 2, 2]
-            num_heads=[3, 6, 12, 24]
-            patch_size=[4,4,4]
-            window_size=[4,4,8,4]
+            num_heads=[6, 12, 24, 48]
+            patch_size=[4,4,2]
+            window_size=[4,4,4,4]
         elif dataset=="TEST":
             self.imsize=[96,96,96]
             self.vt_map=(2,2,2)
