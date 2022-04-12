@@ -1204,9 +1204,9 @@ class model(SegmentationNetwork):
             window_size=[4,4,8,4]
         elif dataset=="US":
             self.imsize=[128,128,64]
-            self.imsize2=[64, 128,128]
+            self.imsize2=[64,128,128]
             self.vt_map=(14,6,9)
-            self.max_imsize=SYNAPSE_MAX
+            self.max_imsize=US
             embed_dim=192
             depths=[2, 2, 2, 2]
             num_heads=[6, 12, 24, 48]
