@@ -1257,7 +1257,7 @@ class model(SegmentationNetwork):
     def pos2vtpos(self, pos):
         # dim = [64,128,128]
         # max_dim = [218,660,660]
-        dim=self.imsize2
+        dim=self.imsize
         max_dim=self.max_imsize
 
         # Myr : We put the crop in the bigger image referential
