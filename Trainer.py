@@ -184,6 +184,7 @@ class Trainer():
 				# log.debug("inputs.device",inputs.device)
 				# log.debug("model.device",self.model.device)
 
+				log.debug("inputs shape", inputs.shape)
 				inputs = rearrange(inputs, 'b c x y z -> b c z x y')
 				output = self.model(inputs, centers)
 				output = rearrange(output, 'b c z x y z -> b c x y z')
