@@ -1204,6 +1204,7 @@ class model(SegmentationNetwork):
             window_size=[4,4,8,4]
         elif dataset=="US":
             self.imsize=[128,128,64]
+            self.imsize2=[64, 128,128]
             self.vt_map=(14,6,9)
             self.max_imsize=SYNAPSE_MAX
             embed_dim=192
@@ -1257,7 +1258,7 @@ class model(SegmentationNetwork):
     def pos2vtpos(self, pos):
         # dim = [64,128,128]
         # max_dim = [218,660,660]
-        dim=self.imsize
+        dim=self.imsize2
         max_dim=self.max_imsize
 
         # Myr : We put the crop in the bigger image referential
