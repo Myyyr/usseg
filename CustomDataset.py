@@ -7,6 +7,7 @@ from monai.transforms import RandCropByPosNegLabeld, Compose
 import numpy as np
 
 from tools import downsample_seg_for_ds_transform3
+from einops import rearrange
 
 class CustomDataset(Dataset):
 	def __init__(self, data, transform=None, iterations=250, crop_size=[128,128,128], log=None, net_num_pool_op_kernel_sizes=None, val=False, *args, **kwargs):
@@ -50,8 +51,8 @@ class CustomDataset(Dataset):
 		# log.debug("data_i['label'].shape", data_i["label"].shape)
 		# log.debug("index", index)
 		# log.debug("i", i)
-		data_i = {"image": self.loader(self.data[i]["image"])[0][None, ...],
-				  "label": self.loader(self.data[i]["label"])[0][None, ...],
+		data_i = {"image": rearrange(self.loader(self.data[i]["image"])[0][None, ...], 'b c x y z -> b c z x y'),
+				  "label": rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b c x y z -> b c z x y'),
 				  "id": [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 				  }
 
