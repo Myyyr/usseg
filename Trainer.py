@@ -37,6 +37,7 @@ from torch.utils.tensorboard import SummaryWriter
 import telegram_send as ts
 
 from einops import rearrange
+import time
 
 class Trainer():
 	def __init__(self, cfg, log, *args, **kwargs):
@@ -148,12 +149,15 @@ class Trainer():
 			ts.send(messages=["Training: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
 
 
+		
 		for epoch in range(self.start_epoch, self.epochs):
+			t0 = time.time()
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
 			# log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
 			btc = -1
 			for batch_data in tqdm(self.train_loader):
+				t1 = time.time()
 				btc+=1
 				self.optimizer.zero_grad()
 
@@ -170,6 +174,7 @@ class Trainer():
 
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs = inputs.cuda(0)
+					t2 = time.time()
 					# inputs = rearrange(inputs, 'b c x y z -> b c z x y')
 					# log.debug("inputs shape", inputs.shape)
 					# log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
@@ -182,7 +187,7 @@ class Trainer():
 						# labels[lab] = rearrange(labels[lab], 'b c x y z -> b c z x y')
 						# log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb".format(torch.cuda.max_memory_allocated()//1024**3))
 
-
+					t3 = time.time()
 					# centers.cuda()
 					# log.debug("torch.cuda.is_available() and self.use_gpu")
 				# log.debug("inputs.device",inputs.device)
@@ -190,11 +195,13 @@ class Trainer():
 
 				
 				output = self.model(inputs, centers)
+				t4 = time.time()
 				# output = rearrange(output, 'b c z x y z -> b c x y z')
 
 				del inputs
 				# log.debug("type(output)", type(output))
 				l = self.loss(output, labels)
+				t5 = time.time()
 				l.backward()
 				torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
@@ -205,6 +212,7 @@ class Trainer():
 				for lab in labels:
 					del lab
 				del labels
+				t6 = time.time()
 
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
@@ -218,6 +226,19 @@ class Trainer():
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 			torch.cuda.empty_cache()
+			t7 = time.time()
+
+
+			# tim=t1-t0
+			tin=t2-t1
+			tla=t3-t2
+			tfo=t4-t3
+			tlo=t5-t4
+			tba=t6-t5
+			ten=t7-t6
+			tal=t7-t1
+			tep=t7-t0
+			log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | Back: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,tba,ten,tal,tep))
 
 		if not self.dbg:
 			ts.send(messages=["Training END: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
