@@ -328,44 +328,44 @@ class Trainer():
 	def inference(self, inputs):
 		log=self.log
 
-		B, C, H, W, D = inputs.shape
-		H_crop, W_crop, D_crop = self.crop_size
+		B, C, D, H, W = inputs.shape
+		D_crop, H_crop, W_crop = self.crop_size
 		# log.debug("inputs.shape", inputs.shape)
 
-		nH, nW, nD = int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1])), int(D//(D_crop*self.stride[2]))
+		nD, nH, nW = int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1])), int(D//(D_crop*self.stride[2]))
 
-		output = torch.zeros((B, self.classes, H, W, D))
-		count  = torch.zeros((B, self.classes, H, W, D))
+		output = torch.zeros((B, self.classes, D, H, W))
+		count  = torch.zeros((B, self.classes, D, H, W))
 
+		for k in range(nD):
+			for i in range(nH):
+				for j in range(nW):
+				
+					idx_d = int(k*D_crop*self.stride[0])
+					idx_h = int(i*H_crop*self.stride[1])
+					idx_w = int(j*W_crop*self.stride[2])
 
-		for i in range(nH):
-			for j in range(nW):
-				for k in range(nD):
-					idx_h = int(i*H_crop*self.stride[0])
-					idx_w = int(j*W_crop*self.stride[1])
-					idx_d = int(k*D_crop*self.stride[2])
-
+					if idx_d+D_crop > D:
+						idx_d = D - D_crop
 					if idx_h+H_crop > H:
 						idx_h = H - H_crop
 					if idx_w+W_crop > W:
 						idx_w = W - W_crop
-					if idx_d+D_crop > D:
-						idx_d = D - D_crop
 
-					crop = inputs[:,:,idx_h:idx_h+H_crop, idx_w:idx_w+W_crop, idx_d:idx_d+D_crop]
-					centers = [[idx_h+H_crop//2, idx_w+W_crop//2, idx_d+D_crop//2] for i in range(B)]
-					crop = rearrange(crop, 'b c x y z -> b c z x y')
+					crop = inputs[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
+					centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
+					# crop = rearrange(crop, 'b c x y z -> b c z x y')
 					out_crop = self.model(crop, centers)
-					out_crop = rearrange(out_crop, 'b c z x y z -> b c x y z')
+					# out_crop = rearrange(out_crop, 'b c z x y z -> b c x y z')
 
 
 					del crop
 
-					output[:,:,idx_h:idx_h+H_crop, idx_w:idx_w+W_crop, idx_d:idx_d+D_crop] = out_crop[0].cpu()
-					count[:,:,idx_h:idx_h+H_crop, idx_w:idx_w+W_crop, idx_d:idx_d+D_crop]  += 1
+					output[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] = out_crop[0].cpu()
+					count[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]  += 1
 
 
-		return output/count
+		return rearrange(output/count, 'b c z x y z -> b c x y z')
 
 
 

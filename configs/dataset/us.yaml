@@ -1,8 +1,8 @@
 name: US
 path: 
   pth: /scratch/lthemyr/US/20220318_US_DATA
-  im: ${dataset.path.pth}/USimg_cropped
-  seg: ${dataset.path.pth}/USmask_cropped
+  im: ${dataset.path.pth}/USimg_cropped_npz
+  seg: ${dataset.path.pth}/USmask_cropped_npz
 
 len: 55
 split:
