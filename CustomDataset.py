@@ -9,6 +9,8 @@ import numpy as np
 from tools import downsample_seg_for_ds_transform3
 from einops import rearrange
 
+import time
+
 class CustomDataset(Dataset):
 	def __init__(self, data, transform=None, iterations=250, crop_size=[128,128,128], log=None, net_num_pool_op_kernel_sizes=None, val=False, *args, **kwargs):
 		# We use our own Custom dataset wich with we can keep track of sub volumes position.
@@ -40,6 +42,7 @@ class CustomDataset(Dataset):
 			return len(self.data)
 
 	def __getitem__(self, index):
+		t0 = time.time()
 		log=self.log
 		# To Do: dataset when eval mode
 		if not self.val:
@@ -51,13 +54,17 @@ class CustomDataset(Dataset):
 		# log.debug("data_i['label'].shape", data_i["label"].shape)
 		# log.debug("index", index)
 		# log.debug("i", i)
-		data_i = {"image": rearrange(self.loader(self.data[i]["image"])[0][None, ...], 'b x y z -> b z x y'),
-				  "label": rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b x y z -> b z x y'),
-				  "id": [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
-				  }
+		data_i = {}
+		data_i["image"] = rearrange(self.loader(self.data[i]["image"])[0][None, ...], 'b x y z -> b z x y')
+		t1 = time.time()
+		data_i["label"] = rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b x y z -> b z x y')
+		t2 = time.time()
+		data_i["id"] = [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
+
 		shape = data_i["image"].shape
 		if not self.val:
 			data_i, centers = self.croper(data_i)
+			t3 = time.time()
 			data_i = data_i[0]
 			# log.debug("index", index)
 			# log.debug("centers", centers[0])
@@ -69,6 +76,7 @@ class CustomDataset(Dataset):
 
 			# Apply transformations
 			data_i = apply_transform(self.transform, data_i) if self.transform is not None else data_i
+			t4 = time.time()
 
 
 
@@ -79,4 +87,16 @@ class CustomDataset(Dataset):
 
 			data_i["label"] = downsample_seg_for_ds_transform3(data_i["label"][None,...], deep_supervision_scales, classes=[0,1])
 		# log.debug("loadok")
+		t5 = time.time()
+
+		tim=t1-t0
+		tla=t2-t1
+		tcr=t3-t2
+		ttr=t4-t5
+		tde=t5-t4
+		tal=t5-t0
+
+
+		log.debug("Dataset times", "im:{}s | lab:{}s | crop:{}s | trans:{}s | deep:{}s | ALL:{}s |".format(tim, tla, tcr, ttr, tde, tal))
 		return data_i
+
