@@ -60,8 +60,8 @@ class CustomDataset(Dataset):
 			data_i, centers = self.croper(data_i)
 			data_i = data_i[0]
 			# log.debug("index", index)
-			# log.debug("index", index)
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
+			log.debug("centers", centers)
 			data_i["center"] = np.array(centers)
 
 
