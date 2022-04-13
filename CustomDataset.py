@@ -52,7 +52,7 @@ class CustomDataset(Dataset):
 		# log.debug("index", index)
 		# log.debug("i", i)
 		data_i = {"image": rearrange(self.loader(self.data[i]["image"])[0][None, ...], 'b x y z -> b z x y'),
-				  "label": rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b x y z -> c z x y'),
+				  "label": rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b x y z -> b z x y'),
 				  "id": [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 				  }
 
