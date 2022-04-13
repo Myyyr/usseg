@@ -55,9 +55,9 @@ class CustomDataset(Dataset):
 		# log.debug("index", index)
 		# log.debug("i", i)
 		data_i = {}
-		data_i["image"] = rearrange(self.loader(self.data[i]["image"])[None, ...], 'b x y z -> b z x y')
+		data_i["image"] = rearrange(self.loader(self.data[i]["image"])['arr_0'][None, ...], 'b x y z -> b z x y')
 		t1 = time.time()
-		data_i["label"] = rearrange(self.loader(self.data[i]["label"])[None, ...], 'b x y z -> b z x y')
+		data_i["label"] = rearrange(self.loader(self.data[i]["label"])['arr_0'][None, ...], 'b x y z -> b z x y')
 		t2 = time.time()
 		data_i["id"] = [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 
