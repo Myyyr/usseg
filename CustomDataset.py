@@ -92,7 +92,7 @@ class CustomDataset(Dataset):
 		tim=t1-t0
 		tla=t2-t1
 		tcr=t3-t2
-		ttr=t4-t5
+		ttr=t4-t3
 		tde=t5-t4
 		tal=t5-t0
 
