@@ -55,11 +55,13 @@ class CustomDataset(Dataset):
 				  "label": rearrange(self.loader(self.data[i]["label"])[0][None, ...], 'b x y z -> b z x y'),
 				  "id": [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 				  }
-
+		shape = data_i["image"].shape
 		if not self.val:
 			data_i, centers = self.croper(data_i)
 			data_i = data_i[0]
-			data_i["center"] = np.array(centers[0])
+			centers = [centers[2]-shape[3]//2,centers[0]-shape[1]//2,centers[1]-shape[2]//2]
+			data_i["center"] = np.array(centers)
+
 
 			# Apply transformations
 			data_i = apply_transform(self.transform, data_i) if self.transform is not None else data_i
