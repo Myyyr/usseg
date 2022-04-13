@@ -221,7 +221,7 @@ class Trainer():
 				ten=t6-t5
 				tal=t6-t1
 				tep=t6-t0
-				log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | Back: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,ten,tal,tep))
+				log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,ten,tal,tep))
 
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
