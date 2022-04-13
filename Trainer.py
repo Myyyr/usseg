@@ -214,6 +214,15 @@ class Trainer():
 				del labels
 				t6 = time.time()
 
+				tin=t2-t1
+				tla=t3-t2
+				tfo=t4-t3
+				tlo=t5-t4
+				ten=t6-t5
+				tal=t6-t1
+				tep=t6-t0
+				log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | Back: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,ten,tal,tep))
+
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
 				self.save_chekpoint(epoch)
@@ -226,19 +235,11 @@ class Trainer():
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 			torch.cuda.empty_cache()
-			t7 = time.time()
+			# t7 = time.time()
 
 
 			# tim=t1-t0
-			tin=t2-t1
-			tla=t3-t2
-			tfo=t4-t3
-			tlo=t5-t4
-			tba=t6-t5
-			ten=t7-t6
-			tal=t7-t1
-			tep=t7-t0
-			log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | Back: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,tba,ten,tal,tep))
+			
 
 		if not self.dbg:
 			ts.send(messages=["Training END: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
