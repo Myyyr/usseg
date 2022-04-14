@@ -14,4 +14,4 @@ conda activate usenv
 # srun python main.py training.dbg=False
 # srun python main.py -m model=nnunet # training.dbg=False
 
-srun python main.py -m config_name=small_nnunet
+srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128
