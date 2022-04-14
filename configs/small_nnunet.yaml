@@ -12,3 +12,5 @@ hydra:
     dir: outputs/${dataset.name}/${model.name}
     subdir: ${training.name}:${hydra.job.num}
   verbose: [__main__]
+
+# 3.41 it/s
