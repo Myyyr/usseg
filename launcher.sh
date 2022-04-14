@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/nnunet.out # output file name
-#SBATCH --error=logs/nnunet.err  # error file name
+#SBATCH --output=logs/nnunet_small.out # output file name
+#SBATCH --error=logs/nnunet_small.err  # error file name
 
 
 source /opt/server-env.sh
@@ -12,4 +12,6 @@ source /opt/server-env.sh
 conda activate usenv
 
 # srun python main.py training.dbg=False
-srun python main.py -m model=nnunet # training.dbg=False
+# srun python main.py -m model=nnunet # training.dbg=False
+
+srun pyhton main.py -m model=nnunet dataset=us128 training=crop128_128_128
