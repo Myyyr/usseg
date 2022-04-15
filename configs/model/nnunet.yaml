@@ -5,11 +5,3 @@ model: nnunet
 pth: /scratch/lthemyr/US
 
 
-inference:
-  path: ${model.pth}/${model.name}
-
-checkpoint:
-  save: 1
-  load: False
-  load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
-  path: ${model.pth}/${model.name}/checkpoint

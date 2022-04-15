@@ -47,7 +47,8 @@ class Trainer():
 		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name)
 		self.dataset_name = cfg.dataset.name
 		self.training_name = cfg.training.name
-		self.model_name = cfg.model.name
+		self.model_name = cfg.model.name7
+		self.path = create_path_if_not_exists(os.path.join(cfg.training.pth, cfg.dataset.name, cfg.training.name, cfg.model.name))
 		
 
 		# Device
@@ -107,10 +108,10 @@ class Trainer():
 
 		# Models
 		log.debug("Model")
-		self.save_path = create_path_if_not_exists(cfg.model.checkpoint.path)
+		self.save_path = create_path_if_not_exists(os.path.join(self.path, "checkpoint"))
 		self.n_save = cfg.model.checkpoint.save
 		self.do_load_checkpoint = cfg.model.checkpoint.load
-		self.load_path = cfg.model.checkpoint.load_path
+		self.load_path = os.path.join(self.path, "checkpoint",'latest.pt')
 
 		self.model = import_model(cfg.model.model, dataset='US', num_classes=self.classes, 
 													num_pool=len(self.net_num_pool_op_kernel_sizes), 
@@ -129,9 +130,10 @@ class Trainer():
 		
 		self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
-		self.infer_path = cfg.model.inference.path
-		if not os.path.exists(self.infer_path):
-			os.makedirs(self.infer_path)
+		self.infer_path = self.path
+
+		# if not os.path.exists(self.infer_path):
+		# 	os.makedirs(self.infer_path)
 
 
 		if self.do_load_checkpoint:
