@@ -109,8 +109,8 @@ class Trainer():
 		# Models
 		log.debug("Model")
 		self.save_path = create_path_if_not_exists(os.path.join(self.path, "checkpoint"))
-		self.n_save = cfg.model.checkpoint.save
-		self.do_load_checkpoint = cfg.model.checkpoint.load
+		self.n_save = cfg.training.checkpoint.save
+		self.do_load_checkpoint = cfg.training.checkpoint.load
 		self.load_path = os.path.join(self.path, "checkpoint",'latest.pt')
 
 		self.model = import_model(cfg.model.model, dataset='US', num_classes=self.classes, 
