@@ -47,7 +47,7 @@ class Trainer():
 		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name)
 		self.dataset_name = cfg.dataset.name
 		self.training_name = cfg.training.name
-		self.model_name = cfg.model.name7
+		self.model_name = cfg.model.name
 		self.path = create_path_if_not_exists(os.path.join(cfg.training.pth, cfg.dataset.name, cfg.training.name, cfg.model.name))
 		
 
