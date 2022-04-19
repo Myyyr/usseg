@@ -41,4 +41,13 @@ if __name__ == '__main__':
 # /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022/USimg_cropped128_npz
 
 # /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022/USmask_cropped128
-# /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022/USmask_cropped128_npz
+# # /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022/USmask_cropped128_npz
+
+
+# # ------------
+
+# # /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022/USimg_cropped128
+# # /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022/USimg_cropped128_npz
+
+# /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022/USmask_cropped128
+# /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022/USmask_cropped128_npz
