@@ -5,7 +5,7 @@ import os
 import sys
 
 
-
+L=  ['17L', '53L', '42R', '84L', '47R', '33L', '14L', '94R', '119R', '43L', '54R', '23L', '11R', '116R', '12L', '116L', '38R', '38L', '51R']
 
 def main(argv, arc):
 
@@ -15,7 +15,10 @@ def main(argv, arc):
 		os.makedirs(out_path)
 
 	for f in os.listdir(path):
-		if ".nii" in f:
+		b = False
+		for l  in L:
+			b = (l in f)
+		if (".nii" in f) and not b:
 			x = nib.load(os.path.join(path, f)).get_fdata()
 			out_f = f.replace(".nii.gz", ".npz")
 			np.savez(os.path.join(out_path, out_f), x)
