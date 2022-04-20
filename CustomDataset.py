@@ -62,6 +62,8 @@ class CustomDataset(Dataset):
 		data_i["id"] = [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 
 		shape = data_i["image"].shape
+
+		centers = [0,0,0]
 		if not self.val:
 			data_i, centers = self.croper(data_i)
 			# t3 = time.time()
@@ -71,12 +73,13 @@ class CustomDataset(Dataset):
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
 			# log.debug("centers", centers)
 			# log.debug("shape", shape)
-			data_i["center"] = np.array(centers)
 
 
 			# Apply transformations
 			data_i = apply_transform(self.transform, data_i) if self.transform is not None else data_i
-			# t4 = time.time()
+		
+
+		data_i["center"] = np.array(centers)
 
 
 
