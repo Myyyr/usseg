@@ -97,7 +97,7 @@ class Trainer():
 					
 			])
 
-		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes) # Add transforms : TO DO
+		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes, val=True) # Add transforms : TO DO
 		valData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, val=True) # Add transforms : TO DO
 
 		self.train_loader = DataLoader(trainData, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())

@@ -6,7 +6,7 @@ use_gpu: True
 lr: 1e-2
 weight_decay: 3e-5
 epochs: 1000
-iter: 250
+iter: 39
 batch_size: 2
 num_workers: 12
 crop_size: [128,128,128]
