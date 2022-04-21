@@ -30,7 +30,7 @@ augmentations:
     p_: 0.3
 
 inference:
-  stride: [0.5, 0.5, 0.5]
+  stride: [1,1,1]
 
 checkpoint:
   save: 1

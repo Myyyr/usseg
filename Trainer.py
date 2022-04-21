@@ -334,7 +334,7 @@ class Trainer():
 		D_crop, H_crop, W_crop = self.crop_size
 		# log.debug("inputs.shape", inputs.shape)
 
-		nD, nH, nW = int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1])), int(D//(D_crop*self.stride[2]))
+		nD, nH, nW = int(D//(D_crop*self.stride[2])), int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1]))
 
 		output = torch.zeros((B, self.classes, D, H, W))
 		count  = torch.zeros((B, self.classes, D, H, W))
