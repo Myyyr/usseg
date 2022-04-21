@@ -172,6 +172,7 @@ class Trainer():
 			self.optimizer.param_groups[0]['lr'] = self.lr
 			btc = -1
 			for batch_data in tqdm(self.train_loader):
+				break
 				btc+=1
 				self.optimizer.zero_grad()
 
@@ -208,9 +209,13 @@ class Trainer():
 						inputs = batch_data["image"]
 						labels = batch_data["label"]
 						centers = batch_data["center"]
+						log.debug('input', inputs.shape)
+						log.debug('labels', labels.shape)
 						if torch.cuda.is_available() and self.use_gpu:
-							inputs = inputs.float().cuda(0)
+							inputs = inputs[0].float().cuda(0)
 							labels = labels[0].cuda(0)
+						log.debug('input', inputs.shape)
+						log.debug('labels', labels.shape)
 						output = self.model(inputs[0], centers)
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
