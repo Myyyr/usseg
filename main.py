@@ -24,9 +24,10 @@ def main(cfg: DictConfig) -> None:
 	trainer = Trainer(cfg, log)
 	log.end("Trainer initialization")
 
-	log.start("Training")
-	trainer.run_training()
-	log.end("Training")
+	if not cfg.training.only_val:
+		log.start("Training")
+		trainer.run_training()
+		log.end("Training")
 
 	log.start("Eval")
 	trainer.run_eval()

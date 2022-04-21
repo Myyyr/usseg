@@ -2,6 +2,7 @@ name: CROP_SMALL
 dbg: True
 gpu: 0
 use_gpu: True
+only_val: False
 
 lr: 1e-2
 weight_decay: 3e-5

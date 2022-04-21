@@ -254,6 +254,8 @@ class Trainer():
 			self.model.eval()
 			for batch_data in tqdm(self.val_loader):
 				inputs = batch_data["image"]
+				if torch.cuda.is_available() and self.use_gpu:
+					inputs = inputs.float().cuda(0)
 				prediction = self.inference(inputs)
 				prediction = torch.argmax(prediction, dim=1)
 				idx = batch_data["id"][0][0]
