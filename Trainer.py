@@ -261,8 +261,10 @@ class Trainer():
 				name = idx.replace('xxx', 'pred')
 				file = os.path.join(self.infer_path, name)
 
-				pred_nib = nib.Nifti1Image(prediction.numpy(), None)
-				nib.save(pred_nib, file)
+				# pred_nib = nib.Nifti1Image(prediction.numpy(), None)
+				# nib.save(pred_nib, file)
+
+				np.savez(file, prediction.numpy())
 
 		loader = LoadImage()
 		results = {}
@@ -270,9 +272,11 @@ class Trainer():
 		N = 0
 
 		for f in os.listdir(self.infer_path):
-			if '.nii' in f:
-				pred = loader(os.path.join(self.infer_path, f))[0][0]
-				anno = loader(os.path.join(self.seg_path, f.replace('pred', 'Vol')))[0]
+			if '.npz' in f:
+				# pred = loader(os.path.join(self.infer_path, f))[0][0]
+				pred = np.load(os.path.join(self.infer_path, f))['arr_0']
+				# anno = loader(os.path.join(self.seg_path, f.replace('pred', 'Vol')))[0]
+				anno = np.load(os.path.join(self.seg_path, f.replace('pred', 'Vol')))['arr_0']
 
 				pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes)])
 				anno = convert_seg_image_to_one_hot_encoding_batched(anno[None, ...], [i for i in range(self.classes)])
