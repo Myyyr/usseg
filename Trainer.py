@@ -21,7 +21,7 @@ from monai.transforms import (
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance
 
-from tools import create_split, import_model, get_loss, poly_lr, create_path_if_not_exists
+from tools import create_split, import_model, get_loss, poly_lr, create_path_if_not_exists, _to_one_hot
 from CustomTransform import CustomRandScaleCropd
 from CustomDataset import CustomDataset
 
@@ -218,9 +218,9 @@ class Trainer():
 						output = torch.argmax(output[0], dim=1)
 
 						# output = convert_seg_image_to_one_hot_encoding_batched(output, [i for i in range(self.classes)])
-						output = torch.nn.functional.one_hot(output, num_classes=self.classes)
+						output = _to_one_hot(output, num_classes=self.classes)
 						# labels = convert_seg_image_to_one_hot_encoding_batched(labels, [i for i in range(self.classes)])
-						labels = torch.nn.functional.one_hot(labels, num_classes=self.classes)
+						labels = _to_one_hot(labels, num_classes=self.classes)
 
 
 						log.debug('output', output[0].shape)

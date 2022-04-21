@@ -12,6 +12,14 @@ from nnunet.training.loss_functions.dice_loss import DC_and_CE_loss
 from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_encoding_batched
 
 
+def _to_one_hot(y, num_classes):
+    scatter_dim = len(y.size())
+    y_tensor = y.view(*y.size(), -1)
+    zeros = torch.zeros(*y.size(), num_classes, dtype=y.dtype)
+        
+    return zeros.scatter(scatter_dim, y_tensor, 1)
+
+
 def create_path_if_not_exists(path):
 	if not os.path.exists(path):
 		os.makedirs(path)
