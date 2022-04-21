@@ -65,6 +65,8 @@ class CustomDataset(Dataset):
 		# t1 = time.time()
 		data_i["label"] = rearrange(np.load(self.data[i]["label"])['arr_0'][None, ...], 'b x y z -> b z x y')
 		# t2 = time.time()
+		log.debug("i", i)
+		log.debug("self.data[i]['image'].split('/')[-1]", self.data[i]["image"].split('/')[-1])
 		data_i["id"] = [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 
 		shape = data_i["image"].shape
