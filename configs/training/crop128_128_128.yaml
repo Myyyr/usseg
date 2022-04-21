@@ -37,6 +37,6 @@ inference:
 
 checkpoint:
   save: 1
-  load: True
+  load: False
   load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
   path: ${model.pth}/${model.name}/checkpoint
