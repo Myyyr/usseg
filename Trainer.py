@@ -209,14 +209,14 @@ class Trainer():
 						inputs = batch_data["image"]
 						labels = batch_data["label"]
 						centers = batch_data["center"]
-						log.debug('input', inputs.shape)
-						log.debug('labels', labels.shape)
+						# log.debug('input', inputs.shape)
+						# log.debug('labels', labels.shape)
 						if torch.cuda.is_available() and self.use_gpu:
-							inputs = inputs[0].float().cuda(0)
-							labels = labels[0].cuda(0)
-						log.debug('input', inputs.shape)
-						log.debug('labels', labels.shape)
-						output = self.model(inputs[0], centers)
+							inputs = inputs.float().cuda(0)
+							labels = labels.cuda(0)
+						# log.debug('input', inputs.shape)
+						# log.debug('labels', labels.shape)
+						output = self.model(inputs, centers)
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1
