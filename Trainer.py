@@ -124,8 +124,11 @@ class Trainer():
 
 		self.lr = self.initial_lr
 
-		self.optimizer = torch.optim.SGD(self.model.parameters(), self.lr, weight_decay=self.weight_decay,
-										 momentum=0.99, nesterov=True)
+		if cfg.optim == "sgd":
+			self.optimizer = torch.optim.SGD(self.model.parameters(), self.lr, weight_decay=self.weight_decay,
+											 momentum=0.99, nesterov=True)
+		elif cfg.optim == "adam":
+			self.optimizer = torch.optim.Adam(self.model.parameters(), self.lr, weight_decay=self.weight_decay)
 
 		
 		self.loss = get_loss(self.net_num_pool_op_kernel_sizes)

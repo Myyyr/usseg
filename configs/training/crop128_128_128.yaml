@@ -4,9 +4,9 @@ gpu: 0
 use_gpu: True
 only_val: False
 
-lr: 1e-2
-weight_decay: 3e-5
-epochs: 1000
+lr: 1e-4
+weight_decay: 1e-5
+epochs: 300
 iter: 39
 batch_size: 2
 num_workers: 12
