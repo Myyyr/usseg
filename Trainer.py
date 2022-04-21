@@ -149,7 +149,7 @@ class Trainer():
 
 
 		if self.do_load_checkpoint:
-			log.info("Checkpoint")
+			log.debug("Checkpoint")
 			self.load_checkpoint()
 
 
