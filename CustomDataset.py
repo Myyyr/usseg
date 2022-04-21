@@ -12,7 +12,7 @@ from einops import rearrange
 # import time
 
 class CustomDataset(Dataset):
-	def __init__(self, data, transform=None, iterations=250, crop_size=[128,128,128], log=None, net_num_pool_op_kernel_sizes=None, val=False, *args, **kwargs):
+	def __init__(self, data, transform=None, iterations=250, crop_size=[128,128,128], log=None, net_num_pool_op_kernel_sizes=None, type_='train', *args, **kwargs):
 		# We use our own Custom dataset wich with we can keep track of sub volumes position.
 		self.data = Dataset(data)
 		self.iterations = iterations
@@ -20,7 +20,7 @@ class CustomDataset(Dataset):
 		self.n_data = len(data)
 		self.transform = transform
 		self.log=log
-		self.val=val
+		self.type=type_
 		self.croper = CustomRandCropByPosNegLabeld(
 						            keys=["image", "label"],
 						            label_key="label",
@@ -36,7 +36,7 @@ class CustomDataset(Dataset):
 		self.idx = -1
 
 	def __len__(self):
-		if not self.val:
+		if self.type == 'train':
 			if self.iterations == 0:
 				return len(self.data)
 			return self.iterations
@@ -46,7 +46,7 @@ class CustomDataset(Dataset):
 	def __getitem__(self, index):
 		log=self.log
 		# To Do: dataset when eval mode
-		if not self.val:
+		if self.type == 'train':
 			if self.iterations == 0:
 				self.idx += 1
 				i = self.idx
@@ -64,7 +64,7 @@ class CustomDataset(Dataset):
 		shape = data_i["image"].shape
 
 		centers = [0,0,0]
-		if not self.val:
+		if not (self.type == 'test'):
 			data_i, centers = self.croper(data_i)
 			data_i = data_i[0]
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
