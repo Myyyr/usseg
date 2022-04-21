@@ -286,8 +286,9 @@ class Trainer():
 
 				# log.debug("anno shape", anno.shape)
 				# log.debug("pred shape", pred.shape)
+				pred = pred[:,:,0,...]
 				dice = compute_meandice(anno, pred)
-				hd95 = compute_hausdorff_distance(anno, pred[:,:,0,...], percentile=95)
+				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
 
 				dice = dice.numpy()[0]
 				hd95 = hd95.numpy()[0]
