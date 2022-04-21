@@ -219,7 +219,7 @@ class Trainer():
 
 						output = _to_one_hot(output, num_classes=self.classes)
 						# log.debug('labels', labels.shape)
-						# log.debug('labels', type(labels))
+						log.debug('labels', type(labels[0,0,0,0,0]))
 						labels = _to_one_hot(labels, num_classes=self.classes)
 
 
