@@ -16,7 +16,10 @@ from monai.transforms import (
 	RandAdjustContrastd,
 	RandFlipd,
 	NormalizeIntensityd,
-	LoadImage
+	LoadImage,
+	RandAffineD,
+	RandScaleIntensityd,
+	RandShiftIntensityd,
 )
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance
