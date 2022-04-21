@@ -213,7 +213,7 @@ class Trainer():
 						# log.debug('labels', labels.shape)
 						if torch.cuda.is_available() and self.use_gpu:
 							inputs = inputs.float().cuda(0)
-							labels = labels.int().cuda(0)
+							labels = labels.long().cuda(0)
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
 
