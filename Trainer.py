@@ -217,7 +217,7 @@ class Trainer():
 						# log.debug('input', inputs.shape)
 						# log.debug('labels', labels.shape)
 						output = self.model(inputs, centers)
-						l = compute_meandice(labels, output)
+						l = compute_meandice(labels, output[0])
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1
 				l_val = l_val/len_val
