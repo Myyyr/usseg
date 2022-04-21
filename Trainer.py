@@ -369,7 +369,7 @@ class Trainer():
 					count[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]  += 1
 
 
-		return rearrange(output/count, 'b c z x y z -> b c x y z')
+		return rearrange(output/count, 'b c z x y -> b c x y z')
 
 
 
