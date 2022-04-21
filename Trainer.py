@@ -217,14 +217,13 @@ class Trainer():
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
 
-						# output = convert_seg_image_to_one_hot_encoding_batched(output, [i for i in range(self.classes)])
 						output = _to_one_hot(output, num_classes=self.classes)
-						# labels = convert_seg_image_to_one_hot_encoding_batched(labels, [i for i in range(self.classes)])
+						log.debug('labels', labels.shape)
+						log.debug('labels', type(labels))
 						labels = _to_one_hot(labels, num_classes=self.classes)
 
 
 						log.debug('output', output[0].shape)
-						log.debug('labels', labels.shape)
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1
