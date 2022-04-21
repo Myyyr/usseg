@@ -75,6 +75,8 @@ class Trainer():
 		# Dataset
 		log.debug("Dataset")
 		self.online_validation = cfg.training.online_validation
+		self.eval_step = cfg.training.eval_step
+
 		self.seg_path = cfg.dataset.path.seg
 		self.train_split = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train)
 		self.val_split   = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val)
@@ -198,7 +200,7 @@ class Trainer():
 				del labels
 
 			l_val = 0
-			if self.online_validation:
+			if self.online_validation and (epoch%self.eval_step==0):
 				self.model.eval()
 				len_val = 0
 				with torch.no_grad():
@@ -209,7 +211,7 @@ class Trainer():
 						if torch.cuda.is_available() and self.use_gpu:
 							inputs = inputs.float().cuda(0)
 							labels = labels[0].cuda(0)
-						output = self.model(inputs, centers)
+						output = self.model(inputs[0], centers)
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1

@@ -11,6 +11,7 @@ weight_decay: 1e-5
 epochs: 300
 iter: 0
 online_validation: True
+eval_step: 1
 batch_size: 2
 num_workers: 1
 crop_size: [128,128,128]
