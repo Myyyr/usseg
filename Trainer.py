@@ -149,6 +149,7 @@ class Trainer():
 
 
 		if self.do_load_checkpoint:
+			log.info("Checkpoint")
 			self.load_checkpoint()
 
 
@@ -254,12 +255,9 @@ class Trainer():
 
 				# pred_nib = nib.Nifti1Image(prediction.numpy(), None)
 				# nib.save(pred_nib, file)
-
-				log.debug("file", file)
-
 				np.savez(file, prediction.numpy())
 
-		loader = LoadImage()
+		# loader = LoadImage()
 		results = {}
 		mean_all = None
 		N = 0
