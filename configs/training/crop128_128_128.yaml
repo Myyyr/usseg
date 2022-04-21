@@ -9,7 +9,8 @@ optim: adam
 lr: 1e-4
 weight_decay: 1e-5
 epochs: 300
-iter: 39
+iter: 0
+online_validation: True
 batch_size: 2
 num_workers: 12
 crop_size: [128,128,128]

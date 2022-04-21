@@ -37,6 +37,8 @@ class CustomDataset(Dataset):
 
 	def __len__(self):
 		if not self.val:
+			if self.iterations == 0:
+				return len(self.data)
 			return self.iterations
 		else:
 			return len(self.data)
@@ -46,7 +48,11 @@ class CustomDataset(Dataset):
 		log=self.log
 		# To Do: dataset when eval mode
 		if not self.val:
-			i = random.randint(0,self.n_data-1)
+			if self.iterations == 0:
+				self.idx += 1
+				i = self.idx
+			else:
+				i = random.randint(0,self.n_data-1)
 		else:
 			self.idx += 1
 			i = self.idx

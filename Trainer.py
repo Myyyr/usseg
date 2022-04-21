@@ -15,6 +15,7 @@ from monai.transforms import (
 	Invertd,
 	RandAdjustContrastd,
 	RandFlipd,
+	NormalizeIntensityd,
 	LoadImage
 )
 # from monai.inferers import sliding_window_inference
@@ -73,6 +74,7 @@ class Trainer():
 
 		# Dataset
 		log.debug("Dataset")
+		self.online_validation = cfg.training.online_validation
 		self.seg_path = cfg.dataset.path.seg
 		self.train_split = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train)
 		self.val_split   = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val)
@@ -91,17 +93,24 @@ class Trainer():
 					# 					 max_roi_scale=cfg.training.augmentations.scale.max_,
 					# 					 prob=1,)#cfg.training.augmentations.scale.p_,)
 					# 					 # random_size=False),
+					NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
+
+
 					RandAdjustContrastd(keys=["image", "label"],
 										prob=cfg.training.augmentations.gamma.p_,
 										gamma=cfg.training.augmentations.gamma.g_),
 					
 			])
 
-		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes, val=True) # Add transforms : TO DO
-		valData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, val=True) # Add transforms : TO DO
+		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes) 
+		testData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, type='test') 
+		if self.online_validation:
+			valData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, type='val') 
 
 		self.train_loader = DataLoader(trainData, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
-		self.val_loader = DataLoader(valData, batch_size=1, shuffle=False, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
+		self.test_loader = DataLoader(testData, batch_size=1, shuffle=False, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
+		if self.online_validation:
+			self.val_loader = DataLoader(valData, batch_size=1, shuffle=False, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
 
 		self.stride = cfg.training.inference.stride
 		self.classes = cfg.dataset.classes
@@ -156,58 +165,27 @@ class Trainer():
 
 		
 		for epoch in range(self.start_epoch, self.epochs):
-			# t0 = time.time()
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
-			# log.debug("Memory", torch.cuda.max_memory_allocated()//1024**3)
 			btc = -1
 			for batch_data in tqdm(self.train_loader):
-				# t1 = time.time()
 				btc+=1
 				self.optimizer.zero_grad()
 
 				inputs = batch_data["image"]
 				labels = batch_data["label"]
 				centers = batch_data["center"]
-				
-				# log.debug("inputs.shape", inputs.shape)
-				# log.debug("type(inputs)", type(inputs))
-				# log.debug("labels[0].shape", labels[0].shape)
-				# log.debug("centers", centers)
-
-				
 
 				if torch.cuda.is_available() and self.use_gpu:
 					inputs = inputs.float().cuda(0)
-					# t2 = time.time()
-					# inputs = rearrange(inputs, 'b c x y z -> b c z x y')
-					# log.debug("inputs shape", inputs.shape)
-					# log.debug("Ep:{}:Btc:{} Input".format(epoch, btc), "Mem: {} Gb | Shape: {}".format(torch.cuda.max_memory_allocated()//1024**3, inputs.shape) )
-					
-					# labels = [lab.cuda(0) for lab in labels]
 					for lab in range(len(labels)):
-						# log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Shape: {}".format(labels[lab].shape))
 						labels[lab] = labels[lab].cuda(0)
-						# log.debug("labels[lab] shape", labels[lab].shape)
-						# labels[lab] = rearrange(labels[lab], 'b c x y z -> b c z x y')
-						# log.debug("Ep:{}:Btc:{} Labels".format(epoch, btc), "Mem: {} Gb".format(torch.cuda.max_memory_allocated()//1024**3))
-
-					# t3 = time.time()
-					# centers.cuda()
-					# log.debug("torch.cuda.is_available() and self.use_gpu")
-				# log.debug("inputs.device",inputs.device)
-				# log.debug("model.device",self.model.device)
-
-				
+	
 				output = self.model(inputs, centers)
-				# t4 = time.time()
-				# output = rearrange(output, 'b c z x y z -> b c x y z')
 
 				del inputs
-				# log.debug("type(output)", type(output))
-				l = self.loss(output, labels)
-				# t5 = time.time()
-				l.backward()
+				l_train = self.loss(output, labels)
+				l_train.backward()
 				torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
 
@@ -217,33 +195,43 @@ class Trainer():
 				for lab in labels:
 					del lab
 				del labels
-				# t6 = time.time()
 
-				# tin=t2-t1
-				# tla=t3-t2
-				# tfo=t4-t3
-				# tlo=t5-t4
-				# ten=t6-t5
-				# tal=t6-t1
-				# tep=t6-t0
-				# log.debug("Train times", "Incu: {} | Lacu: {} | Forward: {} | Loss: {} | End: {} | Batch: {} | Epoch: {}".format(tin,tla,tfo,tlo,ten,tal,tep))
+			l_val = 0
+			if self.online_validation:
+				self.model.eval()
+				len_val = 0
+				with torch.no_grad():
+					for batch_data in tqdm(self.train_loader):
+						inputs = batch_data["image"]
+						labels = batch_data["label"]
+						centers = batch_data["center"]
+						if torch.cuda.is_available() and self.use_gpu:
+							inputs = inputs.float().cuda(0)
+							labels = labels[0].cuda(0)
+						output = self.model(inputs, centers)
+						l = compute_meandice(labels, output)
+						l_val += np.mean(l.cpu().numpy()[0][1:])
+						len_val+=1
+				l_val = l_val/len_val
+
+
+
 
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
 				self.save_chekpoint(epoch)
 				save_chekpoint = " :: Saved!"
-			log.info("Epoch: {}".format(epoch), "Loss: {}, lr: {}{}".format(l.detach().cpu().numpy(),
+			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Loss: {}, lr: {}{}".format(l_train.detach().cpu().numpy(),
+																		l_val,
 																		self.lr,
 																		save_chekpoint
 																		))
-			self.writer.add_scalar('Loss', l.detach().cpu().numpy(), epoch)
+			self.writer.add_scalar('Loss', l_train.detach().cpu().numpy(), epoch)
+			self.writer.add_scalar('Val Loss', l_val, epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 			torch.cuda.empty_cache()
-			# t7 = time.time()
 
-
-			# tim=t1-t0
 			
 
 		if not self.dbg:
@@ -255,7 +243,7 @@ class Trainer():
 
 		if do_infer:
 			self.model.eval()
-			for batch_data in tqdm(self.val_loader):
+			for batch_data in tqdm(self.test_loader):
 				inputs = batch_data["image"]
 				prediction = self.inference(inputs)
 				prediction = torch.argmax(prediction, dim=1)
@@ -267,6 +255,8 @@ class Trainer():
 				# pred_nib = nib.Nifti1Image(prediction.numpy(), None)
 				# nib.save(pred_nib, file)
 
+				log.debug("file", file)
+
 				np.savez(file, prediction.numpy())
 
 		loader = LoadImage()
@@ -276,9 +266,7 @@ class Trainer():
 
 		for f in os.listdir(self.infer_path):
 			if '.npz' in f:
-				# pred = loader(os.path.join(self.infer_path, f))[0][0]
 				pred = np.load(os.path.join(self.infer_path, f))['arr_0']
-				# anno = loader(os.path.join(self.seg_path, f.replace('pred', 'Vol')))[0]
 				anno = np.load(os.path.join(self.seg_path, f.replace('pred', 'Vol')))['arr_0']
 
 				pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes)])
@@ -287,8 +275,6 @@ class Trainer():
 				pred = torch.from_numpy(pred)
 				anno = torch.from_numpy(anno)
 
-				# log.debug("anno shape", anno.shape)
-				# log.debug("pred shape", pred.shape)
 				pred = pred[:,:,0,...]
 				dice = compute_meandice(anno, pred)
 				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
@@ -342,7 +328,6 @@ class Trainer():
 
 		B, C, D, H, W = inputs.shape
 		D_crop, H_crop, W_crop = self.crop_size
-		# log.debug("inputs.shape", inputs.shape)
 
 		nD, nH, nW = int(D//(D_crop*self.stride[2])), int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1]))
 
@@ -366,11 +351,9 @@ class Trainer():
 
 					crop = inputs[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
 					centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
-					# crop = rearrange(crop, 'b c x y z -> b c z x y')
 					if torch.cuda.is_available() and self.use_gpu:
 						crop = crop.float().cuda(0)
 					out_crop = self.model(crop, centers)
-					# out_crop = rearrange(out_crop, 'b c z x y z -> b c x y z')
 
 
 					del crop
