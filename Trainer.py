@@ -213,13 +213,13 @@ class Trainer():
 						# log.debug('labels', labels.shape)
 						if torch.cuda.is_available() and self.use_gpu:
 							inputs = inputs.float().cuda(0)
-							labels = labels.cuda(0)
+							labels = labels.int().cuda(0)
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
 
 						output = _to_one_hot(output, num_classes=self.classes)
-						log.debug('labels', labels.shape)
-						log.debug('labels', type(labels))
+						# log.debug('labels', labels.shape)
+						# log.debug('labels', type(labels))
 						labels = _to_one_hot(labels, num_classes=self.classes)
 
 
