@@ -54,8 +54,8 @@ class CustomDataset(Dataset):
 			else:
 				i = random.randint(0,self.n_data-1)
 		else:
-			self.idx += 1
-			i = self.idx
+			# self.idx += 1
+			i = index
 
 		# log.debug("data_i['label'].shape", data_i["label"].shape)
 		# log.debug("index", index)
