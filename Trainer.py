@@ -40,6 +40,10 @@ import telegram_send as ts
 from einops import rearrange
 # import time
 
+
+## V2 : add normalise intensity
+## V3 : william's data aug
+
 class Trainer():
 	def __init__(self, cfg, log, *args, **kwargs):
 		# Logs
@@ -84,23 +88,38 @@ class Trainer():
 		train_transforms = None
 		val_transforms = None
 
+		# train_transforms = Compose([
+		# 			RandRotated(keys=["image", "label"], 
+		# 						range_x=cfg.training.augmentations.rotate.x_, 
+		# 						range_y=cfg.training.augmentations.rotate.y_, 
+		# 						range_z=cfg.training.augmentations.rotate.z_, 
+		# 						prob=cfg.training.augmentations.rotate.p_),
+		# 			# CustomRandScaleCropd(keys=["image", "label"],
+		# 			# 					 roi_scale=cfg.training.augmentations.scale.min_,
+		# 			# 					 max_roi_scale=cfg.training.augmentations.scale.max_,
+		# 			# 					 prob=1,)#cfg.training.augmentations.scale.p_,)
+		# 			# 					 # random_size=False),
+		# 			NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
+
+
+		# 			RandAdjustContrastd(keys=["image", "label"],
+		# 								prob=cfg.training.augmentations.gamma.p_,
+		# 								gamma=cfg.training.augmentations.gamma.g_),
+					
+		# 	])
+
 		train_transforms = Compose([
-					RandRotated(keys=["image", "label"], 
-								range_x=cfg.training.augmentations.rotate.x_, 
-								range_y=cfg.training.augmentations.rotate.y_, 
-								range_z=cfg.training.augmentations.rotate.z_, 
-								prob=cfg.training.augmentations.rotate.p_),
-					# CustomRandScaleCropd(keys=["image", "label"],
-					# 					 roi_scale=cfg.training.augmentations.scale.min_,
-					# 					 max_roi_scale=cfg.training.augmentations.scale.max_,
-					# 					 prob=1,)#cfg.training.augmentations.scale.p_,)
-					# 					 # random_size=False),
+					RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
+					RandAffineD(keys=["image", "label"],
+						rotate_range=(np.pi/36, np.pi/36, np.pi/36),
+						translate_range=(5, 5, 5),
+						padding_mode="border",
+						scale_range=(0.15, 0.15, 0.15),
+						mode=('bilinear', 'nearest'),
+						prob=1.0),
 					NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
-
-
-					RandAdjustContrastd(keys=["image", "label"],
-										prob=cfg.training.augmentations.gamma.p_,
-										gamma=cfg.training.augmentations.gamma.g_),
+					RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
+					RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
 					
 			])
 
@@ -243,7 +262,7 @@ class Trainer():
 																								save_chekpoint
 																								))
 			self.writer.add_scalar('Loss', l_train, epoch)
-			self.writer.add_scalar('Val Loss', l_val, epoch)
+			self.writer.add_scalar('Val Dice', l_val, epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 			torch.cuda.empty_cache()
