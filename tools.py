@@ -15,7 +15,7 @@ from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_enc
 def _to_one_hot(y, num_classes):
     scatter_dim = len(y.size())
     y_tensor = y.view(*y.size(), -1)
-    zeros = torch.zeros(*y.size(), num_classes, dtype=y.dtype)
+    zeros = torch.zeros(*y.size(), num_classes, dtype=y.dtype, device=y.device)
         
     return zeros.scatter(scatter_dim, y_tensor, 1)
 
