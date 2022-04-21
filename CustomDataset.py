@@ -44,7 +44,6 @@ class CustomDataset(Dataset):
 			return len(self.data)
 
 	def __getitem__(self, index):
-		# t0 = time.time()
 		log=self.log
 		# To Do: dataset when eval mode
 		if not self.val:
@@ -54,19 +53,12 @@ class CustomDataset(Dataset):
 			else:
 				i = random.randint(0,self.n_data-1)
 		else:
-			# self.idx += 1
-			i = index
+			self.idx += 1
+			i = self.idx
 
-		# log.debug("data_i['label'].shape", data_i["label"].shape)
-		# log.debug("index", index)
-		# log.debug("i", i)
 		data_i = {}
 		data_i["image"] = rearrange(np.load(self.data[i]["image"])['arr_0'][None, ...], 'b x y z -> b z x y')
-		# t1 = time.time()
 		data_i["label"] = rearrange(np.load(self.data[i]["label"])['arr_0'][None, ...], 'b x y z -> b z x y')
-		# t2 = time.time()
-		log.debug("i", i)
-		log.debug("self.data[i]['image'].split('/')[-1]", self.data[i]["image"].split('/')[-1])
 		data_i["id"] = [self.data[i]["image"].split('/')[-1].replace('img', 'xxx')]
 
 		shape = data_i["image"].shape
@@ -74,13 +66,8 @@ class CustomDataset(Dataset):
 		centers = [0,0,0]
 		if not self.val:
 			data_i, centers = self.croper(data_i)
-			# t3 = time.time()
 			data_i = data_i[0]
-			# log.debug("index", index)
-			# log.debug("centers", centers[0])
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
-			# log.debug("centers", centers)
-			# log.debug("shape", shape)
 
 
 			# Apply transformations
@@ -97,17 +84,7 @@ class CustomDataset(Dataset):
 	            np.vstack(self.net_num_pool_op_kernel_sizes), axis=0))[:-1]
 
 			data_i["label"] = downsample_seg_for_ds_transform3(data_i["label"][None,...], deep_supervision_scales, classes=[0,1])
-		# log.debug("loadok")
-		# t5 = time.time()
-
-		# tim=t1-t0
-		# tla=t2-t1
-		# tcr=t3-t2
-		# ttr=t4-t3
-		# tde=t5-t4
-		# tal=t5-t0
 
 
-		# log.debug("Dataset times", "im:{}s | lab:{}s | crop:{}s | trans:{}s | deep:{}s | ALL:{}s |".format(tim, tla, tcr, ttr, tde, tal))
 		return data_i
 
