@@ -214,9 +214,9 @@ class Trainer():
 						if torch.cuda.is_available() and self.use_gpu:
 							inputs = inputs.float().cuda(0)
 							labels = labels.cuda(0)
-						# log.debug('input', inputs.shape)
-						# log.debug('labels', labels.shape)
 						output = self.model(inputs, centers)
+						log.debug('output', output[0].shape)
+						log.debug('labels', labels.shape)
 						l = compute_meandice(labels, output[0])
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1
