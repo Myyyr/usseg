@@ -237,7 +237,7 @@ class Trainer():
 			if (epoch+1)%self.n_save == 0:
 				self.save_chekpoint(epoch)
 				save_chekpoint = " :: Saved!"
-			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Loss: {}, lr: {}{}".format(l_train,
+			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Dice: {}, lr: {}{}".format(l_train,
 																								l_val,
 																								self.lr,
 																								save_chekpoint
