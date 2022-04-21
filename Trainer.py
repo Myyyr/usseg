@@ -216,6 +216,9 @@ class Trainer():
 							labels = labels.long().cuda(0)
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
+						
+						log.debug('labels', labels.shape)
+						log.debug('output', output.shape)
 
 						output = _to_one_hot(output, num_classes=self.classes)
 						labels = _to_one_hot(labels, num_classes=self.classes)
