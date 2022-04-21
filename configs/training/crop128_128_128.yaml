@@ -4,6 +4,8 @@ gpu: 0
 use_gpu: True
 only_val: False
 
+
+optim: adam
 lr: 1e-4
 weight_decay: 1e-5
 epochs: 300
