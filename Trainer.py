@@ -170,9 +170,9 @@ class Trainer():
 		for epoch in range(self.start_epoch, self.epochs):
 			self.model.train()
 			self.optimizer.param_groups[0]['lr'] = self.lr
-			btc = -1
+			btc = 0
+			l_train = 0
 			for batch_data in tqdm(self.train_loader):
-				break
 				btc+=1
 				self.optimizer.zero_grad()
 
@@ -188,8 +188,9 @@ class Trainer():
 				output = self.model(inputs, centers)
 
 				del inputs
-				l_train = self.loss(output, labels)
-				l_train.backward()
+				l = self.loss(output, labels)
+				l.backward()
+				l_train += l.detach().cpu().numpy()
 				torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
 
@@ -200,6 +201,7 @@ class Trainer():
 					del lab
 				del labels
 
+			l_train = l_train/btc
 			l_val = 0
 			if self.online_validation and (epoch%self.eval_step==0):
 				self.model.eval()
@@ -217,18 +219,12 @@ class Trainer():
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
 
-						log.debug('labels', labels.shape)
-						log.debug('output', output.shape)
-
 						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
 						output = _to_one_hot(output[0,...], num_classes=self.classes)
 
 						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
 
-
-						log.debug('labels', labels.shape)
-						log.debug('output', output.shape)
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
 						len_val+=1
@@ -241,12 +237,12 @@ class Trainer():
 			if (epoch+1)%self.n_save == 0:
 				self.save_chekpoint(epoch)
 				save_chekpoint = " :: Saved!"
-			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Loss: {}, lr: {}{}".format(l_train.detach().cpu().numpy(),
-																		l_val,
-																		self.lr,
-																		save_chekpoint
-																		))
-			self.writer.add_scalar('Loss', l_train.detach().cpu().numpy(), epoch)
+			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Loss: {}, lr: {}{}".format(l_train,
+																								l_val,
+																								self.lr,
+																								save_chekpoint
+																								))
+			self.writer.add_scalar('Loss', l_train, epoch)
 			self.writer.add_scalar('Val Loss', l_val, epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
 			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
