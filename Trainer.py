@@ -124,10 +124,10 @@ class Trainer():
 
 		self.lr = self.initial_lr
 
-		if cfg.optim == "sgd":
+		if cfg.training.optim == "sgd":
 			self.optimizer = torch.optim.SGD(self.model.parameters(), self.lr, weight_decay=self.weight_decay,
 											 momentum=0.99, nesterov=True)
-		elif cfg.optim == "adam":
+		elif cfg.training.optim == "adam":
 			self.optimizer = torch.optim.Adam(self.model.parameters(), self.lr, weight_decay=self.weight_decay)
 
 		
