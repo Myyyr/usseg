@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/nnunet_small.out # output file name
-#SBATCH --error=logs/nnunet_small.err  # error file name
+#SBATCH --output=logs/nnunet_small_v4.out # output file name
+#SBATCH --error=logs/nnunet_small_v4.err  # error file name
 
 
 source /opt/server-env.sh
