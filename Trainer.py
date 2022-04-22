@@ -248,17 +248,19 @@ class Trainer():
 							inputs = inputs.float().cuda(0)
 							labels = labels.long().cuda(0)
 						output = self.model(inputs, centers)
-						output = torch.argmax(output[0], dim=1)
+						if len(self.net_num_pool_op_kernel_sizes)!=0:
+							output = output[0]
+						output = torch.argmax(output, dim=1)
 
 						log.debug("output", output.shape)
 						log.debug("labels", labels.shape)
 
-						if len(self.net_num_pool_op_kernel_sizes)==0:
-							labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
-							output = _to_one_hot(output, num_classes=self.classes)
-						else:
-							labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
-							output = _to_one_hot(output[0,...], num_classes=self.classes)
+						# if len(self.net_num_pool_op_kernel_sizes)==0:
+						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
+						# 	output = _to_one_hot(output, num_classes=self.classes)
+						# else:
+						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
+						output = _to_one_hot(output[0,...], num_classes=self.classes)
 
 						log.debug("output", output.shape)
 						log.debug("labels", labels.shape)
