@@ -8,7 +8,7 @@ class model(SegmentationNetwork):
 		self.network = VNet(out_channels=num_classes)
 
 	def forward(self, x, *args, **kwargs):
-		return self.network(x)
+		return [self.network(x)]
 
 
 

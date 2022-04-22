@@ -76,8 +76,8 @@ class Trainer():
 		self.crop_size = cfg.training.crop_size
 		self.iterations = cfg.training.iter
 		self.weight_decay = cfg.training.weight_decay
-		self.net_num_pool_op_kernel_sizes = cfg.training.net_num_pool_op_kernel_sizes
-		self.net_conv_kernel_sizes = cfg.training.net_conv_kernel_sizes
+		self.net_num_pool_op_kernel_sizes = cfg.model.net_num_pool_op_kernel_sizes
+		self.net_conv_kernel_sizes = cfg.model.net_conv_kernel_sizes
 
 		# Dataset
 		log.debug("Dataset")
