@@ -254,7 +254,7 @@ class Trainer():
 						output = _to_one_hot(output[0,...], num_classes=self.classes)
 
 						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
-						log.debug(output, output.shape)
+						log.debug("output", output.shape)
 						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
 
 						l = compute_meandice(labels, output)
