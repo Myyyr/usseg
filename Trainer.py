@@ -214,9 +214,9 @@ class Trainer():
 				output = self.model(inputs, centers)
 
 				del inputs
-				# if len(self.net_num_pool_op_kernel_sizes)==0:
+				if len(self.net_num_pool_op_kernel_sizes)==0:
 					# output = torch.softmax(output[0], dim=1)
-					# labels = labels[0]
+					labels = labels.cuda(0)
 				log.debug('output', output.device)
 				log.debug('labels', labels.device)
 				l = self.loss(output, labels)
