@@ -79,7 +79,7 @@ class CustomDataset(Dataset):
 
 
 		# Do deep supervision on labels
-		if self.net_num_pool_op_kernel_sizes!=None:
+		if self.net_num_pool_op_kernel_sizes!=[]:
 			deep_supervision_scales = [[1, 1, 1]] + list(list(i) for i in 1 / np.cumprod(
 	            np.vstack(self.net_num_pool_op_kernel_sizes), axis=0))[:-1]
 
