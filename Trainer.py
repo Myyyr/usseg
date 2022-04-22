@@ -166,7 +166,7 @@ class Trainer():
 
 		
 		if len(self.net_num_pool_op_kernel_sizes)==0:
-			self.loss = DiceLoss(reduction='none')
+			self.loss = DiceLoss(reduction='none', softmax=True, to_onehot_y=True)
 		else:
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
@@ -214,8 +214,8 @@ class Trainer():
 				output = self.model(inputs, centers)
 
 				del inputs
-				if len(self.net_num_pool_op_kernel_sizes)==0:
-					output = torch.softmax(output[0], dim=1)
+				# if len(self.net_num_pool_op_kernel_sizes)==0:
+					# output = torch.softmax(output[0], dim=1)
 					# labels = labels[0]
 				l = self.loss(output, labels)
 				l.backward()
