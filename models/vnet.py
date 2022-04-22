@@ -1,4 +1,5 @@
 from monai.networks.nets import vnet 
+from nnunet.network_architecture.neural_network import SegmentationNetwork
 
 
 class model(SegmentationNetwork):
