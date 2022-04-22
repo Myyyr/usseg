@@ -166,7 +166,7 @@ class Trainer():
 
 		
 		if len(self.net_num_pool_op_kernel_sizes)==0:
-			self.loss = DiceLoss(reduction='none', softmax=True, to_onehot_y=True)
+			self.loss = DiceLoss(softmax=True, to_onehot_y=True)
 		else:
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
