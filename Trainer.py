@@ -250,6 +250,8 @@ class Trainer():
 						output = self.model(inputs, centers)
 						output = torch.argmax(output[0], dim=1)
 
+						log.debug("output", output.shape)
+						log.debug("labels", labels.shape)
 
 						if len(self.net_num_pool_op_kernel_sizes)==0:
 							labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
