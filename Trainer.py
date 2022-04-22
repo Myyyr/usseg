@@ -1,6 +1,7 @@
 import os
 import torch
 import monai
+from monai.losses import DiceLoss
 from monai.data import Dataset
 from monai.data import CacheDataset, DataLoader, Dataset, decollate_batch
 from monai.transforms import (
@@ -164,7 +165,10 @@ class Trainer():
 			self.optimizer = torch.optim.Adam(self.model.parameters(), self.lr, weight_decay=self.weight_decay)
 
 		
-		self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
+		if len(self.net_num_pool_op_kernel_sizes)==0:
+			self.loss = DiceLoss(reduction=None)
+		else:
+			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
 		self.infer_path = self.path
 
@@ -210,6 +214,9 @@ class Trainer():
 				output = self.model(inputs, centers)
 
 				del inputs
+				if len(self.net_num_pool_op_kernel_sizes)==0:
+					output = torch.softmax(output[0], dim=1)
+					labels = labels[0]
 				l = self.loss(output, labels)
 				l.backward()
 				l_train += l.detach().cpu().numpy()
