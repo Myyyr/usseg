@@ -217,8 +217,8 @@ class Trainer():
 				if len(self.net_num_pool_op_kernel_sizes)==0:
 					# output = torch.softmax(output[0], dim=1)
 					labels = labels.cuda(0)
-				log.debug('output', output.device)
-				log.debug('labels', labels.device)
+				# log.debug('output', output.device)
+				# log.debug('labels', labels.device)
 				l = self.loss(output, labels)
 				l.backward()
 				l_train += l.detach().cpu().numpy()
