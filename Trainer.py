@@ -79,6 +79,8 @@ class Trainer():
 		self.weight_decay = cfg.training.weight_decay
 		self.net_num_pool_op_kernel_sizes = cfg.model.net_num_pool_op_kernel_sizes
 		self.net_conv_kernel_sizes = cfg.model.net_conv_kernel_sizes
+		self.do_clip = cfg.training.do_clip
+		self.do_schedul = cfg.training.do_schedul
 
 		# Dataset
 		log.debug("Dataset")
@@ -220,7 +222,8 @@ class Trainer():
 				l = self.loss(output, labels)
 				l.backward()
 				l_train += l.detach().cpu().numpy()
-				torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
+				if self.do_clip:
+					torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
 
 				for out in output:
@@ -285,7 +288,8 @@ class Trainer():
 			self.writer.add_scalar('Loss', l_train, epoch)
 			self.writer.add_scalar('Val Dice', l_val, epoch)
 			self.writer.add_scalar('lr', self.lr, epoch)
-			self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
+			if self.do_schedul:
+				self.lr = poly_lr(epoch, self.epochs, self.initial_lr, 0.9)
 			torch.cuda.empty_cache()
 
 			
