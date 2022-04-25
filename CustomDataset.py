@@ -70,6 +70,7 @@ class CustomDataset(Dataset):
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
 
 
+		if self.transform != None:
 			# Apply transformations
 			data_i = apply_transform(self.transform, data_i) if self.transform is not None else data_i
 		
