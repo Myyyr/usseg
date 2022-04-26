@@ -593,10 +593,12 @@ class PatchEmbed(nn.Module):
         self.embed_dim = embed_dim
 
         if patch_size[0] == 4:
-            print(patch_size)
-            exit(0)
             stride1=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
             stride2=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
+            print(patch_size)
+            print(stride1)
+            print(stride2)
+            exit(0)
         else:
             stride1=[2,2,2]
             stride2=[1,2,2]
