@@ -217,6 +217,7 @@ class SwinTransformerBlock(nn.Module):
         S, H, W = self.input_resolution
 
         assert L == S * H * W, "input feature has wrong size {} != {} * {} * {}".format(L, S, H, W)
+        print("input feature has wrong size {} == {} * {} * {}".format(L, S, H, W))
         
         shortcut = x
         x = self.norm1(x)
@@ -598,7 +599,6 @@ class PatchEmbed(nn.Module):
             print(patch_size)
             print(stride1)
             print(stride2)
-            exit(0)
         else:
             stride1=[2,2,2]
             stride2=[1,2,2]
