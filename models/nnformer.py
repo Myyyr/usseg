@@ -929,30 +929,30 @@ class model(SegmentationNetwork):
         window_size=cfg.window_size
 
 
-        if dataset=="SYNAPSE":
-            self.imsize=[64,128,128]
-            self.vt_map=(3,5,5)
-            embed_dim=192
-            depths=[2, 2, 2, 2]
-            num_heads=[6, 12, 24, 48]
-            patch_size=[2,4,4]
-            window_size=[4,4,4,4]
-        elif dataset=="BRAIN_TUMOR":
-            self.imsize=[128,128,128]
-            self.vt_map=(2,2,2)
-            embed_dim=96
-            depths=[2, 2, 2, 2]
-            num_heads=[3, 6, 12, 24]
-            patch_size=[4,4,4]
-            window_size=[4,4,8,4]
-        elif dataset=="US128":
-            self.imsize=[128,128,128]
-            self.vt_map=(2,2,2)
-            embed_dim=96
-            depths=[2, 2, 2, 2]
-            num_heads=[3, 6, 12, 24]
-            patch_size=[4,4,4]
-            window_size=[4,4,8,4]
+        # if dataset=="SYNAPSE":
+        #     self.imsize=[64,128,128]
+        #     self.vt_map=(3,5,5)
+        #     embed_dim=192
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[6, 12, 24, 48]
+        #     patch_size=[2,4,4]
+        #     window_size=[4,4,4,4]
+        # elif dataset=="BRAIN_TUMOR":
+        #     self.imsize=[128,128,128]
+        #     self.vt_map=(2,2,2)
+        #     embed_dim=96
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[3, 6, 12, 24]
+        #     patch_size=[4,4,4]
+        #     window_size=[4,4,8,4]
+        # elif dataset=="US128":
+        #     self.imsize=[128,128,128]
+        #     self.vt_map=(2,2,2)
+        #     embed_dim=96
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[3, 6, 12, 24]
+        #     patch_size=[4,4,4]
+        #     window_size=[4,4,8,4]
 
 
         self.model_down=SwinTransformer(pretrain_img_size=imsize,window_size=window_size,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=input_channels)
