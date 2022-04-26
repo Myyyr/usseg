@@ -905,7 +905,7 @@ class model(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None, *args, **kwargs):
+                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None, log=None,*args, **kwargs):
     
         super(model, self).__init__()
         
@@ -927,6 +927,9 @@ class model(SegmentationNetwork):
         depths=[2, 2, 2, 2]
         patch_size=cfg.patch_size
         window_size=cfg.window_size
+        self.log = log
+        log.debug("patch_size",patch_size)
+
 
 
         # if dataset=="SYNAPSE":

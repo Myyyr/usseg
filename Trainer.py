@@ -157,7 +157,8 @@ class Trainer():
 													num_pool=len(self.net_num_pool_op_kernel_sizes), 
 													pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes,
 													conv_kernel_sizes=self.net_conv_kernel_sizes,
-													cfg=cfg.model)
+													cfg=cfg.model,
+													log=log)
 
 		if torch.cuda.is_available() and self.use_gpu:
 			self.model.cuda()
