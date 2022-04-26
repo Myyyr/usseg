@@ -905,7 +905,7 @@ class model(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None):
+                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None, *args, **kwargs):
     
         super(model, self).__init__()
         
