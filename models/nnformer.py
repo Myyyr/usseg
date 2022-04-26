@@ -593,6 +593,8 @@ class PatchEmbed(nn.Module):
         self.embed_dim = embed_dim
 
         if patch_size[0] == 4:
+            print(patch_size)
+            exit(0)
             stride1=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
             stride2=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
         else:
@@ -928,7 +930,7 @@ class model(SegmentationNetwork):
         patch_size=cfg.patch_size
         window_size=cfg.window_size
         self.log = log
-        log.debug("patch_size",patch_size)
+        # log.debug("patch_size",patch_size)
 
 
 
