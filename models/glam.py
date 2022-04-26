@@ -1148,7 +1148,7 @@ class model(SegmentationNetwork):
     
         super(model, self).__init__()
 
-        imsize=cfg.imsize
+        self.imsize=cfg.imsize
         embed_dim=cfg.embed_dim
         num_heads=cfg.num_heads
         depths=[2, 2, 2, 2]
