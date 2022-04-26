@@ -964,7 +964,7 @@ class model(SegmentationNetwork):
             self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=patch_size))
         self.final=nn.ModuleList(self.final)
         
-    def forward(self, x):
+    def forward(self, x, *args, **kwargs):
         
             
             
