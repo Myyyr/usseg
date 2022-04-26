@@ -561,7 +561,6 @@ class BasicLayer(nn.Module):
         self.shift_size = window_size // 2
         self.depth = depth
         self.use_checkpoint = use_checkpoint
-        self.vt_map = vt_map
 
         self.global_token = torch.nn.Parameter(torch.randn(gt_num,dim))
         self.global_token.requires_grad = True
@@ -688,7 +687,6 @@ class BasicLayer_up(nn.Module):
         self.window_size = window_size
         self.shift_size = window_size // 2
         self.depth = depth
-        self.vt_map = vt_map
 
         self.global_token = torch.nn.Parameter(torch.randn(gt_num,dim))
         self.global_token.requires_grad = True
@@ -1144,7 +1142,7 @@ class model(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False, gt_num=1, vt_map=(3,5,5), imsize=[64,128,128], cfg=None, log=None, *args, **kwargs):
+                 seg_output_use_bias=False, gt_num=1, imsize=[64,128,128], cfg=None, log=None, *args, **kwargs):
     
         super(model, self).__init__()
 
@@ -1222,9 +1220,9 @@ class model(SegmentationNetwork):
             self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=(4,4,4)))
         self.final=nn.ModuleList(self.final)
 
-        self.vt_check = torch.nn.Parameter(torch.zeros(vt_map[1]*vt_map[2],1))
-        self.vt_check.requires_grad = False
-        self.iter = 0
+        # self.vt_check = torch.nn.Parameter(torch.zeros(vt_map[1]*vt_map[2],1))
+        # self.vt_check.requires_grad = False
+        # self.iter = 0
 
     
     def forward(self, x, pos):
