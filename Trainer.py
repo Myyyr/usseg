@@ -156,7 +156,8 @@ class Trainer():
 		self.model = import_model(cfg.model.model, dataset='US', num_classes=self.classes, 
 													num_pool=len(self.net_num_pool_op_kernel_sizes), 
 													pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes,
-													conv_kernel_sizes=self.net_conv_kernel_sizes)
+													conv_kernel_sizes=self.net_conv_kernel_sizes,
+													cfg=cfg.model)
 
 		if torch.cuda.is_available() and self.use_gpu:
 			self.model.cuda()

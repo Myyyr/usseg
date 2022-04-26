@@ -190,7 +190,7 @@ class model(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=True, convolutional_upsampling=True,
                  max_num_features=None, basic_block=ConvDropoutNormNonlin,
-                 seg_output_use_bias=False, *args, **kwargs):
+                 seg_output_use_bias=False, cfg=None, *args, **kwargs):
         """
         basically more flexible than v1, architecture is the same
 
@@ -201,6 +201,9 @@ class model(SegmentationNetwork):
         Questions? -> f.isensee@dkfz.de
         """
         super(model, self).__init__()
+
+        if cfg != None:
+            base_num_features = cfg.base_num_features
 
         # print("\n\n\n\n\nThat's my model !! \n\n\n\n")
         # exit(0)
@@ -272,6 +275,9 @@ class model(SegmentationNetwork):
 
         output_features = base_num_features
         input_features = input_channels
+
+        
+
 
         for d in range(num_pool):
             # determine the first stride
