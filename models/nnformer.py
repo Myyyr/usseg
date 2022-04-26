@@ -217,7 +217,7 @@ class SwinTransformerBlock(nn.Module):
         S, H, W = self.input_resolution
 
         assert L == S * H * W, "input feature has wrong size {} != {} * {} * {}".format(L, S, H, W)
-        print("input feature has wrong size {} == {} * {} * {}".format(L, S, H, W))
+        # print("input feature has wrong size {} == {} * {} * {}".format(L, S, H, W))
         
         shortcut = x
         x = self.norm1(x)
@@ -720,15 +720,15 @@ class SwinTransformer(nn.Module):
         # build layers
         self.layers = nn.ModuleList()
         for i_layer in range(self.num_layers):
-            print( 'pretrain_img_size' , (
-                        pretrain_img_size[0], pretrain_img_size[1],
-                        pretrain_img_size[2]))
-            print( 'patch_size' , (
-                        patch_size[0], patch_size[1],
-                        patch_size[2]))
-            print( 'p/p' , (
-                        pretrain_img_size[0] // patch_size[0] // 2 ** i_layer, pretrain_img_size[1] // patch_size[1] // 2 ** i_layer,
-                        pretrain_img_size[2] // patch_size[2] // 2 ** i_layer))
+            # print( 'pretrain_img_size' , (
+            #             pretrain_img_size[0], pretrain_img_size[1],
+            #             pretrain_img_size[2]))
+            # print( 'patch_size' , (
+            #             patch_size[0], patch_size[1],
+            #             patch_size[2]))
+            # print( 'p/p' , (
+            #             pretrain_img_size[0] // patch_size[0] // 2 ** i_layer, pretrain_img_size[1] // patch_size[1] // 2 ** i_layer,
+            #             pretrain_img_size[2] // patch_size[2] // 2 ** i_layer))
             layer = BasicLayer(
                 dim=int(embed_dim * 2 ** i_layer),
                 input_resolution=(
@@ -934,7 +934,7 @@ class model(SegmentationNetwork):
         
         self.upscale_logits_ops.append(lambda x: x)
 
-        self.imsize=cfg.imsize
+        imsize=cfg.imsize
         embed_dim=cfg.embed_dim
         num_heads=cfg.num_heads
         depths=[2, 2, 2, 2]
