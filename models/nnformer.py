@@ -894,7 +894,7 @@ class final_patch_expanding(nn.Module):
 
 
                                          
-class swintransformer(SegmentationNetwork):
+class model(SegmentationNetwork):
 
     def __init__(self, input_channels=1, base_num_features=64, num_classes=14, num_pool=4, num_conv_per_stage=2,
                  feat_map_mul_on_downscale=2, conv_op=nn.Conv2d,
@@ -905,9 +905,9 @@ class swintransformer(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False, imsize=[64,128,128], dataset='SYNAPSE'):
+                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None):
     
-        super(swintransformer, self).__init__()
+        super(model, self).__init__()
         
         
         self._deep_supervision = deep_supervision
@@ -920,17 +920,18 @@ class swintransformer(SegmentationNetwork):
      
         
         self.upscale_logits_ops.append(lambda x: x)
-        
-        
-        # embed_dim=192
-        # depths=[2, 2, 2, 2]
-        # num_heads=[6, 12, 24, 48]
-        # patch_size=[2,4,4]
+
+        self.imsize=cfg.imsize
+        embed_dim=cfg.embed_dim
+        num_heads=cfg.num_heads
+        depths=[2, 2, 2, 2]
+        patch_size=cfg.patch_size
+        window_size=cfg.window_size
+
 
         if dataset=="SYNAPSE":
             self.imsize=[64,128,128]
             self.vt_map=(3,5,5)
-            # self.max_imsize=SYNAPSE_MAX
             embed_dim=192
             depths=[2, 2, 2, 2]
             num_heads=[6, 12, 24, 48]
@@ -939,7 +940,14 @@ class swintransformer(SegmentationNetwork):
         elif dataset=="BRAIN_TUMOR":
             self.imsize=[128,128,128]
             self.vt_map=(2,2,2)
-            # self.max_imsize=BRAIN_TUMOR_MAX
+            embed_dim=96
+            depths=[2, 2, 2, 2]
+            num_heads=[3, 6, 12, 24]
+            patch_size=[4,4,4]
+            window_size=[4,4,8,4]
+        elif dataset=="US128":
+            self.imsize=[128,128,128]
+            self.vt_map=(2,2,2)
             embed_dim=96
             depths=[2, 2, 2, 2]
             num_heads=[3, 6, 12, 24]
@@ -948,12 +956,12 @@ class swintransformer(SegmentationNetwork):
 
 
         self.model_down=SwinTransformer(pretrain_img_size=imsize,window_size=window_size,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=input_channels)
-        self.encoder=encoder(pretrain_img_size=imsize,embed_dim=embed_dim,window_size=window_size,patch_size=patch_size,num_heads=[12,6,3],depths=[2,2,2])
+        self.encoder=encoder(pretrain_img_size=imsize,embed_dim=embed_dim,window_size=window_size,patch_size=patch_size,num_heads=[num_heads[2],num_heads[1],num_heads[0]],depths=[2,2,2])
    
         self.final=[]
-        self.final.append(final_patch_expanding(embed_dim*2**0,num_classes,patch_size=(2,4,4)))
+        self.final.append(final_patch_expanding(embed_dim*2**0,num_classes,patch_size=patch_size))
         for i in range(1,len(depths)-1):
-            self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=(4,4,4)))
+            self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=patch_size))
         self.final=nn.ModuleList(self.final)
         
     def forward(self, x):
