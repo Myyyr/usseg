@@ -596,9 +596,6 @@ class PatchEmbed(nn.Module):
         if patch_size[0] == 4:
             stride1=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
             stride2=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
-            print(patch_size)
-            print(stride1)
-            print(stride2)
         else:
             stride1=[2,2,2]
             stride2=[1,2,2]
