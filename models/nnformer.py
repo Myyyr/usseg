@@ -721,6 +721,12 @@ class SwinTransformer(nn.Module):
         self.layers = nn.ModuleList()
         for i_layer in range(self.num_layers):
             print((
+                        pretrain_img_size[0], pretrain_img_size[1],
+                        pretrain_img_size[2]))
+            print((
+                        patch_size[0], patch_size[1],
+                        patch_size[2]))
+            print((
                         pretrain_img_size[0] // patch_size[0] // 2 ** i_layer, pretrain_img_size[1] // patch_size[1] // 2 ** i_layer,
                         pretrain_img_size[2] // patch_size[2] // 2 ** i_layer))
             layer = BasicLayer(
