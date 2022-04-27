@@ -225,7 +225,9 @@ class Trainer():
 				del inputs
 				if len(self.net_num_pool_op_kernel_sizes)==0:
 					labels = labels.cuda(0)
-
+				if self._loss == "Dice" and type(output)==tuple:
+					output = output[0]
+					labels = labels[0]
 				l = self.loss(output, labels)
 				l.backward()
 				l_train += l.detach().cpu().numpy()
