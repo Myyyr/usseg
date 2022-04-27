@@ -81,6 +81,7 @@ class Trainer():
 		self.net_conv_kernel_sizes = cfg.model.net_conv_kernel_sizes
 		self.do_clip = cfg.training.do_clip
 		self.do_schedul = cfg.training.do_schedul
+		self._loss = cfg.training.loss
 
 		# Dataset
 		log.debug("Dataset")
@@ -173,9 +174,9 @@ class Trainer():
 			self.optimizer = torch.optim.Adam(self.model.parameters(), self.lr, weight_decay=self.weight_decay)
 
 		
-		if len(self.net_num_pool_op_kernel_sizes)==0:
+		if self._loss == "Dice":
 			self.loss = DiceLoss(softmax=True, to_onehot_y=True)
-		else:
+		elif self._loss == "CrossDice":
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
 		self.infer_path = self.path
