@@ -6,7 +6,7 @@ only_val: False
 
 
 optim: sgd
-lr: 1e-4
+lr: 1e-2 # 1e-4
 weight_decay: 1e-5
 epochs: 2000
 iter: 0
