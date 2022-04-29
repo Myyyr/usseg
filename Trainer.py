@@ -18,7 +18,7 @@ from monai.transforms import (
 	RandFlipd,
 	NormalizeIntensityd,
 	LoadImage,
-	RandAffineD,
+	RandAffined,
 	RandScaleIntensityd,
 	RandShiftIntensityd,
 	CropForegroundd,
