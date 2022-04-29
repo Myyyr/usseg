@@ -115,23 +115,48 @@ class Trainer():
 					
 		# 	])
 
-		train_transforms = Compose([
-					RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
-					RandAffineD(keys=["image", "label"],
-						rotate_range=(np.pi/36, np.pi/36, np.pi/36),
-						translate_range=(5, 5, 5),
-						padding_mode="border",
-						scale_range=(0.15, 0.15, 0.15),
-						mode=('bilinear', 'nearest'),
-						prob=1.0),
-					NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
-					RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
-					RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
+		# train_transforms = Compose([
+		# 			RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
+		# 			RandAffineD(keys=["image", "label"],
+		# 				rotate_range=(np.pi/36, np.pi/36, np.pi/36),
+		# 				translate_range=(5, 5, 5),
+		# 				padding_mode="border",
+		# 				scale_range=(0.15, 0.15, 0.15),
+		# 				mode=('bilinear', 'nearest'),
+		# 				prob=1.0),
+		# 			NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True),
+		# 			RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
+		# 			RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
 					
-			])
-		val_transforms = Compose([
-					NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True)		
-			])
+		# 	])
+		# val_transforms = Compose([
+		# 			NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True)		
+		# 	])
+
+		train_transforms = Compose(
+            [
+                # load 4 Nifti images and stack them together
+                # LoadImaged(keys=["image", "label"]),
+                # AddChanneld(keys=["image", "label"]),
+                CropForegroundd(keys=["image", "label"], source_key="image"),
+                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
+                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
+                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=2),
+                RandAffined(keys=["image", "label"], 
+                            rotate_range=(np.pi, np.pi, np.pi),
+                            translate_range=(50, 50, 50),
+                            padding_mode="border",
+                            scale_range=(0.25, 0.25, 0.25),
+                            mode=('bilinear', 'nearest'),
+                            prob=1.0),
+                Resized(
+                    keys=["image", "label"], spatial_size=(128, 128, 128)
+                    ),
+                RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
+                RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
+                # ToTensord(keys=["image", "label"]),
+            ]
+        )
 
 
 		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes) 
