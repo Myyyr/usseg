@@ -21,9 +21,9 @@ from monai.transforms import (
 	RandAffineD,
 	RandScaleIntensityd,
 	RandShiftIntensityd,
-	CropForegroundd
-	RandFlipd
-	Resized
+	CropForegroundd,
+	RandFlipd,
+	Resized,
 )
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance
