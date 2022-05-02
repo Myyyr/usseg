@@ -8,15 +8,15 @@ only_val: False
 optim: adam
 lr: 1e-4
 weight_decay: 1e-5
-epochs: 300
+epochs: 2000
 iter: 0
 online_validation: True
 eval_step: 1
-batch_size: 2
+batch_size: 4 
 num_workers: 1
 crop_size: [128,128,128]
-do_clip: True
-do_schedul: True
+do_clip: False
+do_schedul: False
 loss: Dice # CrossDice
 
 pth: /etudiants/siscol/t/themyr_l/US
