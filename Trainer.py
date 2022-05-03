@@ -298,7 +298,7 @@ class Trainer():
 							inputs = inputs.float().cuda(0)
 							labels = labels.long().cuda(0)
 						output = self.model(inputs, centers)
-						if self._loss != "Dice"::
+						if self._loss != "Dice":
 							output = output[0]
 							output = torch.argmax(output, dim=1)
 							labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
