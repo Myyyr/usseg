@@ -23,10 +23,12 @@ from monai.transforms import (
 	RandShiftIntensityd,
 	CropForegroundd,
 	RandFlipd,
+	Activations,
+    AsDiscrete,
 	Resized,
 )
 # from monai.inferers import sliding_window_inference
-from monai.metrics import compute_meandice, compute_hausdorff_distance
+from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
 
 from tools import create_split, import_model, get_loss, poly_lr, create_path_if_not_exists, _to_one_hot
 from CustomTransform import CustomRandScaleCropd
@@ -352,13 +354,17 @@ class Trainer():
 
 	def run_eval(self, do_infer=True, *args, **kwargs):
 		log=self.log
+		post_trans = Compose(
+                    [Activations(sigmoid=True), AsDiscrete(threshold_values=True)]
+                )
 
 		if do_infer:
 			self.model.eval()
 			for batch_data in tqdm(self.test_loader):
 				inputs = batch_data["image"]
 				prediction = self.inference(inputs)
-				prediction = torch.argmax(prediction, dim=1)
+				# prediction = torch.argmax(prediction, dim=1)
+				prediction = post_trans(prediction)
 				idx = batch_data["id"][0][0]
 
 				name = idx.replace('xxx', 'pred')
