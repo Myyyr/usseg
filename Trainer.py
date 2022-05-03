@@ -310,8 +310,8 @@ class Trainer():
 
 						# labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 						# output = rearrange(output, 'z x y c -> c z x y')[None, ...]
-						log.debug("output", output.shape)
-						log.debug("labels", labels.shape)
+						# log.debug("output", output.shape)
+						# log.debug("labels", labels.shape)
 
 						# exit(0)
 
