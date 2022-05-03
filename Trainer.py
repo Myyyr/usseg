@@ -229,7 +229,7 @@ class Trainer():
 		if not self.dbg:
 			ts.send(messages=["Training: " + self.dataset_name+'_'+self.training_name+'_'+self.model_name])
 
-
+		best_metric = -1
 		
 		for epoch in range(self.start_epoch, self.epochs):
 			self.model.train()
@@ -276,6 +276,10 @@ class Trainer():
 			if self.online_validation and (epoch%self.eval_step==0):
 				self.model.eval()
 				len_val = 0
+				dice_metric = DiceMetric(include_background=True, reduction="mean")
+				post_trans = Compose(
+                    [Activations(sigmoid=True), AsDiscrete(threshold_values=True)]
+                )
 				with torch.no_grad():
 					for batch_data in tqdm(self.val_loader):
 						inputs = batch_data["image"]
@@ -289,7 +293,8 @@ class Trainer():
 						output = self.model(inputs, centers)
 						if len(self.net_num_pool_op_kernel_sizes)!=0:
 							output = output[0]
-						output = torch.argmax(output, dim=1)
+						# output = torch.argmax(output, dim=1)
+						output = post_trans(output)
 
 						# log.debug("output", output.shape)
 						# log.debug("labels", labels.shape)
@@ -298,21 +303,28 @@ class Trainer():
 						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
 						# 	output = _to_one_hot(output, num_classes=self.classes)
 						# else:
-						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes+1)
-						output = _to_one_hot(output[0,...], num_classes=self.classes+1)
+						# labels = _to_one_hot(labels[0,0,...], num_classes=self.classes+1)
+						# output = _to_one_hot(output[0,...], num_classes=self.classes+1)
 
-						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
-						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
-						# log.debug("output", output.shape)
-						# log.debug("labels", labels.shape)
+						# labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
+						# output = rearrange(output, 'z x y c -> c z x y')[None, ...]
+						log.debug("output", output.shape)
+						log.debug("labels", labels.shape)
 
 						# exit(0)
 
-						l = compute_meandice(labels, output)
-						l_val += np.mean(l.cpu().numpy()[0][1:])
+						# l = compute_meandice(labels, output)
+						dice_metric(y_pred=output, y=labels)
+						l = dice_metric.aggregate().item()
+						# l_val += np.mean(l.cpu().numpy()[0][1:])
+						l_val += l
 						len_val+=1
+					dice_metric.reset()
 				l_val = l_val/len_val
-
+				if l_val > best_metric:
+					best_metric = l_val
+					best_epoch = epoch
+					self.save_chekpoint(epoch, "best.pt")
 
 
 
@@ -403,14 +415,14 @@ class Trainer():
 
 
 
-	def save_chekpoint(self, epoch):
+	def save_chekpoint(self, epoch, txt='latest.pt'):
 		state_dict = self.model.state_dict()
 		optimizer_state_dict = self.optimizer.state_dict()
 		save_this = {
 			'epoch': epoch + 1,
 			'state_dict': state_dict,
 			'optimizer_state_dict': optimizer_state_dict}
-		torch.save(save_this, os.path.join(self.save_path, "latest.pt"))
+		torch.save(save_this, os.path.join(self.save_path, txt))
 
 	def load_checkpoint(self):
 		
