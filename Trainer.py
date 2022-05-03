@@ -303,10 +303,10 @@ class Trainer():
 
 						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
-						log.debug("output", output.shape)
-						log.debug("labels", labels.shape)
+						# log.debug("output", output.shape)
+						# log.debug("labels", labels.shape)
 
-						exit(0)
+						# exit(0)
 
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
