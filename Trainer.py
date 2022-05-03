@@ -176,7 +176,7 @@ class Trainer():
 
 		self.stride = cfg.training.inference.stride
 		self.classes = cfg.dataset.classes
-		elif self._loss == "CrossDice":
+		if self._loss == "CrossDice":
 			self.classes+=1
 
 		# Models
