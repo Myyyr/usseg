@@ -203,7 +203,8 @@ class Trainer():
 
 		
 		if self._loss == "Dice":
-			self.loss = DiceLoss(softmax=True, to_onehot_y=True)
+			# self.loss = DiceLoss(softmax=True, to_onehot_y=True)
+			self.loss = DiceLoss(to_onehot_y=False, sigmoid=True, squared_pred=True)
 		elif self._loss == "CrossDice":
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 
