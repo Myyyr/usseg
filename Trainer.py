@@ -301,10 +301,12 @@ class Trainer():
 						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
 						output = _to_one_hot(output[0,...], num_classes=self.classes)
 
-						# log.debug("output", output.shape)
-						# log.debug("labels", labels.shape)
 						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
+						log.debug("output", output.shape)
+						log.debug("labels", labels.shape)
+
+						exit(0)
 
 						l = compute_meandice(labels, output)
 						l_val += np.mean(l.cpu().numpy()[0][1:])
