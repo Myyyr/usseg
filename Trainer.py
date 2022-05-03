@@ -259,8 +259,8 @@ class Trainer():
 				if self._loss == "Dice" and type(output)==tuple:
 					output = output[0]
 					labels = labels[0]
-				log.debug("output", output.shape)
-				log.debug("labels", labels.shape)
+				log.debug("output", output[0].shape)
+				log.debug("labels", labels[0].shape)
 				exit(0)
 				l = self.loss(output, labels)
 				l.backward()
