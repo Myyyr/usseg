@@ -176,6 +176,8 @@ class Trainer():
 
 		self.stride = cfg.training.inference.stride
 		self.classes = cfg.dataset.classes
+		elif self._loss == "CrossDice":
+			self.classes+=1
 
 		# Models
 		log.debug("Model")
@@ -296,10 +298,20 @@ class Trainer():
 							inputs = inputs.float().cuda(0)
 							labels = labels.long().cuda(0)
 						output = self.model(inputs, centers)
-						if len(self.net_num_pool_op_kernel_sizes)!=0:
+						if self._loss != "Dice"::
 							output = output[0]
-						# output = torch.argmax(output, dim=1)
-						output = post_trans(output)
+							output = torch.argmax(output, dim=1)
+							labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
+							output = _to_one_hot(output[0,...], num_classes=self.classes)
+							labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
+							output = rearrange(output, 'z x y c -> c z x y')[None, ...]
+							l = compute_meandice(labels, output)
+							l_val += np.mean(l.cpu().numpy()[0][1:])
+						else:
+							output = post_trans(output)
+							dice_metric(y_pred=output, y=labels)
+							l = dice_metric.aggregate().item()
+							l_val += l
 
 						# log.debug("output", output.shape)
 						# log.debug("labels", labels.shape)
@@ -308,23 +320,15 @@ class Trainer():
 						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
 						# 	output = _to_one_hot(output, num_classes=self.classes)
 						# else:
-						# labels = _to_one_hot(labels[0,0,...], num_classes=self.classes+1)
-						# output = _to_one_hot(output[0,...], num_classes=self.classes+1)
 
-						# labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
-						# output = rearrange(output, 'z x y c -> c z x y')[None, ...]
 						# log.debug("output", output.shape)
 						# log.debug("labels", labels.shape)
 
 						# exit(0)
 
-						# l = compute_meandice(labels, output)
-						dice_metric(y_pred=output, y=labels)
-						l = dice_metric.aggregate().item()
-						# l_val += np.mean(l.cpu().numpy()[0][1:])
-						l_val += l
 						len_val+=1
-					dice_metric.reset()
+					if self._loss == "Dice":
+						dice_metric.reset()
 				l_val = l_val/len_val
 				if l_val > best_metric:
 					best_metric = l_val
@@ -366,8 +370,10 @@ class Trainer():
 			for batch_data in tqdm(self.test_loader):
 				inputs = batch_data["image"]
 				prediction = self.inference(inputs)
-				# prediction = torch.argmax(prediction, dim=1)
-				prediction = post_trans(prediction)
+				if self._loss == "Dice":
+					prediction = post_trans(prediction)
+				else:
+					prediction = torch.argmax(prediction, dim=1)
 				idx = batch_data["id"][0][0]
 
 				name = idx.replace('xxx', 'pred')
