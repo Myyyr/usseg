@@ -298,8 +298,8 @@ class Trainer():
 						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
 						# 	output = _to_one_hot(output, num_classes=self.classes)
 						# else:
-						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
-						output = _to_one_hot(output[0,...], num_classes=self.classes)
+						labels = _to_one_hot(labels[0,0,...], num_classes=self.classes+1)
+						output = _to_one_hot(output[0,...], num_classes=self.classes+1)
 
 						labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 						output = rearrange(output, 'z x y c -> c z x y')[None, ...]
