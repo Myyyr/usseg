@@ -1,4 +1,4 @@
-name: CROP_SMALL_CD
+name: CROP_SMALL_CD_b2
 dbg: True
 gpu: 1
 use_gpu: True
