@@ -397,12 +397,16 @@ class Trainer():
 				if self._loss != "Dice":
 					pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes)])
 					anno = convert_seg_image_to_one_hot_encoding_batched(anno[None, ...], [i for i in range(self.classes)])
+				elif self._loss == "Dice":
+					pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes + 1)])
+					anno = convert_seg_image_to_one_hot_encoding_batched(anno[None, ...], [i for i in range(self.classes + 1)])
 
 				pred = torch.from_numpy(pred)
 				anno = torch.from_numpy(anno)
 
-				if self._loss != "Dice":
-					pred = pred[:,:,0,...]
+				# if self._loss != "Dice":
+				# 	pred = pred[:,:,0,...]
+				pred = pred[:,:,0,...]
 
 				log.debug('anno', anno.shape)
 				log.debug('pred', pred.shape)
@@ -411,12 +415,12 @@ class Trainer():
 				dice = compute_meandice(anno, pred)
 				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
 
-				if self._loss == "Dice":
-					dice = dice.numpy()
-					hd95 = hd95.numpy()
-				else:
-					dice = dice.numpy()[0]
-					hd95 = hd95.numpy()[0]
+				# if self._loss == "Dice":
+				# 	dice = dice.numpy()
+				# 	hd95 = hd95.numpy()
+				# else:
+				dice = dice.numpy()[0]
+				hd95 = hd95.numpy()[0]
 
 				idx = f.replace('pred', 'xxx')
 				log.info(idx, "Dice: {}\nHD95: {}".format(dice, hd95))
