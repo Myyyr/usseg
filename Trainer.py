@@ -94,8 +94,8 @@ class Trainer():
 		self.eval_step = cfg.training.eval_step
 
 		self.seg_path = cfg.dataset.path.seg
-		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train)
-		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, val=True)
+		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train, cv=cfg.dataset.cv)
+		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, cv=cfg.dataset.cv, val=True)
 
 		train_transforms = None
 		val_transforms = None
