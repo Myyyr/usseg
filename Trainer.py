@@ -361,6 +361,7 @@ class Trainer():
 
 	def run_eval(self, do_infer=True, *args, **kwargs):
 		log=self.log
+		self.load_checkpoint(os.path.join(self.path, "checkpoint",'best.pt'))
 		post_trans = Compose(
                     [Activations(sigmoid=True), AsDiscrete(threshold_values=True)]
                 )
