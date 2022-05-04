@@ -400,6 +400,11 @@ class Trainer():
 				anno = torch.from_numpy(anno)
 
 				pred = pred[:,:,0,...]
+
+				log.debug('anno', anno.shape)
+				log.debug('pred', pred.shape)
+				exit(0)
+
 				dice = compute_meandice(anno, pred)
 				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
 
