@@ -445,7 +445,9 @@ class Trainer():
 			'optimizer_state_dict': optimizer_state_dict}
 		torch.save(save_this, os.path.join(self.save_path, txt))
 
-	def load_checkpoint(self, txt=self.load_path):
+	def load_checkpoint(self, txt=None):
+		if txt==None:
+			txt=self.load_path
 		
 		checkpoint = torch.load(txt)
 		self.model.load_state_dict(checkpoint['state_dict'])
