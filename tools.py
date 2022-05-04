@@ -88,6 +88,36 @@ def create_split(im_pth, seg_pth, split):
 	return splits
 
 
+def create_split_v2(im_pth, seg_pth, split, val=False, cv='cv1'):
+	all_splits = {'cv1':['84R','84L','116R','116L','114R','98R','98L','118R','118L','04L','44R','44L']
+			  'cv2':['47R', '01R', '01L', '74R', '14R', '14L', '33L', '72L', '51R', '51L']
+			  'cv3':['05R', '57R', '57L', '43R', '43L', '94R', '131L', '11R', '11L', '54R', '12L', '15R', '17L']
+			  'cv4':['21R', '21L', '03R', '03L', '97R', '97L', '27R', '27L', '23R', '23L', '53L', '119R']
+			  'cv5':['125R', '125L', '20R', '42R', '99R', '02R', '02L', '87R','87L','37R','38R','38L']}
+	
+	if val:
+		split=all_splits[cv]
+	else:
+		split=[]
+		for c in list(all_splits.keys()):
+			if c != cv:
+				split += all_splits[c]
+
+
+	splits=[]
+	for spl in split:
+		tmp = {
+				'image': os.path.join(im_pth,spl+'_img128.npz'),
+				'label': os.path.join(seg_pth,spl+'_Vol128.npz'),
+				'id': spl
+			}
+		splits.append(tmp)
+
+	return splits
+
+
+
+
 class Log(object):
 	"""docstring for Log"""
 	def __init__(self, log):

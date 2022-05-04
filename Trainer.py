@@ -30,7 +30,7 @@ from monai.transforms import (
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
 
-from tools import create_split, import_model, get_loss, poly_lr, create_path_if_not_exists, _to_one_hot
+from tools import create_split_v2, import_model, get_loss, poly_lr, create_path_if_not_exists, _to_one_hot
 from CustomTransform import CustomRandScaleCropd
 from CustomDataset import CustomDataset
 
@@ -94,8 +94,8 @@ class Trainer():
 		self.eval_step = cfg.training.eval_step
 
 		self.seg_path = cfg.dataset.path.seg
-		self.train_split = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train)
-		self.val_split   = create_split(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val)
+		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train)
+		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, val=True)
 
 		train_transforms = None
 		val_transforms = None
