@@ -394,8 +394,9 @@ class Trainer():
 				pred = np.load(os.path.join(self.infer_path, f))['arr_0']
 				anno = np.load(os.path.join(self.seg_path, f.replace('pred', 'Vol')))['arr_0']
 
-				pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes)])
-				anno = convert_seg_image_to_one_hot_encoding_batched(anno[None, ...], [i for i in range(self.classes)])
+				if self._loss != "Dice":
+					pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(self.classes)])
+					anno = convert_seg_image_to_one_hot_encoding_batched(anno[None, ...], [i for i in range(self.classes)])
 
 				pred = torch.from_numpy(pred)
 				anno = torch.from_numpy(anno)
