@@ -372,7 +372,7 @@ class Trainer():
 				inputs = batch_data["image"]
 				prediction = self.inference(inputs)
 				if self._loss == "Dice":
-					prediction = post_trans(prediction)
+					prediction = post_trans(prediction)[0,...]
 				else:
 					prediction = torch.argmax(prediction, dim=1)
 				idx = batch_data["id"][0][0]
