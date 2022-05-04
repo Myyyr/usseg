@@ -372,7 +372,7 @@ class Trainer():
 				inputs = batch_data["image"]
 				prediction = self.inference(inputs)
 				if self._loss == "Dice":
-					prediction = post_trans(prediction)[0,...]
+					prediction = post_trans(prediction)
 				else:
 					prediction = torch.argmax(prediction, dim=1)
 				idx = batch_data["id"][0][0]
@@ -401,7 +401,8 @@ class Trainer():
 				pred = torch.from_numpy(pred)
 				anno = torch.from_numpy(anno)
 
-				pred = pred[:,:,0,...]
+				if self._loss != "Dice":
+					pred = pred[:,:,0,...]
 
 				log.debug('anno', anno.shape)
 				log.debug('pred', pred.shape)
