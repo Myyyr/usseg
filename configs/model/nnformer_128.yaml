@@ -1,4 +1,4 @@
-name: NNFORMER
+name: NNFORMER_128
 model: nnformer
 # pth: /home/myr/these/datasets
 # pth: /etudiants/siscol/t/themyr_l/US
