@@ -1,5 +1,5 @@
 name: UNETR
-model: UNETR
+model: unetr
 # pth: /home/myr/these/datasets
 pth: /etudiants/siscol/t/themyr_l/US
 # pth: /scratch/lthemyr/US
