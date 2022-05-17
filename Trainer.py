@@ -155,7 +155,7 @@ class Trainer():
                             mode=('bilinear', 'nearest'),
                             prob=1.0),
                 Resized(
-                    keys=["image", "label"], spatial_size=(128, 128, 128)
+                    keys=["image", "label"], spatial_size=self.crop_size
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
@@ -191,7 +191,8 @@ class Trainer():
 													pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes,
 													conv_kernel_sizes=self.net_conv_kernel_sizes,
 													cfg=cfg.model,
-													log=log)
+													log=log,
+													img_size=self.crop_size)
 
 		if torch.cuda.is_available() and self.use_gpu:
 			self.model.cuda()
