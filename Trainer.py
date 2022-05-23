@@ -162,7 +162,8 @@ class Trainer():
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
                 RandSpatialCropd(keys=["image", "label"],
-                	roi_size=self.crop_size),
+                	roi_size=self.crop_size,
+                	random_size=False),
                 # ToTensord(keys=["image", "label"]),
             ]
         )
