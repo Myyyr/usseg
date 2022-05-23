@@ -146,8 +146,6 @@ class Trainer():
                 # LoadImaged(keys=["image", "label"]),
                 # AddChanneld(keys=["image", "label"]),
                 CropForegroundd(keys=["image", "label"], source_key="image"),
-                RandSpatialCropd(keys=["image", "label"],
-                	roi_size=self.crop_size),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=2),
@@ -159,10 +157,12 @@ class Trainer():
                             mode=('bilinear', 'nearest'),
                             prob=1.0),
                 Resized(
-                    keys=["image", "label"], spatial_size=self.crop_size
+                    keys=["image", "label"], spatial_size=self.im_size
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
+                RandSpatialCropd(keys=["image", "label"],
+                	roi_size=self.crop_size),
                 # ToTensord(keys=["image", "label"]),
             ]
         )
