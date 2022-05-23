@@ -5,6 +5,8 @@ path:
   im: ${dataset.path.pth}/USimg_cropped128_npz
   seg: ${dataset.path.pth}/USmask_cropped128_npz
 
+im_size: [128,128,128]
+
 # len: 55
 # split:
 #   n_train: 44
