@@ -186,6 +186,7 @@ class Trainer():
 
 		# Models
 		log.debug("Model")
+		self.feature_size = cfg.model.feature_size
 		self.save_path = create_path_if_not_exists(os.path.join(self.path, "checkpoint"))
 		self.n_save = cfg.training.checkpoint.save
 		self.do_load_checkpoint = cfg.training.checkpoint.load
@@ -197,7 +198,8 @@ class Trainer():
 													conv_kernel_sizes=self.net_conv_kernel_sizes,
 													cfg=cfg.model,
 													log=log,
-													img_size=self.crop_size)
+													img_size=self.crop_size,
+													feature_size=self.feature_size)
 
 		if torch.cuda.is_available() and self.use_gpu:
 			self.model.cuda()
