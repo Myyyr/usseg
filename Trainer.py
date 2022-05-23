@@ -143,7 +143,10 @@ class Trainer():
                 # load 4 Nifti images and stack them together
                 # LoadImaged(keys=["image", "label"]),
                 # AddChanneld(keys=["image", "label"]),
-                CropForegroundd(keys=["image", "label"], source_key="image"),
+                CustomRandCropByPosNegLabeld(keys=["image", "label"],
+                	label_key="label"
+                	spatial_size=self.crop_size),
+                # CropForegroundd(keys=["image", "label"], source_key="image"),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=2),
