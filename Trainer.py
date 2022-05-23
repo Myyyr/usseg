@@ -276,7 +276,7 @@ class Trainer():
 				l = self.loss(output, labels)
 				l.backward()
 				log.debug("l", l.shape)
-				l_train += l.detach().cpu().numpy()
+				# l_train += l.detach().cpu().numpy()
 				if self.do_clip:
 					torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
 				self.optimizer.step()
