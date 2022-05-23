@@ -26,7 +26,7 @@ from monai.transforms import (
 	Activations,
     AsDiscrete,
 	Resized,
-	RandScaleCropd,
+	RandSpatialCropd,
 )
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
@@ -145,8 +145,8 @@ class Trainer():
                 # load 4 Nifti images and stack them together
                 # LoadImaged(keys=["image", "label"]),
                 # AddChanneld(keys=["image", "label"]),
-                RandScaleCropd(keys=["image", "label"],
-                	roi_scale=[self.im_size[0]/self.crop_size[0],self.im_size[1]/self.crop_size[1],self.im_size[2]/self.crop_size[2]]),
+                RandSpatialCropd(keys=["image", "label"],
+                	roi_size=self.crop_size),
                 # CropForegroundd(keys=["image", "label"], source_key="image"),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
