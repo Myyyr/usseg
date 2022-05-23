@@ -269,8 +269,10 @@ class Trainer():
 				# log.debug("output", output[0].shape)
 				# log.debug("labels", labels[0].shape)
 				# exit(0)
+
 				l = self.loss(output, labels)
 				l.backward()
+				log.debug("l", l.shape)
 				l_train += l.detach().cpu().numpy()
 				if self.do_clip:
 					torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
