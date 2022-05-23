@@ -259,6 +259,8 @@ class Trainer():
 					for lab in range(len(labels)):
 						labels[lab] = labels[lab].cuda(0)
 	
+				log.debug("inputs", inputs.shape)
+				# log.debug("labels", labels.shape)
 				output = self.model(inputs, centers)
 
 				del inputs
