@@ -1,6 +1,8 @@
 import nibabel as nib
 import numpy as np
 import os
+import torchvison as tv
+import torch
 
 import sys
 
@@ -12,6 +14,13 @@ def main(argv, arc):
 
 	path = argv[1]
 	out_path = argv[2]
+	size = None
+	if len(argv)==4:
+		size = [argv[3] for i in range(3)]
+
+	if size != None:
+		resizer = tv.transforms.Resize(size)
+
 	if not os.path.exists(out_path):
 		os.makedirs(out_path)
 
@@ -22,7 +31,12 @@ def main(argv, arc):
 		if (".nii" in f) and not b:
 			x = nib.load(os.path.join(path, f)).get_fdata()
 			out_f = f.replace(".nii.gz", ".npz")
+			if size != None:
+				x = torch.from_numpy(x)
+				x = resizer(x)
+				x = x.numpy()
 			np.savez(os.path.join(out_path, out_f), x)
+
 
 
 
