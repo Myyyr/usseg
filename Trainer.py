@@ -67,7 +67,7 @@ class Trainer():
 		
 
 		# Device
-		# os.environ["CUDA_VISIBLE_DEVICES"]=str(cfg.training.gpu)
+		os.environ["CUDA_VISIBLE_DEVICES"]=str(cfg.training.gpu)
 		# torch.cuda.set_device(cfg.training.gpu)
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 		self.use_gpu = cfg.training.use_gpu
@@ -203,7 +203,7 @@ class Trainer():
 													feature_size=self.feature_size)
 
 		if torch.cuda.is_available() and self.use_gpu:
-			torch.cuda.set_device(cfg.training.gpu)
+			# torch.cuda.set_device(cfg.training.gpu)
 			self.model.cuda()
 		self.model.inference_apply_nonlin = softmax_helper
 
