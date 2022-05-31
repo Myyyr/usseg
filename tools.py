@@ -37,10 +37,16 @@ class CustomDice():
 		log.debug("intersection sum", intersection.sum())
 
 		intersection = intersection.sum()
-		log.debug("intersection sum", intersection.shape)
+		log.debug("intersection_sum", intersection.shape)
+		log.debug("intersection_sum item", intersection.item())
 		
-		return 1 - ((2. * intersection + smooth) /
+		ret = 1 - ((2. * intersection + smooth) /
 				  (iflat.sum() + tflat.sum() + smooth))
+		log.debug("ret", ret.shape)
+		log.debug("ret item", ret.item())
+
+
+		return ret
 
 
 def _to_one_hot(y, num_classes):
