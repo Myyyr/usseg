@@ -166,7 +166,7 @@ class Trainer():
                 RandSpatialCropd(keys=["image", "label"],
                 	roi_size=self.crop_size,
                 	random_size=False),
-                ToTensord(keys=["image", "label"]),
+                # ToTensord(keys=["image", "label"]),
             ]
         )
 
