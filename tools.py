@@ -17,7 +17,7 @@ class CustomDice():
 	def __init__(self, log=None):
 		self.log=log
 
-	def forward(self, input, target):
+	def __call__(self, input, target):
 		log = self.log
 		smooth = 1.
 
