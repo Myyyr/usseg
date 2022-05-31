@@ -273,6 +273,7 @@ class Trainer():
 					labels = labels[0]
 				log.debug("output", output[0].shape)
 				log.debug("labels", labels[0].shape)
+				log.debug("labels sum", (labels[0]).sum())
 				# exit(0)
 
 				# log.debug("output", output.shape)
