@@ -194,7 +194,7 @@ class model(SegmentationNetwork):
     """
     ResTran-3D Unet
     """
-    def __init__(self, norm_cfg='BN', activation_cfg='ReLU', img_size=None, num_classes=None, weight_std=False, deep_supervision=True):
+    def __init__(self, norm_cfg='BN', activation_cfg='ReLU', img_size=None, num_classes=None, weight_std=False, deep_supervision=True,  *args, **kwargs):
         super().__init__()
         self.do_ds = False
         self.U_ResTran3D = U_ResTran3D(norm_cfg, activation_cfg, img_size, num_classes, weight_std) # U_ResTran3D
