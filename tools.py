@@ -26,12 +26,15 @@ class CustomDice():
 
 		iflat = input.view(-1)
 		log.debug("iflat", iflat.shape)
+		log.debug("iflat sum", iflat.sum())
 
 		tflat = target.view(-1)
 		log.debug("tflat", tflat.shape)
+		log.debug("tflat sum", tflat.sum())
 
 		intersection = (iflat * tflat)
 		log.debug("intersection", intersection.shape)
+		log.debug("intersection sum", intersection.sum())
 
 		intersection = intersection.sum()
 		log.debug("intersection sum", intersection.shape)
