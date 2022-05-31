@@ -222,8 +222,9 @@ class Trainer():
 		elif self._loss == "CrossDice":
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
 		elif self._loss == "CustomDice":
-			self.loss = CustomDice(self.log)
+			self.loss = CustomDice(log)
 
+		log.debug("Loss", self._loss)
 		self.infer_path = self.path
 
 		# if not os.path.exists(self.infer_path):
