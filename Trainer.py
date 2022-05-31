@@ -261,7 +261,7 @@ class Trainer():
 					for lab in range(len(labels)):
 						labels[lab] = labels[lab].cuda(0)
 	
-				log.debug("inputs", inputs.shape)
+				# log.debug("inputs", inputs.shape)
 				# log.debug("labels", labels.shape)
 				output = self.model(inputs, centers)
 
@@ -275,12 +275,12 @@ class Trainer():
 				# log.debug("labels", labels[0].shape)
 				# exit(0)
 
-				log.debug("output", output.shape)
-				log.debug("labels", labels.shape)
+				# log.debug("output", output.shape)
+				# log.debug("labels", labels.shape)
 				l = self.loss(output, labels)
 				l.backward()
-				log.debug("l", l.shape)
-				log.debug("l", l)
+				# log.debug("l", l.shape)
+				# log.debug("l", l)
 				# l_train += l.detach().cpu().numpy()
 				if self.do_clip:
 					torch.nn.utils.clip_grad_norm_(self.model.parameters(), 12)
