@@ -271,9 +271,9 @@ class Trainer():
 				if self._loss == "Dice" and type(output)==tuple:
 					output = output[0]
 					labels = labels[0]
-				log.debug("output", output[0].shape)
-				log.debug("labels", labels[0].shape)
-				log.debug("labels sum", (labels[0]).sum())
+				log.debug("output", output.shape)
+				log.debug("labels", labels.shape)
+				log.debug("labels sum", (labels).sum())
 				# exit(0)
 
 				# log.debug("output", output.shape)
