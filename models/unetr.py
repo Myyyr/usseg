@@ -1,5 +1,5 @@
-# from monai.networks.nets.unetr import UNETR 
-from .utils.unetr import UNETR 
+from monai.networks.nets.unetr import UNETR 
+# from .utils.unetr import UNETR 
 from nnunet.network_architecture.neural_network import SegmentationNetwork
 
 
