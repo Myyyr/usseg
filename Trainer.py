@@ -270,8 +270,6 @@ class Trainer():
 					for lab in range(len(labels)):
 						labels[lab] = labels[lab].cuda(0)
 	
-				log.debug("inputs", inputs.shape)
-				# log.debug("labels", labels.shape)
 				output = self.model(inputs, centers)
 
 				del inputs
@@ -280,18 +278,9 @@ class Trainer():
 				if self._loss == "Dice" and type(output)==tuple:
 					output = output[0]
 					labels = labels[0]
-				log.debug("output", output.shape)
-				log.debug("labels", labels.shape)
-				log.debug("labels sum", (labels).sum())
-				log.debug("output sum", (output).sum())
 				# exit(0)
 
-				# log.debug("output", output.shape)
-				# log.debug("labels", labels.shape)
 				l = self.loss(output, labels)
-				log.debug("l", l.shape)
-				log.debug("l", l.item())
-				log.debug("l", l)
 				l_train += l.detach().cpu().numpy()
 				l.backward()
 				# exit(0)
