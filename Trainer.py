@@ -31,7 +31,8 @@ from monai.transforms import (
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
 
-from tools import create_split_v2, import_model, get_loss, poly_lr, create_path_if_not_exists, _to_one_hot
+from tools import create_split_v2, import_model, get_loss, poly_lr, 
+					create_path_if_not_exists, _to_one_hot, CustomDice
 from CustomTransform import CustomRandScaleCropd, CustomRandCropByPosNegLabeld
 from CustomDataset import CustomDataset
 
@@ -221,6 +222,8 @@ class Trainer():
 			self.loss = DiceLoss(to_onehot_y=False, sigmoid=True, squared_pred=True)
 		elif self._loss == "CrossDice":
 			self.loss = get_loss(self.net_num_pool_op_kernel_sizes)
+		elif self._loss == "CustomDice":
+			self.loss = CustomDice(self.log)
 
 		self.infer_path = self.path
 

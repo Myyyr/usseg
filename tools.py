@@ -12,12 +12,27 @@ from nnunet.training.loss_functions.dice_loss import DC_and_CE_loss
 from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_encoding_batched
 
 
+class CustomDice(torch.nn.Module):
+	def __init__(self, log=None):
+		self.log=log
+
+	def forward(self, input, target):
+		smooth = 1.
+
+		iflat = input.view(-1)
+		tflat = target.view(-1)
+		intersection = (iflat * tflat).sum()
+		
+		return 1 - ((2. * intersection + smooth) /
+				  (iflat.sum() + tflat.sum() + smooth))
+
+
 def _to_one_hot(y, num_classes):
-    scatter_dim = len(y.size())
-    y_tensor = y.view(*y.size(), -1)
-    zeros = torch.zeros(*y.size(), num_classes, dtype=y.dtype, device=y.device)
-        
-    return zeros.scatter(scatter_dim, y_tensor, 1)
+	scatter_dim = len(y.size())
+	y_tensor = y.view(*y.size(), -1)
+	zeros = torch.zeros(*y.size(), num_classes, dtype=y.dtype, device=y.device)
+		
+	return zeros.scatter(scatter_dim, y_tensor, 1)
 
 
 def create_path_if_not_exists(path):
@@ -26,24 +41,24 @@ def create_path_if_not_exists(path):
 	return path
 
 def poly_lr(epoch, max_epochs, initial_lr, exponent=0.9):
-    return initial_lr * (1 - epoch / max_epochs)**exponent
+	return initial_lr * (1 - epoch / max_epochs)**exponent
 
 
 def downsample_seg_for_ds_transform3(seg, ds_scales=((1, 1, 1), (0.5, 0.5, 0.5), (0.25, 0.25, 0.25)), classes=None):
-    output = []
-    one_hot = torch.from_numpy(convert_seg_image_to_one_hot_encoding_batched(seg[:, 0], classes)) # b, c,
+	output = []
+	one_hot = torch.from_numpy(convert_seg_image_to_one_hot_encoding_batched(seg[:, 0], classes)) # b, c,
 
-    for s in ds_scales:
-        if all([i == 1 for i in s]):
-            output.append(torch.from_numpy(seg[0,...]))
-        else:
-            kernel_size = tuple(int(1 / i) for i in s)
-            stride = kernel_size
-            pad = tuple((i-1) // 2 for i in kernel_size)
-            pooled = avg_pool3d(one_hot, kernel_size, stride, pad, count_include_pad=False, ceil_mode=False)
+	for s in ds_scales:
+		if all([i == 1 for i in s]):
+			output.append(torch.from_numpy(seg[0,...]))
+		else:
+			kernel_size = tuple(int(1 / i) for i in s)
+			stride = kernel_size
+			pad = tuple((i-1) // 2 for i in kernel_size)
+			pooled = avg_pool3d(one_hot, kernel_size, stride, pad, count_include_pad=False, ceil_mode=False)
 
-            output.append(pooled[0,...])
-    return output
+			output.append(pooled[0,...])
+	return output
 
 def get_loss(net_num_pool_op_kernel_sizes):
 	################# Here we wrap the loss for deep supervision ############
