@@ -288,10 +288,10 @@ class Trainer():
 				# log.debug("output", output.shape)
 				# log.debug("labels", labels.shape)
 				l = self.loss(output, labels)
-				l.backward()
 				log.debug("l", l.shape)
 				log.debug("l", l.item())
 				log.debug("l", l)
+				l.backward()
 				exit(0)
 
 				l_train += l.detach().cpu().numpy()
