@@ -192,7 +192,7 @@ class U_ResTran3D(nn.Module):
         return [result, ds0, ds1, ds2]
 
 
-class ResTranUnet(SegmentationNetwork):
+class model(SegmentationNetwork):
     """
     ResTran-3D Unet
     """
