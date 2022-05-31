@@ -5,6 +5,7 @@ from termcolor import colored
 import numpy as np
 import torch
 from torch.nn.functional import avg_pool3d
+import torch.nn as nn
 
 from nnunet.training.loss_functions.deep_supervision import MultipleOutputLoss2
 from nnunet.training.loss_functions.dice_loss import DC_and_CE_loss
@@ -12,7 +13,7 @@ from nnunet.training.loss_functions.dice_loss import DC_and_CE_loss
 from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_encoding_batched
 
 
-class CustomDice(torch.nn.Module):
+class CustomDice():
 	def __init__(self, log=None):
 		self.log=log
 
