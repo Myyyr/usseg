@@ -286,7 +286,7 @@ class Trainer():
 				# log.debug("labels", labels.shape)
 				l = self.loss(output, labels)
 				l.backward()
-				log.debug("l", l.shape)
+				log.debug("l", l.item().shape)
 				log.debug("l", l)
 				exit(0)
 
