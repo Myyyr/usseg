@@ -67,7 +67,8 @@ class Trainer():
 		
 
 		# Device
-		os.environ["CUDA_VISIBLE_DEVICES"]=str(cfg.training.gpu)
+		# os.environ["CUDA_VISIBLE_DEVICES"]=str(cfg.training.gpu)
+		torch.cuda.set_device(cfg.training.gpu)
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 		self.use_gpu = cfg.training.use_gpu
 
