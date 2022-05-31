@@ -1,4 +1,4 @@
-name: CROP_SMALL_nnu
+name: CROP_96
 dbg: True
 gpu: 1
 use_gpu: True
