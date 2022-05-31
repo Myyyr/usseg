@@ -30,8 +30,11 @@ class CustomDice():
 		tflat = target.view(-1)
 		log.debug("tflat", tflat.shape)
 
-		intersection = (iflat * tflat).sum()
+		intersection = (iflat * tflat)
 		log.debug("intersection", intersection.shape)
+
+		intersection = intersection.sum()
+		log.debug("intersection sum", intersection.shape)
 		
 		return 1 - ((2. * intersection + smooth) /
 				  (iflat.sum() + tflat.sum() + smooth))
