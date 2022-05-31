@@ -4,10 +4,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from nnunet.network_architecture import CNNBackbone
+from .utils import CNNBackbone
 from nnunet.network_architecture.neural_network import SegmentationNetwork
-from nnunet.network_architecture.DeTrans.DeformableTrans import DeformableTransformer
-from nnunet.network_architecture.DeTrans.position_encoding import build_position_encoding
+from .DeTrans.DeformableTrans import DeformableTransformer
+from .DeTrans.position_encoding import build_position_encoding
 
 class Conv3d_wd(nn.Conv3d):
 
