@@ -17,11 +17,20 @@ class CustomDice(torch.nn.Module):
 		self.log=log
 
 	def forward(self, input, target):
+		log = self.log
 		smooth = 1.
 
+		log.debug("input", input.shape)
+		log.debug("target", target.shape)
+
 		iflat = input.view(-1)
+		log.debug("iflat", iflat.shape)
+
 		tflat = target.view(-1)
+		log.debug("tflat", tflat.shape)
+
 		intersection = (iflat * tflat).sum()
+		log.debug("intersection", intersection.shape)
 		
 		return 1 - ((2. * intersection + smooth) /
 				  (iflat.sum() + tflat.sum() + smooth))
