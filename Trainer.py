@@ -307,7 +307,7 @@ class Trainer():
 						inputs = batch_data["image"]
 						labels = batch_data["label"]
 						centers = batch_data["center"]
-						# log.debug('input', inputs.shape)
+						log.debug('input', inputs.shape)
 						# log.debug('labels', labels.shape)
 						if torch.cuda.is_available() and self.use_gpu:
 							inputs = inputs.float().cuda(0)
@@ -328,8 +328,8 @@ class Trainer():
 							l = dice_metric.aggregate().item()
 							l_val += l
 
-						# log.debug("output", output.shape)
-						# log.debug("labels", labels.shape)
+						log.debug("output", output.shape)
+						log.debug("labels", labels.shape)
 
 						# if len(self.net_num_pool_op_kernel_sizes)==0:
 						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
