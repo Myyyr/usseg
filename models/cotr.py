@@ -1,15 +1,13 @@
-# ------------------------------------------------------------------------
-# UTrans
-# ------------------------------------------------------------------------
+
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from UTrans.network_architecture import CNNBackbone
+from nnunet.network_architecture import CNNBackbone
 from nnunet.network_architecture.neural_network import SegmentationNetwork
-from UTrans.network_architecture.DeTrans.DeformableTrans import DeformableTransformer
-from UTrans.network_architecture.DeTrans.position_encoding import build_position_encoding
+from nnunet.network_architecture.DeTrans.DeformableTrans import DeformableTransformer
+from nnunet.network_architecture.DeTrans.position_encoding import build_position_encoding
 
 class Conv3d_wd(nn.Conv3d):
 
@@ -196,7 +194,7 @@ class model(SegmentationNetwork):
     """
     ResTran-3D Unet
     """
-    def __init__(self, norm_cfg='BN', activation_cfg='ReLU', img_size=None, num_classes=None, weight_std=False, deep_supervision=False):
+    def __init__(self, norm_cfg='BN', activation_cfg='ReLU', img_size=None, num_classes=None, weight_std=False, deep_supervision=True):
         super().__init__()
         self.do_ds = False
         self.U_ResTran3D = U_ResTran3D(norm_cfg, activation_cfg, img_size, num_classes, weight_std) # U_ResTran3D
