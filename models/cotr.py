@@ -216,7 +216,7 @@ class model(SegmentationNetwork):
         self._deep_supervision = deep_supervision
         self.do_ds = deep_supervision
 
-    def forward(self, x):
+    def forward(self, x,  *args, **kwargs):
         seg_output = self.U_ResTran3D(x)
         if self._deep_supervision and self.do_ds:
             return seg_output
