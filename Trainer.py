@@ -279,9 +279,12 @@ class Trainer():
 					output = output[0]
 					labels = labels[0]
 				# exit(0)
+				gc.collect()
 
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
+
+				gc.collect()
 				l.backward()
 				# exit(0)
 
