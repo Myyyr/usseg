@@ -18,7 +18,7 @@ import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
 from torch.nn import LayerNorm
 
-from .monai.blocks import MLPBlock as Mlp
+from .monai.blocks.mlp import MLPBlock as Mlp
 # from monai.networks.blocks import PatchEmbed, UnetOutBlock, UnetrBasicBlock, UnetrUpBlock
 from monai.networks.blocks import UnetOutBlock, UnetrBasicBlock, UnetrUpBlock
 from .monai.blocks.patchembedding import PatchEmbed
