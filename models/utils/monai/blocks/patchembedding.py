@@ -17,7 +17,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import LayerNorm
 
-from monai.networks.layers import Conv, trunc_normal_
+# from monai.networks.layers import Conv, trunc_normal_
+from monai.networks.layers import Conv
+from ..monai.layers.weight_init import trunc_normal_ 
 from monai.utils import ensure_tuple_rep, optional_import
 from monai.utils.module import look_up_option
 
