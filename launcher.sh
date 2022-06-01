@@ -8,7 +8,6 @@
 
 
 source /opt/server-env.sh
-# source /home/lthemyr/usenv/bin/activate
 conda activate usenv
 
 # srun python main.py training.dbg=False
@@ -22,5 +21,5 @@ conda activate usenv
 
 
 
-
+# srun convert_dataset.py /scratch/lthemyr/20220318_US_DATA/USmask_cropped /scratch/lthemyr/20220318_US_DATA/USmask_cropped256_npz 256
 
