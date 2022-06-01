@@ -148,5 +148,5 @@ training:
   checkpoint:
     save: 1
     load: false
-    load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
+    load_path: ${model.pth}/${model.name}/checkpoint/best.pt
     path: ${model.pth}/${model.name}/checkpoint
