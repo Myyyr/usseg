@@ -1,0 +1,6 @@
+- model=nnunet
+- dataset=us128
+- training=crop128_128_128_nnu
+- training.name=CROP_SMALL_nnu_v2
+- training.optim=sgd
+- training.gpu=0
