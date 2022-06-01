@@ -9,7 +9,7 @@ class model(SegmentationNetwork):
             out_channels=num_classes, 
             img_size=img_size, 
             feature_size=feature_size,
-            depth=(2, 2, 4, 2)
+            depth=(2, 2, 4, 2),
             norm_name='batch')
 
     def forward(self, x, *args, **kwargs):
