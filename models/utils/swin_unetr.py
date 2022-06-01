@@ -23,8 +23,8 @@ from monai.networks.blocks import MLPBlock as Mlp
 from monai.networks.blocks import UnetOutBlock, UnetrBasicBlock, UnetrUpBlock
 from .monai.blocks.patchembedding import PatchEmbed
 # from monai.networks.layers import DropPath, trunc_normal_
-from .layers.weight_init import trunc_normal_ 
-from .layers.drop_path import DropPath 
+from .monai.layers.weight_init import trunc_normal_ 
+from .monai.layers.drop_path import DropPath 
 from monai.utils import ensure_tuple_rep, optional_import
 
 rearrange, _ = optional_import("einops", name="rearrange")
