@@ -6,6 +6,8 @@ import logging
 from Trainer import Trainer
 
 from tools import Log
+import sys
+
 
 LOG = logging.getLogger(__name__)
 
@@ -15,6 +17,10 @@ LOG = logging.getLogger(__name__)
 @hydra.main(config_path="configs", config_name="default")
 def main(cfg: DictConfig) -> None:
 	log = Log(LOG)
+
+	if len(sys.argv) > 2:
+		if sys.argv[1] == '-c':
+			cfg = OmegaConf.load(sys.argv[2])
 
 	log.info("Config:", OmegaConf.to_yaml(cfg))
 	log.info("Working directory:", os.getcwd())
