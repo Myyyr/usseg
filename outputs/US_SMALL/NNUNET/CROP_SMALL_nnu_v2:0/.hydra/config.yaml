@@ -106,6 +106,10 @@ training:
   eval_step: 1
   batch_size: 2
   num_workers: 1
+  im_size:
+  - 128
+  - 128
+  - 128
   crop_size:
   - 128
   - 128
