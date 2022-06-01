@@ -50,7 +50,7 @@ import telegram_send as ts
 from einops import rearrange
 # import time
 
-
+import gc
 ## V2 : add normalise intensity
 ## V3 : william's data aug
 
@@ -295,6 +295,9 @@ class Trainer():
 				for lab in labels:
 					del lab
 				del labels
+
+				gc.collect()
+
 
 			l_train = l_train/btc
 			l_val = 0
