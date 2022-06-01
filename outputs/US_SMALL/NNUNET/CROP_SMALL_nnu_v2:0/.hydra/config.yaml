@@ -5,6 +5,10 @@ dataset:
     im: ${dataset.path.pth}/USimg_cropped128_npz
     seg: ${dataset.path.pth}/USmask_cropped128_npz
   len: 39
+  im_size:
+  - 128
+  - 128
+  - 128
   split:
     n_train: 31
     n_val: 8
@@ -106,10 +110,6 @@ training:
   eval_step: 1
   batch_size: 2
   num_workers: 1
-  im_size:
-  - 128
-  - 128
-  - 128
   crop_size:
   - 128
   - 128
