@@ -131,3 +131,6 @@ dmypy.json
 
 # Notebooks
 *.ipynb
+
+# Tensorboard
+*tensorboard/
