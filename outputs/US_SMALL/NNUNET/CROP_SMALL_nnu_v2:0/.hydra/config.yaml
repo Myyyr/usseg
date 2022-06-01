@@ -95,6 +95,7 @@ model:
     - 3
     - 3
   base_num_features: 32
+  feature_size: 32
 training:
   name: CROP_SMALL_nnu_v2
   dbg: true
