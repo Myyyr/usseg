@@ -16,7 +16,7 @@ def main(argv, arc):
 	out_path = argv[2]
 	size = None
 	if len(argv)==4:
-		size = [argv[3] for i in range(3)]
+		size = [int(argv[3])for i in range(3)]
 
 	# if size != None:
 	# 	resizer = tv.transforms.Resize(size)
