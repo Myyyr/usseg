@@ -33,6 +33,7 @@ def main(argv, arc):
 			out_f = f.replace(".nii.gz", ".npz")
 			if size != None:
 				x = torch.from_numpy(x)
+				print(x.shape)
 				x = F.interpolate(x, size)
 				x = x.numpy()
 			np.savez(os.path.join(out_path, out_f), x)
