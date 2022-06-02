@@ -34,6 +34,7 @@ def main(argv, arc):
 			if size != None:
 				x = torch.from_numpy(x)
 				print(x.shape)
+				print(size)
 				x = F.interpolate(x, size)
 				x = x.numpy()
 			np.savez(os.path.join(out_path, out_f), x)
