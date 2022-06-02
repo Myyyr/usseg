@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch
 
 import sys
-
+import tqdm
 
 # L=  ['17L', '53L', '42R', '84L', '47R', '33L', '14L', '94R', '119R', '43L', '54R', '23L', '11R', '116R', '12L', '116L', '38R', '38L', '51R']
 L=  []
@@ -24,7 +24,7 @@ def main(argv, arc):
 	if not os.path.exists(out_path):
 		os.makedirs(out_path)
 
-	for f in os.listdir(path):
+	for f in tqdm.tqdm(os.listdir(path)):
 		b = False
 		for l  in L:
 			b = (l in f)
@@ -33,8 +33,8 @@ def main(argv, arc):
 			out_f = f.replace(".nii.gz", ".npz")
 			if size != None:
 				x = torch.from_numpy(x)
-				print(x.shape)
-				print(size)
+				# print(x.shape)
+				# print(size)
 				x = F.interpolate(x[None, None, ...], size)
 				x = x[0,0,...].numpy()
 			np.savez(os.path.join(out_path, out_f), x)
