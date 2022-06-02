@@ -95,7 +95,7 @@ class Trainer():
 		log.debug("Dataset")
 		self.online_validation = cfg.training.online_validation
 		self.eval_step = cfg.training.eval_step
-		self.img_size = cfg.dataset.img_size
+		self.img_size = cfg.dataset.im_size
 
 		self.seg_path = cfg.dataset.path.seg
 		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train, cv=cfg.dataset.cv)
