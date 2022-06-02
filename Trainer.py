@@ -95,7 +95,7 @@ class Trainer():
 		log.debug("Dataset")
 		self.online_validation = cfg.training.online_validation
 		self.eval_step = cfg.training.eval_step
-		self.im_size = cfg.dataset.im_size
+		self.img_size = cfg.dataset.img_size
 
 		self.seg_path = cfg.dataset.path.seg
 		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train, cv=cfg.dataset.cv)
@@ -159,7 +159,7 @@ class Trainer():
                             mode=('bilinear', 'nearest'),
                             prob=1.0),
                 Resized(
-                    keys=["image", "label"], spatial_size=self.im_size
+                    keys=["image", "label"], spatial_size=self.img_size
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
@@ -430,7 +430,7 @@ class Trainer():
 
 				# if self._loss != "Dice":
 				# 	pred = pred[:,:,0,...]
-				
+
 				log.debug('anno', anno.shape)
 				log.debug('pred', pred.shape)
 				pred = pred[:,:,0,...]
@@ -494,7 +494,7 @@ class Trainer():
 		log=self.log
 
 		B, C, D, H, W = inputs.shape
-		D_crop, H_crop, W_crop = self.crop_size
+		D_crop, H_crop, W_crop = self.img_size
 
 		nD, nH, nW = int(D//(D_crop*self.stride[2])), int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1]))
 
