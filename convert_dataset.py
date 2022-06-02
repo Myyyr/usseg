@@ -1,7 +1,7 @@
 import nibabel as nib
 import numpy as np
 import os
-import torchvison as tv
+import torchvision as tv
 import torch
 
 import sys
