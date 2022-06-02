@@ -35,8 +35,8 @@ def main(argv, arc):
 				x = torch.from_numpy(x)
 				print(x.shape)
 				print(size)
-				x = F.interpolate(x, size)
-				x = x.numpy()
+				x = F.interpolate(x[None, None, ...], size)
+				x = x[0,0,...].numpy()
 			np.savez(os.path.join(out_path, out_f), x)
 
 
