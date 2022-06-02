@@ -493,8 +493,8 @@ class Trainer():
 	def inference(self, inputs):
 		log=self.log
 
-		B, C, D, H, W = inputs.shape
-		D_crop, H_crop, W_crop = self.img_size
+		B, C, D, H, W = self.img_size
+		D_crop, H_crop, W_crop = inputs.shape
 
 		nD, nH, nW = int(D//(D_crop*self.stride[2])), int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1]))
 
