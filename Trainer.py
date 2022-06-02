@@ -430,10 +430,11 @@ class Trainer():
 
 				# if self._loss != "Dice":
 				# 	pred = pred[:,:,0,...]
+				
+				log.debug('anno', anno.shape)
+				log.debug('pred', pred.shape)
 				pred = pred[:,:,0,...]
 
-				# log.debug('anno', anno.shape)
-				# log.debug('pred', pred.shape)
 				# exit(0)
 
 				dice = compute_meandice(anno, pred)
