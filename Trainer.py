@@ -430,7 +430,7 @@ class Trainer():
 				# pred_nib = nib.Nifti1Image(prediction.numpy(), None)
 				# nib.save(pred_nib, file)
 				np.savez(file, prediction.numpy())
-			l_val = l_val/len_val
+			# l_val = l_val/len_val
 
 		# loader = LoadImage()
 		results = {}
