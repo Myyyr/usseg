@@ -411,7 +411,7 @@ class Trainer():
 				log.debug('prediction', prediction.shape)
 				
 				output_ = prediction
-				labels_ = labels[0]
+				labels_ = labels
 				l = self.loss(output_, labels_)
 				l_val += l.detach().cpu().numpy()
 				len_val += 1
