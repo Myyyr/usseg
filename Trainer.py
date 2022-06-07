@@ -405,9 +405,9 @@ class Trainer():
 				labels = batch_data["label"]
 				prediction = self.inference(inputs)
 
-				if self._loss == "Dice" and type(output)==tuple:
-					output_ = prediction[0]
-					labels_ = labels[0]
+				
+				output_ = prediction
+				labels_ = labels[0]
 				l = self.loss(output_, labels_)
 				l_val += l.detach().cpu().numpy()
 				len_val += 1
