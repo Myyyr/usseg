@@ -405,6 +405,10 @@ class Trainer():
 				labels = batch_data["label"]
 				prediction = self.inference(inputs)
 
+
+				log.debug('inputs', inputs.shape)
+				log.debug('labels', labels.shape)
+				log.debug('prediction', prediction.shape)
 				
 				output_ = prediction
 				labels_ = labels[0]
