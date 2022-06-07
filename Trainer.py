@@ -394,28 +394,28 @@ class Trainer():
                     [Activations(sigmoid=True), AsDiscrete(threshold_values=True)]
                 )
 
-		l_val = 0
-		len_val = 0
-		tqdm_ = trange(len(self.test_loader), desc='Bar desc', leave=True)
+		# l_val = 0
+		# len_val = 0
+		# tqdm_ = trange(len(self.test_loader), desc='Bar desc', leave=True)
 		if do_infer:
 			self.model.eval()
-			# for batch_data in tqdm(self.test_loader):
-			for batch_data in self.test_loader:
+			for batch_data in tqdm(self.test_loader):
+			# for batch_data in self.test_loader:
 				inputs = batch_data["image"]
 				labels = batch_data["label"]
 				prediction = self.inference(inputs)
 
 
-				log.debug('inputs', inputs.shape)
-				log.debug('labels', labels.shape)
-				log.debug('prediction', prediction.shape)
+				# log.debug('inputs', inputs.shape)
+				# log.debug('labels', labels.shape)
+				# log.debug('prediction', prediction.shape)
 				
-				output_ = prediction
-				labels_ = labels
-				l = self.loss(output_, labels_)
-				l_val += l.detach().cpu().numpy()
-				len_val += 1
-				tqdm_.set_description(f"Batch {len_val}/{len(self.test_loader)} | Mean Dice {l_val/len_val} | Dice {l.detach().cpu().numpy()}")
+				# output_ = prediction
+				# labels_ = labels
+				# l = self.loss(output_, labels_)
+				# l_val += l.detach().cpu().numpy()
+				# len_val += 1
+				# tqdm_.set_description(f"Batch {len_val}/{len(self.test_loader)} | Mean Dice {l_val/len_val} | Dice {l.detach().cpu().numpy()}")
 
 
 				if self._loss == "Dice":
