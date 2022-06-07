@@ -54,6 +54,10 @@ import gc
 ## V2 : add normalise intensity
 ## V3 : william's data aug
 
+from tqdm import trange
+
+
+
 class Trainer():
 	def __init__(self, cfg, log, *args, **kwargs):
 		# Logs
@@ -390,11 +394,26 @@ class Trainer():
                     [Activations(sigmoid=True), AsDiscrete(threshold_values=True)]
                 )
 
+		l_val = 0
+		len_val = 0
+		tqdm_ = trange(len(self.test_loader), desc='Bar desc', leave=True)
 		if do_infer:
 			self.model.eval()
-			for batch_data in tqdm(self.test_loader):
+			# for batch_data in tqdm(self.test_loader):
+			for batch_data in self.test_loader:
 				inputs = batch_data["image"]
+				labels = batch_data["label"]
 				prediction = self.inference(inputs)
+
+				if self._loss == "Dice" and type(output)==tuple:
+					output_ = prediction[0]
+					labels_ = labels[0]
+				l = self.loss(output_, labels_)
+				l_val += l.detach().cpu().numpy()
+				len_val += 1
+				tqdm_.set_description(f"Batch {len_val}/{len(self.test_loader)} | Mean Dice {l_val/len_val} | Dice {l.detach().cpu().numpy()}")
+
+
 				if self._loss == "Dice":
 					prediction = post_trans(prediction)[0,...]
 				else:
@@ -407,6 +426,7 @@ class Trainer():
 				# pred_nib = nib.Nifti1Image(prediction.numpy(), None)
 				# nib.save(pred_nib, file)
 				np.savez(file, prediction.numpy())
+			l_val = l_val/len_val
 
 		# loader = LoadImage()
 		results = {}
