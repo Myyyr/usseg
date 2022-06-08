@@ -23,3 +23,7 @@ conda activate usenv
 
 # srun convert_dataset.py /scratch/lthemyr/20220318_US_DATA/USmask_cropped /scratch/lthemyr/20220318_US_DATA/USmask_cropped256_npz 256
 
+
+
+# Runs on 256x256x256 images
+srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu
