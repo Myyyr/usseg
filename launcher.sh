@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/glam_128on256.out # output file name
-#SBATCH --error=logs/glam_128on256.err  # error file name
+#SBATCH --output=logs/glam_128on128.out # output file name
+#SBATCH --error=logs/glam_128on128.err  # error file name
 
 
 source /opt/server-env.sh
@@ -26,8 +26,8 @@ conda activate usenv
 
 
 # Runs on 128x128x128 images
-# srun python main.py -m model=glam dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
+srun python main.py -m model=glam dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
 
 # Runs on 256x256x256 images
-srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
+# srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
 # srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu
