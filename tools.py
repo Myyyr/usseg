@@ -143,11 +143,11 @@ def create_split_v2(im_pth, seg_pth, split, val=False, cv='cv1', log=None, *args
 
 	splits=[]
 	for spl in split:
-		log.debug("file 	", os.path.join(im_pth,spl+'_img128.npz'))
-		if os.path.exists(os.path.join(im_pth,spl+'_img128.npz')):
+		# log.debug("file 	", os.path.join(im_pth,spl+'_img128.npz'))
+		if os.path.exists(os.path.join(im_pth,spl+'_img.npz')):
 			tmp = {
-					'image': os.path.join(im_pth,spl+'_img128.npz'),
-					'label': os.path.join(seg_pth,spl+'_Vol128.npz'),
+					'image': os.path.join(im_pth,spl+'_img.npz'),
+					'label': os.path.join(seg_pth,spl+'_Vol.npz'),
 					'id': spl
 					}
 			splits.append(tmp)
