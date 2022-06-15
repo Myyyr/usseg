@@ -18,6 +18,7 @@ class CustomDataset(Dataset):
 		self.iterations = iterations
 		self.loader = LoadImage()
 		self.n_data = len(data)
+		log.debug("n_data", len(data))
 		self.transform = transform
 		self.log=log
 		self.type=type_
