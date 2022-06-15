@@ -102,8 +102,8 @@ class Trainer():
 		self.img_size = cfg.dataset.im_size
 
 		self.seg_path = cfg.dataset.path.seg
-		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train, cv=cfg.dataset.cv)
-		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, cv=cfg.dataset.cv, val=True)
+		self.train_split = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.train, cv=cfg.dataset.cv, log=log)
+		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, cv=cfg.dataset.cv, val=True, log=log)
 
 		train_transforms = None
 		val_transforms = None
