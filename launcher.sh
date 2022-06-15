@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/glam_128on128.out # output file name
-#SBATCH --error=logs/glam_128on128.err  # error file name
+#SBATCH --output=logs/glam_128on256.out # output file name
+#SBATCH --error=logs/glam_128on256.err  # error file name
 
 
 source /opt/server-env.sh
