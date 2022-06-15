@@ -125,7 +125,7 @@ def create_split(im_pth, seg_pth, split):
 	return splits
 
 
-def create_split_v2(im_pth, seg_pth, split, val=False, cv='cv1', *args, **kwargs):
+def create_split_v2(im_pth, seg_pth, split, val=False, cv='cv1', log=None, *args, **kwargs):
 	all_splits = {'cv1':['84R','84L','116R','116L','114R','98R','98L','118R','118L','04L','44R','44L'],
 			  'cv2':['47R', '01R', '01L', '74R', '14R', '14L', '33L', '72L', '51R', '51L'],
 			  'cv3':['05R', '57R', '57L', '43R', '43L', '94R', '131L', '11R', '11L', '54R', '12L', '15R', '17L'],
