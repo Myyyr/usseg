@@ -1,7 +1,10 @@
 import nibabel as nib
 import numpy as np
 import os
-import torch.nn.functional as F
+# import torch.nn.functional as F
+# import torchvision.transforms.functional as F
+import monai.transforms as T
+
 import torch
 
 import sys
@@ -35,8 +38,9 @@ def main(argv, arc):
 				x = torch.from_numpy(x)
 				# print(x.shape)
 				# print(size)
-				x = F.interpolate(x[None, None, ...], size)
-				x = x[0,0,...].numpy()
+				# x = F.interpolate(x[None, None, ...], size)
+				x = T.Resize(size, mode="nearest")(x[None, ...])[0,...]
+				x = x[0,...].numpy()
 			np.savez(os.path.join(out_path, out_f), x)
 
 
