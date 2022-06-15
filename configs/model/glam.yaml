@@ -1,5 +1,5 @@
-name: FINE
-model: fine
+name: GLAM
+model: glam
 # pth: /home/myr/these/datasets
 # pth: /etudiants/siscol/t/themyr_l/US
 pth: /scratch/lthemyr/US
