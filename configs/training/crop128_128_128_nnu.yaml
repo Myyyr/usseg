@@ -19,7 +19,8 @@ do_clip: True
 do_schedul: True
 loss: CrossDice # Dice
 
-pth: /etudiants/siscol/t/themyr_l/US
+# pth: /etudiants/siscol/t/themyr_l/US
+pth: /local/DEEPLEARNING/20220318_US_DATA
 
 augmentations:
   rotate:

@@ -33,7 +33,11 @@ To train UNet from scratch:
 python main.py --config-path=outputs/US_SMALL/NNUNET/CROP_SMALL_nnu_v2\:0/.hydra/ --config-name=config
 
 ```
+To train UNet from scratch:
 
+```
+python main.py -m model=glam dataset=us128 training=crop128_128_128_nnu
+```
 
 
 ### 3. Inference
