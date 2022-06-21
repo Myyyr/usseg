@@ -1,7 +1,8 @@
 name: US_SMALL
 path: 
   # pth: /scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022
-  pth: /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022
+  # pth: /etudiants/siscol/t/themyr_l/US/us_3d_segmentation_dataset_08_03_2022
+  pth: /local/DEEPLEARNING/20220318_US_DATA
   im: ${dataset.path.pth}/USimg_cropped128_npz
   seg: ${dataset.path.pth}/USmask_cropped128_npz
 
