@@ -26,8 +26,7 @@ conda activate usenv
 
 
 # Runs on 128x128x128 images
-srun python main.py -m model=glam dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
+srun python main.py -m model=glam dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
 
 # Runs on 256x256x256 images
-# srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/US/us_3d_segmentation_dataset_08_03_2022 training.pth=/scratch/lthemyr/US
-# srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu
+# srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
