@@ -1,6 +1,6 @@
 name: CROP_SMALL_nnu
 dbg: True
-gpu: 1
+gpu: 0
 use_gpu: True
 only_val: False
 
