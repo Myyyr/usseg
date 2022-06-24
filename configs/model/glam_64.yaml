@@ -1,5 +1,5 @@
 name: GLAM_64
-model: glam_64
+model: glam
 # pth: /home/myr/these/datasets
 # pth: /etudiants/siscol/t/themyr_l/US
 pth: /scratch/lthemyr/US
