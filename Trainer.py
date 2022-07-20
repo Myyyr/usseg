@@ -277,6 +277,7 @@ class Trainer():
 	
 				output = self.model(inputs, centers)
 
+				log.debug("inputs shape", inputs.shape)
 				del inputs
 				if len(self.net_num_pool_op_kernel_sizes)==0:
 					labels = labels.cuda(0)
@@ -286,7 +287,6 @@ class Trainer():
 				# exit(0)
 				gc.collect()
 
-				log.debug("inputs shape", inputs.shape)
 
 				for ii in range(len(output)):
 					log.debug("labels[{}] shape".format(ii), labels[ii].shape)
