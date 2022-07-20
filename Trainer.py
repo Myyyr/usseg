@@ -107,6 +107,7 @@ class Trainer():
 		self.val_split   = create_split_v2(cfg.dataset.path.im, cfg.dataset.path.seg, cfg.dataset.split.val, cv=cfg.dataset.cv, val=True, log=log)
 
 		train_transforms = None
+		test_transforms = None
 		val_transforms = None
 
 		# train_transforms = Compose([
@@ -143,9 +144,12 @@ class Trainer():
 		# 			RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
 					
 		# 	])
-		# val_transforms = Compose([
-		# 			NormalizeIntensityd(keys="image", nonzero=True, channel_wise=True)		
-		# 	])
+		val_transforms = Compose([
+					CropForegroundd(keys=["image", "label"], source_key="image")	
+					Resized(
+                    keys=["image", "label"], spatial_size=self.img_size
+                    )	
+			])
 
 		train_transforms = Compose(
             [
@@ -177,7 +181,7 @@ class Trainer():
 
 
 		trainData = CustomDataset(self.train_split, transform=train_transforms, iterations=self.iterations, crop_size=self.crop_size, log=log, net_num_pool_op_kernel_sizes=self.net_num_pool_op_kernel_sizes) 
-		testData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=0, crop_size=self.crop_size, log=log, type_='test') 
+		testData   = CustomDataset(self.val_split,   transform=test_transforms, iterations=0, crop_size=self.crop_size, log=log, type_='test') 
 		if self.online_validation:
 			valData   = CustomDataset(self.val_split,   transform=val_transforms, iterations=0, crop_size=self.crop_size, log=log, type_='val') 
 
@@ -294,14 +298,14 @@ class Trainer():
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
-				if math.isnan(l.detach().cpu().numpy()):
-					log.debug("Loss", l.detach().cpu().numpy())
-					for ii in range(len(output)):
-						log.debug("labels[{}] shape".format(ii), labels[ii].shape)
-						log.debug("output[{}] shape".format(ii), output[ii].shape)
+				# if math.isnan(l.detach().cpu().numpy()):
+				# 	log.debug("Loss", l.detach().cpu().numpy())
+				# 	for ii in range(len(output)):
+				# 		log.debug("labels[{}] shape".format(ii), labels[ii].shape)
+				# 		log.debug("output[{}] shape".format(ii), output[ii].shape)
 
-						log.debug("labels[{}] count".format(ii), labels[ii].sum())
-						log.debug("output[{}] count".format(ii), output[ii].sum())
+				# 		log.debug("labels[{}] count".format(ii), labels[ii].sum())
+				# 		log.debug("output[{}] count".format(ii), output[ii].sum())
 				# if btc >= 10:
 				# 	exit(0)
 				gc.collect()
