@@ -296,7 +296,7 @@ class Trainer():
 					log.debug("output[{}] count".format(ii), output[ii].sum())
 
 
-				if btc => 10:
+				if btc >= 10:
 					exit(0)
 
 				l = self.loss(output, labels)
