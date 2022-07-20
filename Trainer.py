@@ -1,5 +1,6 @@
 import os
 import torch
+import math
 import monai
 from monai.losses import DiceLoss
 from monai.data import Dataset
@@ -277,7 +278,6 @@ class Trainer():
 	
 				output = self.model(inputs, centers)
 
-				log.debug("inputs shape", inputs.shape)
 				del inputs
 				if len(self.net_num_pool_op_kernel_sizes)==0:
 					labels = labels.cuda(0)
@@ -288,22 +288,22 @@ class Trainer():
 				gc.collect()
 
 
-				for ii in range(len(output)):
-					log.debug("labels[{}] shape".format(ii), labels[ii].shape)
-					log.debug("output[{}] shape".format(ii), output[ii].shape)
-
-					log.debug("labels[{}] count".format(ii), labels[ii].sum())
-					log.debug("output[{}] count".format(ii), output[ii].sum())
 
 
 
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
-				log.debug("Loss", l.detach().cpu().numpy())
+				if math.isnan(l.detach().cpu().numpy()):
+					log.debug("Loss", l.detach().cpu().numpy())
+					for ii in range(len(output)):
+						log.debug("labels[{}] shape".format(ii), labels[ii].shape)
+						log.debug("output[{}] shape".format(ii), output[ii].shape)
 
-				if btc >= 10:
-					exit(0)
+						log.debug("labels[{}] count".format(ii), labels[ii].sum())
+						log.debug("output[{}] count".format(ii), output[ii].sum())
+				# if btc >= 10:
+				# 	exit(0)
 				gc.collect()
 				l.backward()
 				# exit(0)
