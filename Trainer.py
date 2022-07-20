@@ -300,7 +300,7 @@ class Trainer():
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
-				log.debug(l.detach().cpu().numpy())
+				log.debug("Loss", l.detach().cpu().numpy())
 
 				if btc >= 10:
 					exit(0)
