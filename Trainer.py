@@ -145,7 +145,7 @@ class Trainer():
 					
 		# 	])
 		val_transforms = Compose([
-					CropForegroundd(keys=["image", "label"], source_key="image")	
+					CropForegroundd(keys=["image", "label"], source_key="image"),	
 					Resized(
                     keys=["image", "label"], spatial_size=self.img_size
                     )	
