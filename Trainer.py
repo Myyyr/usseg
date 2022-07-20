@@ -296,12 +296,14 @@ class Trainer():
 					log.debug("output[{}] count".format(ii), output[ii].sum())
 
 
-				if btc >= 10:
-					exit(0)
 
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
+				log.debug(.detach().cpu().numpy())
+
+				if btc >= 10:
+					exit(0)
 				gc.collect()
 				l.backward()
 				# exit(0)
