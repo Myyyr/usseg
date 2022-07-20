@@ -286,6 +286,19 @@ class Trainer():
 				# exit(0)
 				gc.collect()
 
+				log.debug("inputs shape", inputs.shape)
+
+				for ii in range(len(output)):
+					log.debug("labels[{}] shape".format(ii), labels[ii].shape)
+					log.debug("output[{}] shape".format(ii), output[ii].shape)
+
+					log.debug("labels[{}] count".format(ii), labels[ii].sum())
+					log.debug("output[{}] count".format(ii), output[ii].sum())
+
+
+				if btc => 10:
+					exit(0)
+
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
