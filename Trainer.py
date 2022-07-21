@@ -355,7 +355,7 @@ class Trainer():
 							l = compute_meandice(labels, output)
 							l_val += np.mean(l.cpu().numpy()[0][1:])
 
-							if math.isnan(l.cpu().numpy()):
+							if math.isnan(l.cpu().numpy()[0][1:]):
 								log.debug("Loss", l.cpu().numpy())
 								# for ii in range(len(output)):
 								log.debug("labels shape", labels.shape)
