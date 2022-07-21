@@ -152,7 +152,7 @@ class Trainer():
 			RandCropByLabelClassesd(keys=["image", "label"],
 									label_key="label",
 									spatial_size=self.crop_size,
-									num_classes=self.cfg.dataset.classes+1,
+									num_classes=cfg.dataset.classes+1,
 									num_samples=1
 									)
 			# RandSpatialCropd(keys=["image", "label"],
@@ -187,7 +187,7 @@ class Trainer():
                 RandCropByLabelClassesd(keys=["image", "label"],
                 						label_key="label",
                 						spatial_size=self.crop_size,
-                						num_classes=self.cfg.dataset.classes+1,
+                						num_classes=cfg.dataset.classes+1,
                 						num_samples=1
                 						)
                 # ToTensord(keys=["image", "label"]),
