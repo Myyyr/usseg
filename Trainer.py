@@ -355,7 +355,7 @@ class Trainer():
 							output = _to_one_hot(output[0,...], num_classes=self.classes)
 							labels = rearrange(labels, 'z x y c -> c z x y')[None, ...]
 							output = rearrange(output, 'z x y c -> c z x y')[None, ...]
-							l = compute_meandice(labels, output)
+							l = compute_meandice(output, labels)
 							l_val += np.mean(l.cpu().numpy()[0][1:])
 
 							log.debug("Loss", l.cpu().numpy())
@@ -493,7 +493,7 @@ class Trainer():
 
 				# exit(0)
 
-				dice = compute_meandice(anno, pred)
+				dice = compute_meandice(pred, anno)
 				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
 
 				# if self._loss == "Dice":
