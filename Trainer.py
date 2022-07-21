@@ -144,11 +144,8 @@ class Trainer():
 		# 			RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
 					
 		# 	])
-		val_transforms = Compose([
-					CropForegroundd(keys=["image", "label"], source_key="image"),	
-					Resized(
-                    keys=["image", "label"], spatial_size=self.img_size
-                    )	
+		val_transforms = Compose([(keys=["image", "label"], source_key="image"),	
+					Resized(keys=["image", "label"], spatial_size=self.img_size),	
 			])
 
 		train_transforms = Compose(
@@ -355,6 +352,15 @@ class Trainer():
 							output = rearrange(output, 'z x y c -> c z x y')[None, ...]
 							l = compute_meandice(labels, output)
 							l_val += np.mean(l.cpu().numpy()[0][1:])
+
+							if math.isnan(l.cpu().numpy()):
+								log.debug("Loss", l.cpu().numpy())
+								# for ii in range(len(output)):
+								log.debug("labels shape", labels.shape)
+								log.debug("output shape", output.shape)
+
+								log.debug("labels count", labels.sum())
+								log.debug("output count", output.sum())
 						else:
 							output = post_trans(output)
 							dice_metric(y_pred=output, y=labels)
