@@ -23,17 +23,17 @@ class CustomDataset(Dataset):
 		self.transform = transform
 		self.log=log
 		self.type=type_
-		self.croper = CustomRandCropByPosNegLabeld(
-						            keys=["image", "label"],
-						            label_key="label",
-						            spatial_size=crop_size,
-						            pos=1,
-						            neg=1,
-						            num_samples=1,
-						            image_key="image",
-						            image_threshold=0,
-						            log=log
-						        )
+		# self.croper = CustomRandCropByPosNegLabeld(
+		# 				            keys=["image", "label"],
+		# 				            label_key="label",
+		# 				            spatial_size=crop_size,
+		# 				            pos=1,
+		# 				            neg=1,
+		# 				            num_samples=1,
+		# 				            image_key="image",
+		# 				            image_threshold=0,
+		# 				            log=log
+		# 				        )
 		self.net_num_pool_op_kernel_sizes = net_num_pool_op_kernel_sizes
 		self.idx = -1
 
@@ -65,10 +65,11 @@ class CustomDataset(Dataset):
 
 		shape = data_i["image"].shape
 
-		centers = [0,0,0]
+		centers = [[0,0,0]]
 		if not (self.type == 'test'):
-			data_i, centers = self.croper(data_i)
-			data_i = data_i[0]
+			# data_i, centers = self.croper(data_i)
+			# data_i = data_i[0]
+			# TODO : customise RandCropByLabelClassesd to return centers
 			centers = [centers[0][2]-shape[3]//2,centers[0][0]-shape[1]//2,centers[0][1]-shape[2]//2]
 
 
