@@ -144,8 +144,10 @@ class Trainer():
 		# 			RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5)
 					
 		# 	])
-		val_transforms = Compose([(keys=["image", "label"], source_key="image"),	
-					Resized(keys=["image", "label"], spatial_size=self.img_size),	
+		val_transforms = Compose(
+			[
+			CropForegroundd(keys=["image", "label"], source_key="image"),	
+			Resized(keys=["image", "label"], spatial_size=self.img_size),	
 			])
 
 		train_transforms = Compose(
