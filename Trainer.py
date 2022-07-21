@@ -358,15 +358,15 @@ class Trainer():
 							l = compute_meandice(output, labels, ignore_empty=False)
 							l_val += np.mean(l.cpu().numpy()[0][1:])
 
-							log.debug("Loss", l.cpu().numpy())
-							if math.isnan(l.cpu().numpy()[0][1]):
-								log.debug("Loss", l.cpu().numpy())
-								# for ii in range(len(output)):
-								log.debug("labels[0,1,...] shape", labels[0,1,...].shape)
-								log.debug("output[0,1,...] shape", output[0,1,...].shape)
+							# log.debug("Loss", l.cpu().numpy())
+							# if math.isnan(l.cpu().numpy()[0][1]):
+							# 	log.debug("Loss", l.cpu().numpy())
+							# 	# for ii in range(len(output)):
+							# 	log.debug("labels[0,1,...] shape", labels[0,1,...].shape)
+							# 	log.debug("output[0,1,...] shape", output[0,1,...].shape)
 
-								log.debug("labels[0,1,...] count", labels[0,1,...].sum())
-								log.debug("output[0,1,...] count", output[0,1,...].sum())
+							# 	log.debug("labels[0,1,...] count", labels[0,1,...].sum())
+							# 	log.debug("output[0,1,...] count", output[0,1,...].sum())
 						else:
 							output = post_trans(output)
 							dice_metric(y_pred=output, y=labels)
