@@ -362,11 +362,11 @@ class Trainer():
 							if math.isnan(l.cpu().numpy()[0][1]):
 								log.debug("Loss", l.cpu().numpy())
 								# for ii in range(len(output)):
-								log.debug("labels shape", labels.shape)
-								log.debug("output shape", output.shape)
+								log.debug("labels[0,1,...] shape", labels[0,1,...].shape)
+								log.debug("output[0,1,...] shape", output[0,1,...].shape)
 
-								log.debug("labels count", labels.sum())
-								log.debug("output count", output.sum())
+								log.debug("labels[0,1,...] count", labels[0,1,...].sum())
+								log.debug("output[0,1,...] count", output[0,1,...].sum())
 						else:
 							output = post_trans(output)
 							dice_metric(y_pred=output, y=labels)
@@ -549,8 +549,11 @@ class Trainer():
 	def inference(self, inputs):
 		log=self.log
 
-		D, H, W = self.img_size
-		B, C, D_crop, H_crop, W_crop = inputs.shape
+		# D, H, W = self.img_size
+		# B, C, D_crop, H_crop, W_crop = inputs.shape
+
+		D_crop, H_crop, W_crop = self.crop_size
+		B, C, D, H, W = inputs.shape
 
 		nD, nH, nW = int(D//(D_crop*self.stride[2])), int(H//(H_crop*self.stride[0])), int(W//(W_crop*self.stride[1]))
 
