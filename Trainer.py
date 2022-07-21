@@ -28,6 +28,7 @@ from monai.transforms import (
     AsDiscrete,
 	Resized,
 	RandSpatialCropd,
+	RandCropByLabelClassesd,
 )
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
@@ -146,11 +147,17 @@ class Trainer():
 		# 	])
 		val_transforms = Compose(
 			[
-			CropForegroundd(keys=["image", "label"], source_key="image"),	
+			# CropForegroundd(keys=["image", "label"], source_key="image"),	
 			Resized(keys=["image", "label"], spatial_size=self.img_size),
-			RandSpatialCropd(keys=["image", "label"],
-                	roi_size=self.crop_size,
-                	random_size=False),	
+			RandCropByLabelClassesd(keys=["image", "label"],
+									label_key="label",
+									spatial_size=self.crop_size,
+									num_classes=self.cfg.dataset.classes+1,
+									num_samples=1
+									)
+			# RandSpatialCropd(keys=["image", "label"],
+   #              	roi_size=self.crop_size,
+   #              	random_size=False),	
 			])
 
 		train_transforms = Compose(
@@ -158,7 +165,7 @@ class Trainer():
                 # load 4 Nifti images and stack them together
                 # LoadImaged(keys=["image", "label"]),
                 # AddChanneld(keys=["image", "label"]),
-                CropForegroundd(keys=["image", "label"], source_key="image"),
+                # CropForegroundd(keys=["image", "label"], source_key="image"),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
                 RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=2),
@@ -174,9 +181,15 @@ class Trainer():
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
-                RandSpatialCropd(keys=["image", "label"],
-                	roi_size=self.crop_size,
-                	random_size=False),
+                # RandSpatialCropd(keys=["image", "label"],
+                # 	roi_size=self.crop_size,
+                # 	random_size=False),
+                RandCropByLabelClassesd(keys=["image", "label"],
+                						label_key="label",
+                						spatial_size=self.crop_size,
+                						num_classes=self.cfg.dataset.classes+1,
+                						num_samples=1
+                						)
                 # ToTensord(keys=["image", "label"]),
             ]
         )
