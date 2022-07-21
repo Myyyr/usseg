@@ -147,7 +147,10 @@ class Trainer():
 		val_transforms = Compose(
 			[
 			CropForegroundd(keys=["image", "label"], source_key="image"),	
-			Resized(keys=["image", "label"], spatial_size=self.img_size),	
+			Resized(keys=["image", "label"], spatial_size=self.img_size),
+			RandSpatialCropd(keys=["image", "label"],
+                	roi_size=self.crop_size,
+                	random_size=False),	
 			])
 
 		train_transforms = Compose(
@@ -356,7 +359,7 @@ class Trainer():
 							l_val += np.mean(l.cpu().numpy()[0][1:])
 
 							log.debug("Loss", l.cpu().numpy())
-							if math.isnan(l.cpu().numpy()[0][1:]):
+							if math.isnan(l.cpu().numpy()[0][1]):
 								log.debug("Loss", l.cpu().numpy())
 								# for ii in range(len(output)):
 								log.debug("labels shape", labels.shape)
