@@ -295,7 +295,7 @@ class Trainer():
 					for lab in range(len(labels)):
 						labels[lab] = labels[lab].cuda(0)
 	
-				output = self.model(inputs, centers, log)
+				output = self.model(inputs, centers, log=log)
 
 				del inputs
 				if len(self.net_num_pool_op_kernel_sizes)==0:
