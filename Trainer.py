@@ -307,11 +307,11 @@ class Trainer():
 				gc.collect()
 
 
-				log.debug('len output', len(output))
-				log.debug('len labels', len(labels))
-				for ii in range(len(output)):
-					log.debug("output[{}]".format(ii), output[ii].shape)
-					log.debug("labels[{}]".format(ii), labels[ii].shape)
+				# log.debug('len output', len(output))
+				# log.debug('len labels', len(labels))
+				# for ii in range(len(output)):
+				# 	log.debug("output[{}]".format(ii), output[ii].shape)
+				# 	log.debug("labels[{}]".format(ii), labels[ii].shape)
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
