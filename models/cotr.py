@@ -157,7 +157,8 @@ class U_ResTran3D(nn.Module):
         if 'log' in list(kwargs.keys()):
             log = kwargs['log']
         if log != None:
-            log.debug("-- x_convs", x_convs.shape)
+            log.debug("-- x_convs[-1]", x_convs[-1].shape)
+            log.debug("-- x_convs[-2]", x_convs[-2].shape)
             log.debug("-- x_trans", x_trans.shape)
             log.debug("-- x", x.shape)
             log.debug("-- skip2", skip2.shape)
