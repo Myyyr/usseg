@@ -153,15 +153,15 @@ class U_ResTran3D(nn.Module):
         x = self.transposeconv_stage2(x_trans[:, agno::].transpose(-1, -2).view(x_convs[-1].shape)) # x_trans length: 12*24*24+6*12*12=7776
         skip2 = x_trans[:, 0:agno].transpose(-1, -2).view(x_convs[-2].shape)
 
-        log = None
-        if 'log' in list(kwargs.keys()):
-            log = kwargs['log']
-        if log != None:
-            log.debug("-- x_convs[-1]", x_convs[-1].shape)
-            log.debug("-- x_convs[-2]", x_convs[-2].shape)
-            log.debug("-- x_trans", x_trans.shape)
-            log.debug("-- x", x.shape)
-            log.debug("-- skip2", skip2.shape)
+        # log = None
+        # if 'log' in list(kwargs.keys()):
+        #     log = kwargs['log']
+        # if log != None:
+        #     log.debug("-- x_convs[-1]", x_convs[-1].shape)
+        #     log.debug("-- x_convs[-2]", x_convs[-2].shape)
+        #     log.debug("-- x_trans", x_trans.shape)
+        #     log.debug("-- x", x.shape)
+        #     log.debug("-- skip2", skip2.shape)
 
         x = x + skip2
         x = self.stage2_de(x)
