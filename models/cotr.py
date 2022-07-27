@@ -141,34 +141,26 @@ class U_ResTran3D(nn.Module):
         return x_fea, masks, x_posemb
 
 
-    def forward(self, inputs):
+    def forward(self, inputs, *args, **kwargs):
         # # %%%%%%%%%%%%% UTrans
-        # print("inputs", inputs.shape)
-        # exit(0)
         x_convs = self.backbone(inputs)
         x_fea, masks, x_posemb = self.posi_mask(x_convs)
         x_trans = self.encoder_Detrans(x_fea, masks, x_posemb)
 
-        # # Single_scale
-        # # x = self.transposeconv_stage2(x_trans.transpose(-1, -2).view(x_convs[-1].shape))
-        # # skip2 = x_convs[-2]
-        # Multi-scale  
-
-        # print(x_trans.shape) 
-        # print(x_convs[-1].shape)
-        # exit(0)
-        # 48 192 192
-        # torch.Size([2, 7776, 384])
-        # torch.Size([2, 384, 6, 12, 12])
-
-        # 64 128 128
-        # torch.Size([2, 4608, 384])
-        # torch.Size([2, 384, 8, 8, 8])
 
         agno = x_trans.shape[1] - x_convs[-1].shape[-1]*x_convs[-1].shape[-2]*x_convs[-1].shape[-3]
 
         x = self.transposeconv_stage2(x_trans[:, agno::].transpose(-1, -2).view(x_convs[-1].shape)) # x_trans length: 12*24*24+6*12*12=7776
         skip2 = x_trans[:, 0:agno].transpose(-1, -2).view(x_convs[-2].shape)
+
+        log = None
+        if 'log' in list(kwargs.keys()):
+            log = kwargs['log']
+        if log != None:
+            log.debug("-- x_convs", x_convs.shape)
+            log.debug("-- x_trans", x_trans.shape)
+            log.debug("-- x", x.shape)
+            log.debug("-- skip2", skip2.shape)
 
         x = x + skip2
         x = self.stage2_de(x)
@@ -219,8 +211,8 @@ class model(SegmentationNetwork):
         self._deep_supervision = deep_supervision
         self.do_ds = deep_supervision
 
-    def forward(self, x,  *args, **kwargs):
-        seg_output = self.U_ResTran3D(x)
+    def forward(self, x, *args, **kwargs):
+        seg_output = self.U_ResTran3D(x, *args, **kwargs)
         if self._deep_supervision and self.do_ds:
             return seg_output
         else:

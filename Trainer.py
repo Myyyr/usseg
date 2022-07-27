@@ -295,7 +295,7 @@ class Trainer():
 					for lab in range(len(labels)):
 						labels[lab] = labels[lab].cuda(0)
 	
-				output = self.model(inputs, centers)
+				output = self.model(inputs, centers, log)
 
 				del inputs
 				if len(self.net_num_pool_op_kernel_sizes)==0:
@@ -313,7 +313,7 @@ class Trainer():
 					log.debug("output[{}]".format(ii), output[ii].shape)
 					log.debug("labels[{}]".format(ii), labels[ii].shape)
 
-					
+
 				l = self.loss(output, labels)
 				l_train += l.detach().cpu().numpy()
 
