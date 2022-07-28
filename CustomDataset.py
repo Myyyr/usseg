@@ -75,7 +75,11 @@ class CustomDataset(Dataset):
 
 		if self.transform != None:
 			# Apply transformations
-			data_i = apply_transform(self.transform, data_i)[0] if self.transform is not None else data_i
+			tmp = apply_transform(self.transform, data_i)
+			if type(tmp) == type([]):
+				data_i = tmp[0] if self.transform is not None else data_i
+			else:
+				data_i = tmp if self.transform is not None else data_i
 		
 
 		data_i["center"] = np.array(centers)
