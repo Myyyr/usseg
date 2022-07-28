@@ -148,16 +148,16 @@ class Trainer():
 		val_transforms = Compose(
 			[
 			# CropForegroundd(keys=["image", "label"], source_key="image"),	
-			Resized(keys=["image", "label"], spatial_size=self.img_size),
-			RandCropByLabelClassesd(keys=["image", "label"],
-									label_key="label",
-									spatial_size=self.crop_size,
-									num_classes=cfg.dataset.classes+1,
-									num_samples=1
-									)
-			# RandSpatialCropd(keys=["image", "label"],
-   #              	roi_size=self.crop_size,
-   #              	random_size=False),	
+			# Resized(keys=["image", "label"], spatial_size=self.img_size),
+			# RandCropByLabelClassesd(keys=["image", "label"],
+			# 						label_key="label",
+			# 						spatial_size=self.crop_size,
+			# 						num_classes=cfg.dataset.classes+1,
+			# 						num_samples=1
+			# 						)
+			RandSpatialCropd(keys=["image", "label"],
+                	roi_size=self.crop_size,
+                	random_size=False),	
 			])
 
 		train_transforms = Compose(
