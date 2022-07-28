@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cotr_64on256.out # output file name
-#SBATCH --error=logs/cotr_64on256.err  # error file name
+#SBATCH --output=logs/cotrdbg_64on256.out # output file name
+#SBATCH --error=logs/cotrdbg_64on256.err  # error file name
 
 
 source /opt/server-env.sh
