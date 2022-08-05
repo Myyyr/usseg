@@ -21,8 +21,6 @@ def main(argv, arc):
 	if len(argv)==4:
 		size = [int(argv[3])for i in range(3)]
 
-	# if size != None:
-	# 	resizer = tv.transforms.Resize(size)
 
 	if not os.path.exists(out_path):
 		os.makedirs(out_path)
@@ -36,9 +34,6 @@ def main(argv, arc):
 			out_f = f.replace(".nii.gz", ".npz")
 			if size != None:
 				x = torch.from_numpy(x)
-				# print(x.shape)
-				# print(size)
-				# x = F.interpolate(x[None, None, ...], size)
 				x = T.Resize(size, mode="nearest")(x[None, ...])[0,...]
 				x = x[0,...].numpy()
 			np.savez(os.path.join(out_path, out_f), x)

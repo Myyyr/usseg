@@ -65,11 +65,11 @@ class Trainer():
 		# Logs
 		self.log = log
 		self.dbg=cfg.training.dbg
-		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name)
+		self.writer = SummaryWriter(log_dir='tensorboard/'+cfg.dataset.name+'_'+cfg.training.name+'_'+cfg.model.name+'_'+cfg.dataset.cv)
 		self.dataset_name = cfg.dataset.name
 		self.training_name = cfg.training.name
 		self.model_name = cfg.model.name
-		self.path = create_path_if_not_exists(os.path.join(cfg.training.pth, cfg.dataset.name, cfg.training.name, cfg.model.name))
+		self.path = create_path_if_not_exists(os.path.join(cfg.training.pth, cfg.dataset.name, cfg.training.name, cfg.model.name, cfg.dataset.cv))
 		
 
 		# Device
@@ -371,19 +371,6 @@ class Trainer():
 							l = dice_metric.aggregate().item()
 							l_val += l
 
-						# log.debug("output", output.shape)
-						# log.debug("labels", labels.shape)
-
-						# if len(self.net_num_pool_op_kernel_sizes)==0:
-						# 	labels = _to_one_hot(labels[0,0,...], num_classes=self.classes)
-						# 	output = _to_one_hot(output, num_classes=self.classes)
-						# else:
-
-						# log.debug("output", output.shape)
-						# log.debug("labels", labels.shape)
-
-						# exit(0)
-
 						len_val+=1
 					if self._loss == "Dice":
 						dice_metric.reset()
@@ -434,19 +421,6 @@ class Trainer():
 				inputs = batch_data["image"]
 				labels = batch_data["label"]
 				prediction = self.inference(inputs)
-
-
-				# log.debug('inputs', inputs.shape)
-				# log.debug('labels', labels.shape)
-				# log.debug('prediction', prediction.shape)
-				
-				# output_ = prediction
-				# labels_ = labels
-				# l = self.loss(output_, labels_)
-				# l_val += l.detach().cpu().numpy()
-				# len_val += 1
-				# tqdm_.set_description(f"Batch {len_val}/{len(self.test_loader)} | Mean Dice {l_val/len_val} | Dice {l.detach().cpu().numpy()}")
-
 
 				if self._loss == "Dice":
 					prediction = post_trans(prediction)[0,...]
