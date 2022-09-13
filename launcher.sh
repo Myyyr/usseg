@@ -33,7 +33,7 @@ conda activate usenv
 
 ### NNUNET
 # [ cv5_nnunet_128 ]
-srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.cv=cv5 
+srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5 
 
 #### multi split
 # srun python multi_main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
@@ -59,7 +59,7 @@ srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu d
 # srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True
 
 # [ cv3_nnunet_256 ]
-# ---> srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True training.cv=cv3
+# ---> srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv3
 
 #### multi split
 # srun python multi_main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
@@ -70,7 +70,7 @@ srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu d
 # srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu training.name=CROP_SMALL_64_nnu_augdbg dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
 
 # [ cv2_cotr_256 ]
-# ---> srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True training.cv=cv2
+# ---> srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
 
 #### multi split
 # srun python multi_main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
@@ -81,7 +81,7 @@ srun python main.py -m model=nnunet dataset=us128 training=crop128_128_128_nnu d
 # srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
 
 # [ cv2_glam_256 ]
-# ---> srun python multi_main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True training.cv=cv2
+# ---> srun python multi_main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
 
 #### multi split
 # srun python multi_main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
