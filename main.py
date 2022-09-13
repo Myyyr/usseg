@@ -29,8 +29,8 @@ def main(cfg: DictConfig) -> None:
 	log.start("Trainer initialization")
 	trainer = Trainer(cfg, log)
 	log.end("Trainer initialization")
-	print(cfg.training.only_val)
-	exit(0)
+	# print(cfg.training.only_val)
+	# exit(0)
 	if not cfg.training.only_val:
 		log.start("Training")
 		trainer.run_training()
