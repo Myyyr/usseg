@@ -202,9 +202,9 @@ class Trainer():
 
 		self.train_loader = DataLoader(trainData, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
 		log.debug('train_loader', len(self.train_loader))
-		self.test_loader = DataLoader(testData, batch_size=1, shuffle=False, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
+		self.test_loader = DataLoader(testData, batch_size=1, shuffle=False, num_workers=1, pin_memory=torch.cuda.is_available())
 		if self.online_validation:
-			self.val_loader = DataLoader(valData, batch_size=1, shuffle=False, num_workers=self.num_workers, pin_memory=torch.cuda.is_available())
+			self.val_loader = DataLoader(valData, batch_size=1, shuffle=False, num_workers=1, pin_memory=torch.cuda.is_available())
 
 		self.stride = cfg.training.inference.stride
 		self.classes = cfg.dataset.classes
