@@ -40,7 +40,7 @@ inference:
   stride: [1,1,1]
 
 checkpoint:
-  save: 1
+  save: 10
   load: False
   load_path: ${model.pth}/${model.name}/checkpoint/latest.pt
   path: ${model.pth}/${model.name}/checkpoint
