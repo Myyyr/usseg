@@ -385,11 +385,11 @@ class Trainer():
 			saved_txt = ""
 			if (epoch+1)%self.n_save == 0:
 				self.save_chekpoint(epoch)
-				save_chekpoint = " :: Saved!"
+				saved_txt = " :: Saved!"
 			log.info("Epoch: {}".format(epoch), "Train Loss: {}, Val Dice: {}, lr: {}{}".format(l_train,
 																								l_val,
 																								self.lr,
-																								save_chekpoint
+																								saved_txt
 																								))
 			self.writer.add_scalar('Loss', l_train, epoch)
 			self.writer.add_scalar('Val Dice', l_val, epoch)
