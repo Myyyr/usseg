@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv2_glam_256.out # output file name
-#SBATCH --error=logs/cv2_glam_256.err  # error file name
+#SBATCH --output=logs/cv1_glam_256.out # output file name
+#SBATCH --error=logs/cv1_glam_256.err  # error file name
 
 
 source /opt/server-env.sh
@@ -81,7 +81,16 @@ conda activate usenv
 # srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
 
 # [ cv2_glam_256 ]
-srun python multi_main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
+# srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
+# [ cv1_glam_256 ]
+srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv1
+# [ cv3_glam_256 ]
+# srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv3
+# [ cv4_glam_256 ]
+# srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4
+# [ cv5_glam_256 ]
+# srun python main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5
+
 
 #### multi split
 # srun python multi_main.py -m model=glam_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
