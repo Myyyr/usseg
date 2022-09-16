@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv3_cotr_256.out # output file name
-#SBATCH --error=logs/cv3_cotr_256.err  # error file name
+#SBATCH --output=logs/cv4_cotr_256.out # output file name
+#SBATCH --error=logs/cv4_cotr_256.err  # error file name
 
 ####################################################
 # b2$ sbatch job1.sh 							   #
@@ -86,9 +86,9 @@ conda activate usenv
 # [ cv1_cotr_256 ] XXX
 # srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv1
 # [ cv3_cotr_256 ] XXX
-srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv3
+# srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv3
 # [ cv4_cotr_256 ] XXX
-# srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4
+srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4
 # [ cv5_cotr_256 ] XXX
 # srun python main.py -m model=cotr_64 dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5
 
