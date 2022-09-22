@@ -552,14 +552,19 @@ class Trainer():
 					if torch.cuda.is_available() and self.use_gpu:
 						crop = crop.float().cuda(0)
 
-					log.debug("crop size", crop.shape)
-					out_crop = self.model(crop, centers)
+					with torch.no_grad():
+						log.debug("crop size", crop.shape)
+						out_crop = self.model(crop, centers)
 
 
 					del crop
 
 					output[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] = out_crop[0].cpu()
 					count[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]  += 1
+
+					del out_crop
+
+					gc.collect()
 
 
 		return rearrange(output/count, 'b c z x y -> b c x y z')
