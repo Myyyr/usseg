@@ -551,6 +551,8 @@ class Trainer():
 					centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
 					if torch.cuda.is_available() and self.use_gpu:
 						crop = crop.float().cuda(0)
+
+					log.debug("crop size", crop.shape)
 					out_crop = self.model(crop, centers)
 
 
