@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv3_nnunet_256_continue.out # output file name
-#SBATCH --error=logs/cv3_nnunet_256_continue.err  # error file name
+#SBATCH --output=logs/cv2_cotr_256_eval.out # output file name
+#SBATCH --error=logs/cv2_cotr_256_eval.err  # error file name
 
 ####################################################
 # b2$ sbatch job1.sh 							   #
