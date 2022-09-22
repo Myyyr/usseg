@@ -553,7 +553,6 @@ class Trainer():
 						crop = crop.float().cuda(0)
 
 					with torch.no_grad():
-						log.debug("crop size", crop.shape)
 						out_crop = self.model(crop, centers)
 
 
