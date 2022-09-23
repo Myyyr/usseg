@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv4_glam_256_ok_continue.out # output file name
-#SBATCH --error=logs/cv4_glam_256_ok_continue.err  # error file name
+#SBATCH --output=logs/cv5_glam_256_ok.out # output file name
+#SBATCH --error=logs/cv5_glam_256_ok.err  # error file name
 
 ####################################################
 # b2$ sbatch job1.sh 							   #
@@ -169,10 +169,10 @@ conda activate usenv
 # [ cv4_glam_256_ok ]
 # srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4
 # --> CONTINUE  [ cv4_glam_256_ok_continue ]
-srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4 training.checkpoint.load=True
+# srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv4 training.checkpoint.load=True
 
 # [ cv5_glam_256_ok ]
-# srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5
+srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5
 # --> CONTINUE  [ cv5_glam_256_ok_continue ]
 # srun python main.py -m model=glam_64_ok dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv5 training.checkpoint.load=True
 
