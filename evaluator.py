@@ -16,7 +16,7 @@ def main(pred_pth, gt_pth, out_pth):
 	classes = 2
 	if out_pth == "":
 		out_pth = pred_pth
-	out_pth = os.path.join(out_path, "final_results.json") 
+	out_pth = os.path.join(out_pth, "final_results.json") 
 
 	results = {}
 	avg_dsc = [0, 0]
