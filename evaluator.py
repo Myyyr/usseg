@@ -3,6 +3,7 @@ from monai.metrics import compute_meandice
 import nibabel as nib
 import torch
 import monai.transforms as T
+from scipy.ndimage import zoom
 
 import argparse
 import os
@@ -19,10 +20,13 @@ def main(pred_pth, gt_pth, out_pth):
 		if ".npz" in fp:
 			fg = fp.replace('pred.npz', 'Vol.nii.gz')
 
-			pred = np.load(os.path.join(pred_pth, fp))['arr_0']
+			pred = np.load(os.path.join(pred_pth, fp))['arr_0'][0,...]
 			gt   = nib.load(os.path.join(gt_pth, fg)).get_fdata()
+			print("a.1", gt.shape, pred.shape)
+
+			gt = zoom(gt, (0.3, 0.3, 0.3))
 			size = gt.shape
-			print("a", gt.shape, pred.shape)
+			print("a.2", gt.shape, pred.shape)
 
 			pred = torch.from_numpy(pred)
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])[0,...]
