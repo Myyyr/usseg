@@ -66,7 +66,7 @@ def main(pred_pth, gt_pth, out_pth):
 			avg_hd95 += hd95
 			N +=1
 
-			exit(0)
+			# exit(0)
 
 	avg_dsc = [avg_dsc[i]/N for i in range(classes)]
 	avg_hd95 /= N
