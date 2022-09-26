@@ -42,7 +42,7 @@ def main(pred_pth, gt_pth, out_pth):
 
 
 if __name__ == '__main__':
-	arser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser()
 	parser.add_argument('pred_pth', help='path of the predictions')
 	parser.add_argument('gt_pth', help='path of the ground truth', default="/scratch/lthemyr/20220318_US_DATA/USmask_cropped")
 	parser.add_argument('out_pth', help='path of the output file', default="")
