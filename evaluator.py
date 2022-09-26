@@ -20,7 +20,7 @@ def main(pred_pth, gt_pth, out_pth):
 		if ".npz" in fp:
 			fg = fp.replace('pred.npz', 'Vol.nii.gz')
 
-			pred = np.load(os.path.join(pred_pth, fp))['arr_0']
+			pred = np.load(os.path.join(pred_pth, fp))['arr_0'][0,...]
 			gt   = nib.load(os.path.join(gt_pth, fg)).get_fdata()
 			print("a.1", gt.shape, pred.shape)
 
@@ -29,7 +29,7 @@ def main(pred_pth, gt_pth, out_pth):
 			print("a.2", gt.shape, pred.shape)
 
 			pred = torch.from_numpy(pred)
-			pred = T.Resize(size, mode="nearest")(pred[None, ...])[0,...]
+			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
 			print("b", gt.shape, pred.shape)
 
 			pred = pred[0,...].numpy()
