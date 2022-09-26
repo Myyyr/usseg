@@ -71,7 +71,7 @@ def main(pred_pth, gt_pth, out_pth):
 	results["AVERAGE"] = {"dsc":avg_dsc, "hd95":avg_hd95}
 
 	with open(out_pth, 'w', encoding='utf-8') as f:
-	    json.dump(results, f, ensure_ascii=False, indent=4)
+	    json.dump(results, f, indent=4)
 
 
 
