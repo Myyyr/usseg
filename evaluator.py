@@ -12,6 +12,7 @@ import json
 
 
 def main(pred_pth, gt_pth, out_pth):
+	classes = 1
 	if out_pth == "":
 		out_pth = pred_pth
 	out_file = "final_results.json"
@@ -36,9 +37,14 @@ def main(pred_pth, gt_pth, out_pth):
 
 			print("c", gt.shape, pred.shape)
 
+			pred = convert_seg_image_to_one_hot_encoding_batched(pred[None, ...], [i for i in range(classes)])
+			gt   = convert_seg_image_to_one_hot_encoding_batched(gt[None, ...],   [i for i in range(classes)])
+
+			print("d", gt.shape, pred.shape)
+
+
 			gt = torch.from_numpy(gt).float().cuda(0)
 			pred = pred.float().cuda(0)
-
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
 			print("\n\ndsc", dsc)
 			exit(0)
