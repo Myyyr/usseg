@@ -13,7 +13,7 @@ import json
 
 
 def main(pred_pth, gt_pth, out_pth):
-	classes = 1
+	classes = 2
 	if out_pth == "":
 		out_pth = pred_pth
 	out_file = "final_results.json"
