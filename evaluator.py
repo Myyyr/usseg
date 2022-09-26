@@ -4,6 +4,7 @@ import nibabel as nib
 import torch
 import monai.transforms as T
 from scipy.ndimage import zoom
+from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_encoding_batched
 
 import argparse
 import os
