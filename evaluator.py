@@ -32,11 +32,13 @@ def main(pred_pth, gt_pth, out_pth):
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
 			print("b", gt.shape, pred.shape)
 
-			pred = pred[0,...].numpy()
+			pred = pred[0,...]#.numpy()
 
 			print("c", gt.shape, pred.shape)
 
-			# exit(0)
+			gt = torch.from_numpy(gt).gpu()
+			pred = pred.gpu()
+
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
 			print("\n\ndsc", dsc)
 			exit(0)
