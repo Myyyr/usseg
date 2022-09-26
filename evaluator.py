@@ -34,7 +34,7 @@ def main(pred_pth, gt_pth, out_pth):
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
 			print("b", gt.shape, pred.shape)
 
-			pred = pred[0,...]#.numpy()
+			pred = pred[0,...].numpy()
 
 			print("c", gt.shape, pred.shape)
 
@@ -44,8 +44,8 @@ def main(pred_pth, gt_pth, out_pth):
 			print("d", gt.shape, pred.shape)
 
 
-			gt = torch.from_numpy(gt).float().cuda(0)
-			pred = pred.float().cuda(0)
+			pred = torch.from_numpy(pred).float().cuda(0)
+			gt   = torch.from_numpy(gt).float().cuda(0)
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
 			print("\n\ndsc", dsc)
 			exit(0)
