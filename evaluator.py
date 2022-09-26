@@ -1,5 +1,5 @@
 import numpy as np
-from monai.metrics import compute_meandice
+from monai.metrics import compute_meandice, compute_hausdorff_distance
 import nibabel as nib
 import torch
 import monai.transforms as T
@@ -52,7 +52,7 @@ def main(pred_pth, gt_pth, out_pth):
 
 			dice = dice.numpy()[0]
 			hd95 = hd95.numpy()[0]
-			
+
 			print("\n\ndsc", dsc, hd95)
 			exit(0)
 
