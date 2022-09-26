@@ -16,10 +16,16 @@ def main(pred_pth, gt_pth, out_pth):
 	classes = 2
 	if out_pth == "":
 		out_pth = pred_pth
-	out_file = "final_results.json"
+	out_pth = os.path.join(out_path, "final_results.json") 
+
+	results = {}
+	avg_dsc = [0, 0]
+	avg_hd95 = 0
+	N = 0
 
 	for fp in os.listdir(pred_pth):
 		if ".npz" in fp:
+			vol_id = fp.replace("pred.npz","")
 			fg = fp.replace('pred.npz', 'Vol.nii.gz')
 
 			pred = np.load(os.path.join(pred_pth, fp))['arr_0'][0,...]
@@ -54,10 +60,18 @@ def main(pred_pth, gt_pth, out_pth):
 			hd95 = hd95.cpu().numpy()[0]
 
 			print("\n\ndsc", dsc, hd95)
-			exit(0)
 
+			results[vol_id] = {"dsc":dsc, "hd95":hd95}
+			avg_dsc = [avg_dsc[i]+dsc[i] for i in range(len(dsc))]
+			avg_hd95 += hd95
+			N +=1
 
-			# Compute dice and hausdorff in a json !!!
+	avg_dsc = [avg_dsc[i]/N for i in range(len(avg_dsc))]
+	avg_hd95 /= N
+	results["AVERAGE"] = {"dsc":avg_dsc, "hd95":avg_hd95}
+
+	with open(out_pth, 'w', encoding='utf-8') as f:
+	    json.dump(results, f, ensure_ascii=False, indent=4)
 
 
 
