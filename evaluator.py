@@ -61,12 +61,12 @@ def main(pred_pth, gt_pth, out_pth):
 
 			print("\n\ndsc", dsc, hd95)
 
-			results[vol_id] = {"dsc":dsc, "hd95":hd95}
-			avg_dsc = [avg_dsc[i]+dsc[i] for i in range(len(dsc))]
+			results[vol_id] = {"dsc":[dsc[i] for i in range(classes)], "hd95":hd95}
+			avg_dsc = [avg_dsc[i]+dsc[i] for i in range(classes)]
 			avg_hd95 += hd95
 			N +=1
 
-	avg_dsc = [avg_dsc[i]/N for i in range(len(avg_dsc))]
+	avg_dsc = [avg_dsc[i]/N for i in range(classes)]
 	avg_hd95 /= N
 	results["AVERAGE"] = {"dsc":avg_dsc, "hd95":avg_hd95}
 
