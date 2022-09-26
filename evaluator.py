@@ -70,7 +70,7 @@ def main(pred_pth, gt_pth, out_pth):
 	avg_hd95 /= N
 	results["AVERAGE"] = {"dsc":avg_dsc, "hd95":avg_hd95}
 
-	with open(out_pth, 'w', encoding='utf-8') as f:
+	with open(out_pth, 'w') as f:
 	    json.dump(results, f, indent=4)
 
 
