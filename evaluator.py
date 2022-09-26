@@ -36,6 +36,9 @@ def main(pred_pth, gt_pth, out_pth):
 
 			print("c", gt.shape, pred.shape)
 
+			# exit(0)
+			dsc = compute_meandice(pred, gt, ignore_empty=False)
+			print("\n\ndsc", dsc)
 			exit(0)
 
 
