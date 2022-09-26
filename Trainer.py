@@ -466,7 +466,7 @@ class Trainer():
 				# exit(0)
 
 				dice = compute_meandice(pred, anno, ignore_empty=False)
-				hd95 = compute_hausdorff_distance(anno, pred, percentile=95)
+				hd95 = compute_hausdorff_distance(pred, anno, percentile=95)
 
 				# if self._loss == "Dice":
 				# 	dice = dice.numpy()

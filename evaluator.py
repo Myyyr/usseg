@@ -46,8 +46,14 @@ def main(pred_pth, gt_pth, out_pth):
 
 			pred = torch.from_numpy(pred).float().cuda(0)
 			gt   = torch.from_numpy(gt).float().cuda(0)
+
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
-			print("\n\ndsc", dsc)
+			hd95 = compute_hausdorff_distance(pred, gt, percentile=95)
+
+			dice = dice.numpy()[0]
+			hd95 = hd95.numpy()[0]
+			
+			print("\n\ndsc", dsc, hd95)
 			exit(0)
 
 
