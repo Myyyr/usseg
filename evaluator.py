@@ -50,7 +50,7 @@ def main(pred_pth, gt_pth, out_pth):
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
 			hd95 = compute_hausdorff_distance(pred, gt, percentile=95)
 
-			dice = dice.numpy()[0]
+			dsc = dsc.numpy()[0]
 			hd95 = hd95.numpy()[0]
 
 			print("\n\ndsc", dsc, hd95)
