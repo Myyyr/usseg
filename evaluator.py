@@ -36,8 +36,8 @@ def main(pred_pth, gt_pth, out_pth):
 
 			print("c", gt.shape, pred.shape)
 
-			gt = torch.from_numpy(gt).gpu()
-			pred = pred.gpu()
+			gt = torch.from_numpy(gt).float().cuda(0)
+			pred = pred.float().cuda(0)
 
 			dsc = compute_meandice(pred, gt, ignore_empty=False)
 			print("\n\ndsc", dsc)
