@@ -1,6 +1,6 @@
 import numpy as np
 from monai.metrics import compute_meandice, compute_hausdorff_distance
-from monai.transforms.transforms import Spacing
+from monai.transforms import Spacing
 import nibabel as nib
 import torch
 import monai.transforms as T
