@@ -1,5 +1,6 @@
 import numpy as np
 from monai.metrics import compute_meandice, compute_hausdorff_distance
+from monai.transforms.transforms import Spacing
 import nibabel as nib
 import torch
 import monai.transforms as T
@@ -23,6 +24,8 @@ def main(pred_pth, gt_pth, out_pth):
 	avg_hd95 = 0
 	N = 0
 
+	spacer = Spacing((0.3,0.3,0.3), mode='nearest')
+
 	for fp in os.listdir(pred_pth):
 		if ".npz" in fp:
 			vol_id = fp.replace("pred.npz","")
@@ -32,7 +35,8 @@ def main(pred_pth, gt_pth, out_pth):
 			gt   = nib.load(os.path.join(gt_pth, fg)).get_fdata()
 			print("a.1", gt.shape, pred.shape)
 
-			gt = zoom(gt, (0.3, 0.3, 0.3))
+			# gt = zoom(gt, (0.3, 0.3, 0.3))
+			gt = spacer(gt)
 			size = gt.shape
 			print("a.2", gt.shape, pred.shape)
 
