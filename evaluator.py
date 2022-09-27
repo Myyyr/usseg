@@ -37,7 +37,7 @@ def main(pred_pth, gt_pth, out_pth):
 
 			# gt = zoom(gt, (0.3, 0.3, 0.3))
 			size = gt.shape
-			gt = spacer(gt,output_spatial_shape=size)
+			gt = spacer(gt,output_spatial_shape=(size, None))
 			print('debug', len(gt), type(gt))
 			print('debug', type(gt[0]), type(gt[1]), type(gt[2]))
 			print('debug', gt[0].shape, gt[1].shape, gt[2].shape)
