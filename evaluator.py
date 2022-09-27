@@ -38,6 +38,7 @@ def main(pred_pth, gt_pth, out_pth):
 			# gt = zoom(gt, (0.3, 0.3, 0.3))
 			gt = spacer(gt)
 			print('debug', len(gt), type(gt))
+			print('debug', type(gt[0]), type(gt[1]), type(gt[2]))
 			size = gt.shape
 			print("a.2", gt.shape, pred.shape)
 
