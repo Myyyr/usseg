@@ -36,9 +36,10 @@ def main(pred_pth, gt_pth, out_pth):
 			print("a.1", gt.shape, pred.shape)
 
 			# gt = zoom(gt, (0.3, 0.3, 0.3))
-			gt, voxspa = spacer(gt)
+			gt = spacer(gt)
+			pritn('debug', len(gt), type(gt))
 			size = gt.shape
-			print("a.2", gt.shape, pred.shape, voxspa)
+			print("a.2", gt.shape, pred.shape)
 
 			pred = torch.from_numpy(pred)
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
