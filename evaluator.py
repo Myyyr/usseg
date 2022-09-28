@@ -24,8 +24,6 @@ def main(pred_pth, gt_pth, out_pth):
 	avg_hd95 = 0
 	N = 0
 
-	spacer = Spacing((0.3,0.3,0.3), mode='nearest')
-
 	for fp in os.listdir(pred_pth):
 		if ".npz" in fp:
 			vol_id = fp.replace("pred.npz","")
@@ -37,11 +35,11 @@ def main(pred_pth, gt_pth, out_pth):
 
 			# gt = zoom(gt, (0.3, 0.3, 0.3))
 			size = gt.shape
-			gt = spacer(gt,output_spatial_shape=(size, None))
-			print('debug', len(gt), type(gt))
-			print('debug', type(gt[0]), type(gt[1]), type(gt[2]))
-			print('debug', gt[0].shape, gt[1].shape, gt[2].shape)
-			print("a.2", gt.shape, pred.shape)
+			# gt = spacer(gt,output_spatial_shape=(size, None))
+			# print('debug', len(gt), type(gt))
+			# print('debug', type(gt[0]), type(gt[1]), type(gt[2]))
+			# print('debug', gt[0].shape, gt[1].shape, gt[2].shape)
+			# print("a.2", gt.shape, pred.shape)
 
 			pred = torch.from_numpy(pred)
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
