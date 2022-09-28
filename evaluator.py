@@ -13,6 +13,8 @@ import json
 
 
 
+
+
 def main(pred_pth, gt_pth, out_pth):
 	classes = 2
 	if out_pth == "":
@@ -24,6 +26,7 @@ def main(pred_pth, gt_pth, out_pth):
 	avg_hd95 = 0
 	N = 0
 
+
 	for fp in os.listdir(pred_pth):
 		if ".npz" in fp:
 			vol_id = fp.replace("pred.npz","")
@@ -33,14 +36,7 @@ def main(pred_pth, gt_pth, out_pth):
 			gt   = nib.load(os.path.join(gt_pth, fg)).get_fdata()
 			print("a.1", gt.shape, pred.shape)
 
-			# gt = zoom(gt, (0.3, 0.3, 0.3))
 			size = gt.shape
-			# gt = spacer(gt,output_spatial_shape=(size, None))
-			# print('debug', len(gt), type(gt))
-			# print('debug', type(gt[0]), type(gt[1]), type(gt[2]))
-			# print('debug', gt[0].shape, gt[1].shape, gt[2].shape)
-			# print("a.2", gt.shape, pred.shape)
-
 			pred = torch.from_numpy(pred)
 			pred = T.Resize(size, mode="nearest")(pred[None, ...])#[0,...]
 			print("b", gt.shape, pred.shape)
@@ -71,8 +67,6 @@ def main(pred_pth, gt_pth, out_pth):
 			avg_hd95 += hd95
 			N +=1
 
-			# exit(0)
-
 	avg_dsc = [avg_dsc[i]/N for i in range(classes)]
 	avg_hd95 /= N
 	results["AVERAGE"] = {"dsc":str(avg_dsc), "hd95":str(avg_hd95)}
@@ -90,10 +84,25 @@ def main(pred_pth, gt_pth, out_pth):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-	parser.add_argument('pred_pth', help='path of the predictions')
+	parser.add_argument('pred_pth', help='path of the predictions', default="none")
 	parser.add_argument('gt_pth', help='path of the ground truth', default="/scratch/lthemyr/20220318_US_DATA/USmask_cropped")
 	parser.add_argument('out_pth', help='path of the output file', default="")
 
 	args = parser.parse_args()
 
-	main(args.pred_pth, args.gt_pth, args.out_pth)
+
+	if args.pred_pth != "none":
+		main(args.pred_pth, args.gt_pth, args.out_pth)
+	else:
+		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/"
+		sub = ["cv2","cv3","cv4","cv5"]
+		for i in sub:
+			main(os.path.join(pred_pth, i), args.gt_pth, "")
+			
+		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
+		model = {"COTR_64":["cv1","cv2"],
+				"GLAM_64_OK":["cv2"],
+				"NNUNET":["cv1","cv2","cv3"]}
+		for k in list(model.keys()):
+			for i in model[i]:
+				main(os.path.join(pred_pth, k, i), args.gt_pth, "")
