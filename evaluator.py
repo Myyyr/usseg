@@ -14,7 +14,7 @@ import json
 
 
 def post_proc(pred):
-    out = cc3d.connected_components(pred)       
+    out = cc3d.connected_components(pred)
     bins_origin = np.bincount(out.flatten())
     bins_copy = np.ndarray.tolist(np.bincount(out.flatten()))   
     ind0 = 0
@@ -24,6 +24,7 @@ def post_proc(pred):
     
     out1 = out.copy()
     out1[out1 != ind1] = 0
+    out1[out1 == ind1] = 1
     del(out)
     
     return out1*1.
