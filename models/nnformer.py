@@ -887,7 +887,7 @@ class final_patch_expanding(nn.Module):
 
 
                                          
-class swintransformer(SegmentationNetwork):
+class model(SegmentationNetwork):
 
     def __init__(self, input_channels, base_num_features, num_classes, num_pool, num_conv_per_stage=2,
                  feat_map_mul_on_downscale=2, conv_op=nn.Conv2d,
@@ -898,9 +898,9 @@ class swintransformer(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False):
+                 seg_output_use_bias=False, *args, **kwargs):
     
-        super(swintransformer, self).__init__()
+        super(model, self).__init__()
         
         
         self._deep_supervision = deep_supervision
