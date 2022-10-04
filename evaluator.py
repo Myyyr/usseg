@@ -6,20 +6,34 @@ import torch
 import monai.transforms as T
 from scipy.ndimage import zoom
 from batchgenerators.augmentations.utils import convert_seg_image_to_one_hot_encoding_batched
+import cc3d
 
 import argparse
 import os
 import json
 
 
-
+def post_proc(pred):
+    out = cc3d.connected_components(pred)       
+    bins_origin = np.bincount(out.flatten())
+    bins_copy = np.ndarray.tolist(np.bincount(out.flatten()))   
+    ind0 = 0
+    bins_copy.remove(bins_origin[ind0])
+    ind1 = np.where(bins_origin == max(bins_copy))[0][0]
+    bins_copy.remove(bins_origin[ind1])
+    
+    out1 = out.copy()
+    out1[out1 != ind1] = 0
+    del(out)
+    
+    return out1*1.
 
 
 def main(pred_pth, gt_pth, out_pth):
 	classes = 2
 	if out_pth == "":
 		out_pth = pred_pth
-	out_pth = os.path.join(out_pth, "final_results.json") 
+	out_pth = os.path.join(out_pth, "pp_final_results.json") 
 
 	results = {}
 	avg_dsc = [0, 0]
@@ -35,6 +49,8 @@ def main(pred_pth, gt_pth, out_pth):
 			pred = np.load(os.path.join(pred_pth, fp))['arr_0'][0,...]
 			gt   = nib.load(os.path.join(gt_pth, fg)).get_fdata()
 			print("a.1", gt.shape, pred.shape)
+
+			pred = post_proc(pred)
 
 			size = gt.shape
 			pred = torch.from_numpy(pred)
@@ -94,21 +110,19 @@ if __name__ == '__main__':
 	if args.pred_pth != "none":
 		main(args.pred_pth, args.gt_pth, args.out_pth)
 	else:
-		# pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/"
-		# sub = ["cv2","cv3","cv4","cv5"]
-		# for i in sub:
-		# 	main(os.path.join(pred_pth, i), args.gt_pth, "")
 			
 		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
-		# model = {"COTR_64":["cv1","cv2"],
-		# 		"GLAM_64_OK":["cv2"],
-		# 		"NNUNET":["cv1","cv2","cv3"]}
 		model = {
-				# "COTR_64":["cv4"],
-				"COTR_64":["cv3"],
-				# "GLAM_64_OK":["cv2"],
-				# "NNUNET":["cv4"]
+				"NNUNET":["cv1","cv2","cv3","cv4"],
+				"COTR_64":["cv1","cv2","cv3","cv4"]
 				}
 		for k in list(model.keys()):
 			for i in model[k]:
 				main(os.path.join(pred_pth, k, i), args.gt_pth, "")
+
+
+
+		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/"
+		sub = ["cv1","cv2","cv3","cv4","cv5"]
+		for i in sub:
+			main(os.path.join(pred_pth, i), args.gt_pth, "")
