@@ -100,9 +100,12 @@ if __name__ == '__main__':
 		# 	main(os.path.join(pred_pth, i), args.gt_pth, "")
 			
 		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
-		model = {"COTR_64":["cv1","cv2"],
-				"GLAM_64_OK":["cv2"],
-				"NNUNET":["cv1","cv2","cv3"]}
+		# model = {"COTR_64":["cv1","cv2"],
+		# 		"GLAM_64_OK":["cv2"],
+		# 		"NNUNET":["cv1","cv2","cv3"]}
+		model = {"COTR_64":["cv4"],
+				# "GLAM_64_OK":["cv2"],
+				"NNUNET":["cv4"]}
 		for k in list(model.keys()):
 			for i in model[k]:
 				main(os.path.join(pred_pth, k, i), args.gt_pth, "")
