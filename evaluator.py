@@ -103,9 +103,12 @@ if __name__ == '__main__':
 		# model = {"COTR_64":["cv1","cv2"],
 		# 		"GLAM_64_OK":["cv2"],
 		# 		"NNUNET":["cv1","cv2","cv3"]}
-		model = {"COTR_64":["cv4"],
+		model = {
+				# "COTR_64":["cv4"],
+				"COTR_64":["cv3"],
 				# "GLAM_64_OK":["cv2"],
-				"NNUNET":["cv4"]}
+				# "NNUNET":["cv4"]
+				}
 		for k in list(model.keys()):
 			for i in model[k]:
 				main(os.path.join(pred_pth, k, i), args.gt_pth, "")
