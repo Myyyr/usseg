@@ -215,8 +215,9 @@ class SwinTransformerBlock(nn.Module):
         """
         B, L, C = x.shape
         S, H, W = self.input_resolution
-        
-        assert L == S * H * W, "input feature has wrong size"
+
+        assert L == S * H * W, "input feature has wrong size {} != {} * {} * {}".format(L, S, H, W)
+        # print("input feature has wrong size {} == {} * {} * {}".format(L, S, H, W))
         
         shortcut = x
         x = self.norm1(x)
@@ -592,8 +593,15 @@ class PatchEmbed(nn.Module):
         self.in_chans = in_chans
         self.embed_dim = embed_dim
 
-        self.proj1 = project(in_chans,embed_dim//2,[2,2,2],1,nn.GELU,nn.LayerNorm,False)
-        self.proj2 = project(embed_dim//2,embed_dim,[1,2,2],1,nn.GELU,nn.LayerNorm,True)
+        if patch_size[0] == 4:
+            stride1=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
+            stride2=[patch_size[0]//2,patch_size[1]//2,patch_size[2]//2]
+        else:
+            stride1=[2,2,2]
+            stride2=[1,2,2]
+
+        self.proj1 = project(in_chans,embed_dim//2,stride1,1,nn.GELU,nn.LayerNorm,False)
+        self.proj2 = project(embed_dim//2,embed_dim,stride2,1,nn.GELU,nn.LayerNorm,True)
         if norm_layer is not None:
             self.norm = norm_layer(embed_dim)
         else:
@@ -709,6 +717,15 @@ class SwinTransformer(nn.Module):
         # build layers
         self.layers = nn.ModuleList()
         for i_layer in range(self.num_layers):
+            # print( 'pretrain_img_size' , (
+            #             pretrain_img_size[0], pretrain_img_size[1],
+            #             pretrain_img_size[2]))
+            # print( 'patch_size' , (
+            #             patch_size[0], patch_size[1],
+            #             patch_size[2]))
+            # print( 'p/p' , (
+            #             pretrain_img_size[0] // patch_size[0] // 2 ** i_layer, pretrain_img_size[1] // patch_size[1] // 2 ** i_layer,
+            #             pretrain_img_size[2] // patch_size[2] // 2 ** i_layer))
             layer = BasicLayer(
                 dim=int(embed_dim * 2 ** i_layer),
                 input_resolution=(
@@ -716,7 +733,7 @@ class SwinTransformer(nn.Module):
                     pretrain_img_size[2] // patch_size[2] // 2 ** i_layer),
                 depth=depths[i_layer],
                 num_heads=num_heads[i_layer],
-                window_size=window_size,
+                window_size=window_size[i_layer],
                 mlp_ratio=mlp_ratio,
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
@@ -829,7 +846,7 @@ class encoder(nn.Module):
                     pretrain_img_size[2] // patch_size[2] // 2 ** (len(depths)-i_layer-1)),
                 depth=depths[i_layer],
                 num_heads=num_heads[i_layer],
-                window_size=window_size,
+                window_size=window_size[i_layer],
                 mlp_ratio=mlp_ratio,
                 qkv_bias=qkv_bias,
                 qk_scale=qk_scale,
@@ -887,9 +904,9 @@ class final_patch_expanding(nn.Module):
 
 
                                          
-class swintransformer(SegmentationNetwork):
+class model(SegmentationNetwork):
 
-    def __init__(self, input_channels, base_num_features, num_classes, num_pool, num_conv_per_stage=2,
+    def __init__(self, input_channels=1, base_num_features=64, num_classes=14, num_pool=4, num_conv_per_stage=2,
                  feat_map_mul_on_downscale=2, conv_op=nn.Conv2d,
                  norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
                  dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
@@ -898,9 +915,9 @@ class swintransformer(SegmentationNetwork):
                  conv_kernel_sizes=None,
                  upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
                  max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False):
+                 seg_output_use_bias=False, imsize=[64,128,128], cfg=None, log=None,*args, **kwargs):
     
-        super(swintransformer, self).__init__()
+        super(model, self).__init__()
         
         
         self._deep_supervision = deep_supervision
@@ -913,22 +930,54 @@ class swintransformer(SegmentationNetwork):
      
         
         self.upscale_logits_ops.append(lambda x: x)
-        
-        
-        embed_dim=192
+
+        imsize=cfg.imsize
+        embed_dim=cfg.embed_dim
+        num_heads=cfg.num_heads
         depths=[2, 2, 2, 2]
-        num_heads=[6, 12, 24, 48]
-        patch_size=[2,4,4]
-        self.model_down=SwinTransformer(pretrain_img_size=[64,128,128],window_size=4,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=1)
-        self.encoder=encoder(pretrain_img_size=[64,128,128],embed_dim=embed_dim,window_size=4,patch_size=patch_size,num_heads=[24,12,6],depths=[2,2,2])
+        patch_size=cfg.patch_size
+        window_size=cfg.window_size
+        self.log = log
+        # log.debug("patch_size",patch_size)
+
+
+
+        # if dataset=="SYNAPSE":
+        #     self.imsize=[64,128,128]
+        #     self.vt_map=(3,5,5)
+        #     embed_dim=192
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[6, 12, 24, 48]
+        #     patch_size=[2,4,4]
+        #     window_size=[4,4,4,4]
+        # elif dataset=="BRAIN_TUMOR":
+        #     self.imsize=[128,128,128]
+        #     self.vt_map=(2,2,2)
+        #     embed_dim=96
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[3, 6, 12, 24]
+        #     patch_size=[4,4,4]
+        #     window_size=[4,4,8,4]
+        # elif dataset=="US128":
+        #     self.imsize=[128,128,128]
+        #     self.vt_map=(2,2,2)
+        #     embed_dim=96
+        #     depths=[2, 2, 2, 2]
+        #     num_heads=[3, 6, 12, 24]
+        #     patch_size=[4,4,4]
+        #     window_size=[4,4,8,4]
+
+
+        self.model_down=SwinTransformer(pretrain_img_size=imsize,window_size=window_size,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=input_channels)
+        self.encoder=encoder(pretrain_img_size=imsize,embed_dim=embed_dim,window_size=window_size,patch_size=patch_size,num_heads=[num_heads[2],num_heads[1],num_heads[0]],depths=[2,2,2])
    
         self.final=[]
-        self.final.append(final_patch_expanding(embed_dim*2**0,14,patch_size=(2,4,4)))
+        self.final.append(final_patch_expanding(embed_dim*2**0,num_classes,patch_size=patch_size))
         for i in range(1,len(depths)-1):
-            self.final.append(final_patch_expanding(embed_dim*2**i,14,patch_size=(4,4,4)))
+            self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=patch_size))
         self.final=nn.ModuleList(self.final)
         
-    def forward(self, x):
+    def forward(self, x, *args, **kwargs):
         
             
             
