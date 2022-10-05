@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv2_nnformer_256_continue.out # output file name
-#SBATCH --error=logs/cv2_nnformer_256_continue.err  # error file name
+#SBATCH --output=logs/evaluation.out # output file name
+#SBATCH --error=logs/evaluation.err  # error file name
 
 ####################################################
 # b2$ sbatch job1.sh 							   #
@@ -51,7 +51,10 @@ conda activate usenv
 # srun python main.py -m model=glam dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
 
 ### NNUNET
-# srun python main.py -m model=nnunet dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
+# [ cv2_nnunet_256_128 : ]
+# srun python main.py -m model=nnunet dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2
+# --> CONTINUE [ cv3_nnunet_256_128_continue : ]
+# srun python main.py -m model=nnunet dataset=us256 training=crop128_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
 
 
 
@@ -180,7 +183,7 @@ conda activate usenv
 # [ cv2_nnformer_256 : 4052]
 # srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2
 # --> CONTINUE  [ cv2_nnformer_256_continue : ]
-srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2 training.checkpoint.load=True
+# srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2 training.checkpoint.load=True
 
 
 
@@ -189,7 +192,7 @@ srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu 
 # ====== EVAL ======
 # srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True training.only_val=True
 # srun python evaluator.py /scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/ /scratch/lthemyr/20220318_US_DATA/USmask_cropped /scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/ #evaluation
-# srun python evaluator.py none /scratch/lthemyr/20220318_US_DATA/USmask_cropped /scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/ #evaluation
+srun python evaluator.py none /scratch/lthemyr/20220318_US_DATA/USmask_cropped /scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/ #evaluation : 4051
 
 
 
