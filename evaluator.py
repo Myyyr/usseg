@@ -112,19 +112,19 @@ if __name__ == '__main__':
 		main(args.pred_pth, args.gt_pth, args.out_pth)
 	else:
 			
-		# pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
-		# model = {
-		# 		"NNUNET":["cv1","cv2","cv3","cv4"],
-		# 		"COTR_64":["cv1","cv2","cv3","cv4"]
-		# 		}
-		# for k in list(model.keys()):
-		# 	for i in model[k]:
-		# 		main(os.path.join(pred_pth, k, i), args.gt_pth, "")
+		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
+		model = {
+				"NNUNET":["cv1"]#,"cv2","cv3","cv4"],
+				# "COTR_64":["cv1","cv2","cv3","cv4"]
+				}
+		for k in list(model.keys()):
+			for i in model[k]:
+				main(os.path.join(pred_pth, k, i), args.gt_pth, "")
 
 
 
-		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/"
-		main(os.path.join(pred_pth), args.gt_pth, "")
-		sub = ["cv2","cv3","cv4","cv5"]
-		for i in sub:
-			main(os.path.join(pred_pth, i), args.gt_pth, "")
+		# pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_128/CROP_SMALL_nnu/NNUNET/"
+		# main(os.path.join(pred_pth), args.gt_pth, "")
+		# sub = ["cv2","cv3","cv4","cv5"]
+		# for i in sub:
+		# 	main(os.path.join(pred_pth, i), args.gt_pth, "")
