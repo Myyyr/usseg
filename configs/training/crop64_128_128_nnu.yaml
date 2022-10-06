@@ -38,7 +38,8 @@ augmentations:
 
 inference:
   # stride: [1,1,1]
-  stride: [0.5,0.5,0.5]
+  # stride: [0.5,0.5,0.5]
+  stride: [0.25,0.25,0.25]
 
 checkpoint:
   save: 10
