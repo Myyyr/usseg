@@ -420,7 +420,7 @@ class Trainer():
 			# for batch_data in self.test_loader:
 				inputs = batch_data["image"]
 				labels = batch_data["label"]
-				prediction = self.inference(inputs)
+				prediction = self.inference(inputs, labels)
 
 				if self._loss == "Dice":
 					prediction = post_trans(prediction)[0,...]
@@ -518,7 +518,7 @@ class Trainer():
 		self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
 
-	def inference(self, inputs):
+	def inference(self, inputs, labels):
 		log=self.log
 
 		# D, H, W = self.img_size
@@ -548,6 +548,10 @@ class Trainer():
 						idx_w = W - W_crop
 
 					crop = inputs[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
+					crop_labels = labels[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
+
+					log.debug("labels shape", labels.shape)
+					exit(0)
 					centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
 					if torch.cuda.is_available() and self.use_gpu:
 						crop = crop.float().cuda(0)
