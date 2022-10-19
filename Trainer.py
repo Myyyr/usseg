@@ -550,22 +550,26 @@ class Trainer():
 					crop = inputs[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
 					crop_labels = labels[:,:, idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]
 
-					log.debug("labels shape", labels.shape)
-					exit(0)
-					centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
-					if torch.cuda.is_available() and self.use_gpu:
-						crop = crop.float().cuda(0)
+					# log.debug("labels shape", labels.shape)
+					# exit(0)
+					if crop_labels.sum() != 0:
+						centers = [[idx_d+D_crop//2, idx_h+H_crop//2, idx_w+W_crop//2] for i in range(B)]
+						if torch.cuda.is_available() and self.use_gpu:
+							crop = crop.float().cuda(0)
 
-					with torch.no_grad():
-						out_crop = self.model(crop, centers)
+						with torch.no_grad():
+							out_crop = self.model(crop, centers)
+						output[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] = out_crop[0].cpu()
+						del out_crop
 
+					else:
+						output[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] = torch.zeros((B, self.classes, D_crop, H_crop, W_crop))
 
-					del crop
+					del crop, crop_labels
 
-					output[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] = out_crop[0].cpu()
-					count[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop]  += 1
+					count[:,:,idx_d:idx_d+D_crop, idx_h:idx_h+H_crop, idx_w:idx_w+W_crop] += 1
 
-					del out_crop
+					
 
 					gc.collect()
 
