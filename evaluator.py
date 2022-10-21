@@ -114,8 +114,8 @@ if __name__ == '__main__':
 			
 		pred_pth = "/scratch/lthemyr/20220318_US_DATA/US_256/CROP_SMALL_64_nnu"
 		model = {
-				"NNUNET":["cv1","cv2","cv3","cv4", "cv5"],
-				"COTR_64":["cv1","cv2","cv3","cv4"]
+				"NNUNET":["cv1"]#,"cv2","cv3","cv4", "cv5"],
+				# "COTR_64":["cv1","cv2","cv3","cv4"]
 				}
 		for k in list(model.keys()):
 			for i in model[k]:
