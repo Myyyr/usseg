@@ -30,6 +30,7 @@ from monai.transforms import (
 	RandSpatialCropd,
 	RandCropByLabelClassesd,
 )
+import monai.transforms as mt
 # from monai.inferers import sliding_window_inference
 from monai.metrics import compute_meandice, compute_hausdorff_distance, DiceMetric
 
@@ -166,9 +167,9 @@ class Trainer():
                 # LoadImaged(keys=["image", "label"]),
                 # AddChanneld(keys=["image", "label"]),
                 # CropForegroundd(keys=["image", "label"], source_key="image"),
-                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=0),
-                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=1),
-                RandFlipd(keys=["image", "label"], prob=0.25, spatial_axis=2),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
+                RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
                 RandAffined(keys=["image", "label"], 
                             rotate_range=(np.pi, np.pi, np.pi),
                             translate_range=(50, 50, 50),
@@ -181,6 +182,9 @@ class Trainer():
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
+                mt.RandGaussianNoised(keys="image", prob=0.1, mean=0.0, std=0.1)
+                mt.RandGaussianSmoothd(keys="image", sigma_x=(0.5, 1), sigma_y=(0.5, 1), sigma_z=(0.5, 1), prob=0.2)
+                mt.RandAdjustContrastd(keys="image", prob=0.15)
                 # RandSpatialCropd(keys=["image", "label"],
                 # 	roi_size=self.crop_size,
                 # 	random_size=False),

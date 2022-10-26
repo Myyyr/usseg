@@ -3,8 +3,8 @@
 #SBATCH --gpus=1
 #SBATCH --partition=long
 #SBATCH --time=100:00:00 
-#SBATCH --output=logs/cv2_nnformer_256_continue.out # output file name
-#SBATCH --error=logs/cv2_nnformer_256_continue.err  # error file name
+#SBATCH --output=logs/cv2_nnunet_256_mda.out # output file name
+#SBATCH --error=logs/cv2_nnunet_256_mda.err  # error file name
 
 ####################################################
 # b2$ sbatch job1.sh 							   #
@@ -64,10 +64,10 @@ conda activate usenv
 ## Runs 64x128x128 on 256x256x256 images
 
 ### NNUNET
-# srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA
-# srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True
-
-
+# [ cv2_nnunet_256_mda ]
+srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu training.name=CROP_SMALL_64_nnu_mda dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2
+# [ cv2_nnunet_256_mda_continue ]
+# srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu training.name=CROP_SMALL_64_nnu_mda dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA training.checkpoint.load=True dataset.cv=cv2
 
 # [ cv3_nnunet_256 ]
 # srun python main.py -m model=nnunet dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv3
@@ -185,7 +185,7 @@ conda activate usenv
 # [ cv2_nnformer_256 : 4052]
 # srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2
 # --> CONTINUE  [ cv2_nnformer_256_continue : ]
-srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2 training.checkpoint.load=True
+# srun python main.py -m model=nnformer dataset=us256 training=crop64_128_128_nnu dataset.path.pth=/scratch/lthemyr/20220318_US_DATA training.pth=/scratch/lthemyr/20220318_US_DATA model.pth=/scratch/lthemyr/20220318_US_DATA dataset.cv=cv2 training.checkpoint.load=True
 
 
 
