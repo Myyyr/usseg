@@ -182,9 +182,9 @@ class Trainer():
                     ),
                 RandScaleIntensityd(keys="image", factors=0.1, prob=0.5),
                 RandShiftIntensityd(keys="image", offsets=0.1, prob=0.5),
-                mt.RandGaussianNoised(keys="image", prob=0.1, mean=0.0, std=0.1)
-                mt.RandGaussianSmoothd(keys="image", sigma_x=(0.5, 1), sigma_y=(0.5, 1), sigma_z=(0.5, 1), prob=0.2)
-                mt.RandAdjustContrastd(keys="image", prob=0.15)
+                mt.RandGaussianNoised(keys="image", prob=0.1, mean=0.0, std=0.1),
+                mt.RandGaussianSmoothd(keys="image", sigma_x=(0.5, 1), sigma_y=(0.5, 1), sigma_z=(0.5, 1), prob=0.2),
+                mt.RandAdjustContrastd(keys="image", prob=0.15),
                 # RandSpatialCropd(keys=["image", "label"],
                 # 	roi_size=self.crop_size,
                 # 	random_size=False),
