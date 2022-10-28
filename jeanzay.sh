@@ -15,7 +15,7 @@
 set -x
 
 
-cd $WORK/transseg2d
+cd $WORK/usseg
 module purge
 module load cuda/10.1.2
 module load python/3.8.8
